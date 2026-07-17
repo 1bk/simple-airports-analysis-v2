@@ -1,0 +1,33 @@
+.PHONY: all install pipeline docs dashboard site clean lint
+
+DUCKDB_PATH ?= data/airports.duckdb
+
+all: install pipeline
+
+install:
+	uv sync
+
+# Full ELT: dlt extract/load -> DuckDB -> dbt build, orchestrated by Prefect (headless)
+pipeline:
+	uv run dbt deps --project-dir dbt --profiles-dir dbt
+	uv run python -m pipelines.flow
+
+lint:
+	uv run pre-commit run --all-files
+
+# Static dbt docs -> _site/dbt-docs/
+docs:
+	uv run dbt docs generate --project-dir dbt --profiles-dir dbt --static
+	mkdir -p _site/dbt-docs
+	cp dbt/target/static_index.html _site/dbt-docs/index.html
+
+# Static marimo dashboard (WASM) -> _site/
+dashboard:
+	uv run marimo export html-wasm dashboard/dashboard.py -o _site --mode run --no-show-code
+	rm -f _site/CLAUDE.md
+
+# Full static site: dashboard at root, dbt docs at /dbt-docs/
+site: dashboard docs
+
+clean:
+	rm -rf _site dbt/target data/*.duckdb data/*.duckdb.wal

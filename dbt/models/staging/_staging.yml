@@ -1,0 +1,41 @@
+version: 2
+
+models:
+  - name: stg_airports
+    description: Cleaned OurAirports catalogue, restricted to actual airports (no heliports/seaplane bases).
+    columns:
+      - name: airport_id
+        description: OurAirports numeric identifier.
+        data_tests: [unique, not_null]
+      - name: ident
+        description: Airport identifier (usually ICAO code, else local/GPS code).
+        data_tests: [unique, not_null]
+      - name: airport_type
+        description: Size classification.
+        data_tests:
+          - accepted_values:
+              values: [large_airport, medium_airport, small_airport]
+      - name: latitude
+        data_tests: [not_null]
+      - name: longitude
+        data_tests: [not_null]
+      - name: has_scheduled_service
+        description: Whether the airport has scheduled commercial service.
+
+  - name: stg_aircraft_states
+    description: One row per aircraft in the live snapshot over Malaysia, with a valid position.
+    columns:
+      - name: icao24
+        description: Aircraft ICAO 24-bit transponder address.
+        data_tests: [not_null]
+      - name: data_source
+        description: Which source produced the snapshot (opensky, adsb.lol, or sample).
+        data_tests:
+          - accepted_values:
+              values: [opensky, adsb.lol, sample]
+
+  - name: stg_arrivals
+    description: Arrivals at major Malaysian airports over the past 24h. Empty without OpenSky credentials.
+    columns:
+      - name: arrival_airport_icao
+        data_tests: [not_null]

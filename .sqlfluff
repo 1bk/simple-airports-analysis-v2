@@ -1,0 +1,12 @@
+[sqlfluff]
+dialect = duckdb
+templater = jinja
+exclude_rules = ST06
+max_line_length = 120
+
+[sqlfluff:templater:jinja]
+apply_dbt_builtins = True
+load_macros_from_path = dbt/macros
+
+[sqlfluff:indentation]
+indented_joins = False

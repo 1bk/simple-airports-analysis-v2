@@ -1,0 +1,101 @@
+airport_id,ident,airport_type,name,latitude,longitude,elevation_ft,iso_region,municipality,has_scheduled_service,icao_code,iata_code
+41316,LAC,small_airport,Layang-Layang Airport,7.37157,113.844002,7,MY-12,Pulau Layang-Layang (Swallow Reef),false,"",LAC
+339962,MY-0003,small_airport,Cameron Highlands Airstrip,4.440291,101.421724,,MY-06,Ringlet,false,"",""
+41346,MY-0015,small_airport,Hunter (Morotai) Airport,4.4103899002075195,117.78700256347656,175,MY-12,Morotai,false,"",""
+41347,MY-0016,small_airport,Jeroco Airport,5.406111240386963,118.3963851928711,60,MY-12,Jeroco,false,"",""
+41348,MY-0017,small_airport,Kelabakan Airport,4.416388988494873,117.49639129638672,257,MY-12,Kelabakan,false,"",""
+41349,MY-0018,small_airport,Kuala Kahaba Airport,5.11638879776001,116.14666748046875,1250,MY-12,Kuala Kahaba,false,"",""
+41350,MY-0019,small_airport,Kuala Medamit Airport,4.466390132904053,114.91300201416016,50,MY-13,Kuala Medamit,false,"",""
+41351,MY-0020,small_airport,Marak Parak Airport,6.312222003936768,116.72972106933594,400,MY-12,Marak Parak,false,"",""
+41352,MY-0021,small_airport,Meligan Airport,4.681666851043701,115.69805908203125,1800,MY-12,Meligan,false,"",""
+41353,MY-0022,small_airport,Meridi Airport,6.0941667556762695,116.97000122070312,300,MY-12,Meridi,false,"",""
+41354,MY-0023,small_airport,Nangoh Airport,5.966388702392578,117.29638671875,100,MY-12,Nangoh,false,"",""
+41355,MY-0024,small_airport,Pandewan Airport,4.974722385406494,116.47166442871094,1100,MY-12,Pandewan,false,"",""
+41356,MY-0025,small_airport,Pa Ramudu Airport,3.555431,115.49503,2800,MY-13,Paramudu,false,"",""
+41357,MY-0026,small_airport,Sook Airport,5.141388893127441,116.30777740478516,,MY-12,Sook,false,"",""
+41358,MY-0027,small_airport,Ulu Tomani Airport,4.696944236755371,115.86333465576172,1300,MY-12,Ulu Tomani,false,"",""
+41359,MY-0028,small_airport,Wallace Bay Airport,4.244166851043701,117.65611267089844,10,MY-12,Wallace Bay,false,"",""
+354865,MY-0032,small_airport,Terendak Camp Airstrip,2.295796,102.090654,,MY-04,Mashid Tanah,false,"",""
+355054,MY-0034,small_airport,Pa Dali Airport,3.558464,115.555936,,MY-13,Marudi,false,"",""
+356348,MY-0040,small_airport,Felda Lok Heng Airport,1.6945,104.08725,,MY-01,Lok Heng,false,"",""
+504745,MY-0044,small_airport,Putrajaya Recreational Airport,2.9027,101.66618,105,MY-16,Putrajaya,false,"",""
+41315,MY-GTK,small_airport,Sungai Tekai Airport,2.64118,102.89297,160,MY-01,Sungai Tekai,false,"",GTK
+35208,MY-LBP,small_airport,Long Banga Airport,3.202138,115.401811,750,MY-13,Long Banga,true,"",LBP
+41317,MY-LLM,small_airport,Long Lama Airport,3.76667,114.466667,286,MY-13,Long Lama,false,"",""
+41320,MY-SPT,small_airport,Sipitang Airport,5.0833330154418945,115.55000305175781,44,MY-12,Sipitang,false,"",SPT
+32637,WBGA,small_airport,Long Atip Airport,3.816999912261963,114.69999694824219,300,MY-13,Long Atip,false,"",""
+26807,WBGB,medium_airport,Bintulu Airport,3.12385010719,113.019996643,74,MY-13,Bintulu,true,WBGB,BTU
+30770,WBGC,small_airport,Belaga Airport,2.652143,113.767043,200,MY-13,Belaga,false,WBGC,BLG
+31851,WBGD,small_airport,Long Semado Airport,4.21700000763,115.599998474,2150,MY-13,Long Semado,false,WBGD,LSM
+32638,WBGE,small_airport,Long Geng Airport,2.617,114.133003,350,MY-13,Long Geng,false,"",""
+31816,WBGF,small_airport,Long Lellang Airport,3.4210000038099997,115.153999329,1400,MY-13,Long Datih,true,WBGF,LGL
+26808,WBGG,large_airport,Kuching International Airport,1.487364,110.352859,89,MY-13,Kuching,true,WBGG,KCH
+32086,WBGI,small_airport,Long Seridan Airport,3.976087,115.067303,607,MY-13,Long Seridan,true,WBGI,ODN
+26809,WBGJ,medium_airport,Limbang Airport,4.808300018310547,115.01000213623047,14,MY-13,Limbang,true,WBGJ,LMN
+350992,WBGK,medium_airport,Mukah Airport,2.881944,112.043333,20,MY-13,Mukah,true,WBGK,MKM
+32639,WBGL,small_airport,Long Akah Airport,3.310909,114.785553,289,MY-13,Long Akah,false,WBGL,LKH
+26810,WBGM,medium_airport,Marudi Airport,4.178734,114.330318,103,MY-13,Marudi,true,WBGM,MUR
+30793,WBGN,small_airport,Sematan Airport,1.812678,109.765391,22,MY-13,Sematan,false,WBGN,BSE
+32640,WBGO,small_airport,Lio Matu Airport,3.197567,115.308802,700,MY-13,Lio Matu,false,"",""
+31770,WBGP,small_airport,Kapit Airport,2.01052374505,112.931468248,65,MY-13,Kapit,false,WBGP,KPI
+30764,WBGQ,small_airport,Bakalalan Airport,3.974,115.617996,2900,MY-13,Bakalalan,true,WBGQ,BKM
+26811,WBGR,medium_airport,Miri Airport,4.32201,113.987,59,MY-13,Miri,true,WBGR,MYY
+26812,WBGS,medium_airport,Sibu Airport,2.2616,111.985001,122,MY-13,Sibu,true,WBGS,SBW
+31854,WBGU,small_airport,Long Sukang Airport,4.55222,115.494003,1200,MY-13,Long Sukang,false,WBGU,LSU
+31866,WBGW,small_airport,Lawas Airport,4.84917,115.407997,5,MY-13,Lawas,true,WBGW,LWY
+30682,WBGZ,medium_airport,Bario Airport,3.734648,115.478548,3350,MY-13,Bario,true,WBGZ,BBN
+32330,WBKA,small_airport,Semporna Airport,4.454596,118.595023,60,MY-12,Semporna,false,WBKA,SMM
+32642,WBKB,small_airport,Kota Belud Airport,6.36516,116.471001,46,MY-12,Kota Belud,false,"",""
+26813,WBKD,medium_airport,Lahad Datu Airport,5.03241,118.32376,45,MY-12,Lahad Datu,true,WBKD,LDU
+32434,WBKE,small_airport,Telupid Airport,5.62861,117.125999,343,MY-12,Telupid,false,WBKE,TEL
+31746,WBKG,small_airport,Keningau Airport,5.355487,116.164884,1036,MY-12,Keningau,false,WBKG,KGU
+32408,WBKH,small_airport,Sahabat [Sahabat 16] Airport,5.087779998779297,119.09400177001953,40,MY-12,Sahabat,false,WBKH,SXS
+26814,WBKK,large_airport,Kota Kinabalu International Airport,5.932743,116.049324,10,MY-12,Kota Kinabalu,true,WBKK,BKI
+26815,WBKL,medium_airport,Labuan Airport,5.301667,115.248333,101,MY-15,Labuan,true,WBKL,LBU
+32462,WBKM,small_airport,Tomanggong Airport,5.40257,118.65763,26,MY-12,Tomanggong,true,WBKM,TMG
+31550,WBKN,small_airport,Long Pasia Airport,4.409756,115.724473,3175,MY-12,Long Miau,false,WBKN,GSA
+32352,WBKO,small_airport,Sepulot Airport,4.732999801635742,116.46700286865234,800,MY-12,Sepulot,false,WBKO,SPE
+41321,WBKP,small_airport,Pamol Airport,5.996571,117.404795,36,MY-12,Pamol,false,WBKP,PAY
+32219,WBKR,small_airport,Ranau Airport,5.957793,116.680191,1800,MY-12,Ranau,false,WBKR,RNU
+26816,WBKS,medium_airport,Sandakan Airport,5.900899887084961,118.05899810791016,46,MY-12,Sandakan,true,WBKS,SDK
+31785,WBKT,small_airport,Kudat Airport,6.924111,116.837068,10,MY-12,Kudat,true,WBKT,KUD
+32643,WBKU,small_airport,Kuala Penyu Airport,5.597195,115.582695,6,MY-12,Kuala Penyu,false,"",""
+26817,WBKW,medium_airport,Tawau Airport,4.31338,118.12152,57,MY-12,Tawau,true,WBKW,TWU
+26818,WBMU,medium_airport,Mulu Airport,4.048329830169678,114.80500030517578,80,MY-13,Mulu,true,WBMU,MZV
+26820,WBTM,small_airport,Tanjung Manis Airport,2.17784,111.202003,15,MY-13,Belawai,false,WBTM,TGC
+41323,WMAB,small_airport,Batu Pahat Airstrip,1.74666,102.987976,30,MY-01,Batu Pahat,false,"",""
+32660,WMAC,small_airport,Benta Airport,4.048643,101.985569,250,MY-06,Benta,false,"",""
+32662,WMAE,small_airport,Bidor Airport,4.11638879776001,101.28199768066406,128,MY-08,Bidor,false,"",""
+41324,WMAG,small_airport,Dungun Airport,4.786290168762207,103.38200378417969,22,MY-11,Dungun,false,"",""
+32663,WMAH,small_airport,Grik Airport,5.432849,101.123658,420,MY-08,Grik,false,"",""
+32664,WMAJ,small_airport,Jendarata Airport,3.89972,100.948997,8,MY-08,Jendarata,false,"",""
+41325,WMAL,small_airport,Kuala Kerai Airport,5.538680076599121,102.19499969482422,137,MY-03,Kuala Kerai,false,"",""
+41326,WMAN,small_airport,Sungai Tiang Airport,4.330277919769287,102.3949966430664,10,MY-06,Taman Negara,false,WMAN,SXT
+26863,WMAP,medium_airport,Kluang Airport,2.04138994217,103.306999207,150,MY-01,Kluang,false,"",""
+41327,WMAQ,small_airport,Labis Airport,2.38024,103.03393,179,MY-01,Labis,false,"",""
+31888,WMAU,small_airport,Mersing Airport,2.389148,103.874183,10,MY-01,Mersing,false,WMAU,MEP
+32665,WMAV,small_airport,Muar / Bakri Airport,2.05215,102.65795,20,MY-01,Muar,false,"",""
+32666,WMAZ,small_airport,Segamat Airport,2.498023,102.839756,50,MY-01,Segamat,false,"",""
+32404,WMBA,small_airport,Sitiawan Airport,4.2222,100.6993,25,MY-08,Sitiawan,false,WMBA,SWY
+32667,WMBE,small_airport,Semantan Airport,3.480521,102.377901,100,MY-06,Temerloh,false,"",""
+32668,WMBF,small_airport,Ulu Bernam Airport,3.740934,101.168504,10,MY-08,Ulu Bernam,false,"",""
+32669,WMBH,small_airport,Pengkalan Hulu Airport,5.695909,100.996797,1000,MY-08,Pengkalan Hulu,false,"",""
+32472,WMBI,small_airport,Taiping (Tekah) Airport,4.866432,100.715381,40,MY-08,Taiping,false,WMBI,TPG
+26864,WMBT,medium_airport,Tioman Airport,2.81818,104.160004,15,MY-06,Tioman Island,true,WMBT,TOD
+26865,WMGK,small_airport,Gong Kedak Airport,5.79957,102.484001,20,MY-03,"",false,"",""
+26866,WMKA,medium_airport,Sultan Abdul Halim Airport,6.189670085906982,100.39800262451172,15,MY-02,Alor Satar,true,WMKA,AOR
+26867,WMKB,medium_airport,RMAF Butterworth Air Base,5.46592,100.390999,11,MY-07,Butterworth,false,WMKB,BWH
+26868,WMKC,medium_airport,Sultan Ismail Petra Airport,6.1668500900268555,102.29299926757812,16,MY-03,Kota Baharu,true,WMKC,KBR
+26869,WMKD,medium_airport,Kuantan Airport,3.7753899097442627,103.20899963378906,58,MY-06,Kuantan,true,WMKD,KUA
+26870,WMKE,medium_airport,Kerteh Airport,4.53722,103.427002,18,MY-11,Kerteh,false,WMKE,KTE
+26871,WMKF,small_airport,Simpang Airport,3.1122500896453857,101.7030029296875,111,MY-14,Kuala Lumpur,false,"",""
+26872,WMKI,large_airport,Sultan Azlan Shah Airport,4.56733,101.091643,130,MY-08,Ipoh,true,WMKI,IPH
+26873,WMKJ,large_airport,Senai International Airport,1.64131,103.669998,135,MY-01,Johor Bahru,true,WMKJ,JHB
+26874,WMKK,large_airport,Kuala Lumpur International Airport,2.74558,101.709999,69,MY-10,Sepang,true,WMKK,KUL
+26875,WMKL,large_airport,Langkawi International Airport,6.32973,99.728699,29,MY-02,Langkawi,true,WMKL,LGK
+26876,WMKM,medium_airport,Malacca International Airport,2.265613,102.252778,35,MY-04,Malacca,true,WMKM,MKZ
+26877,WMKN,medium_airport,Sultan Mahmud Airport,5.3826398849487305,103.10299682617188,21,MY-11,Kuala Terengganu,true,WMKN,TGG
+26878,WMKP,large_airport,Penang International Airport,5.296303,100.276185,11,MY-07,Penang,true,WMKP,PEN
+35209,WMPA,small_airport,Pulau Pangkor Airport,4.244719982147217,100.5530014038086,19,MY-08,Pangkor Island,true,WMPA,PKG
+41319,WMPR,small_airport,LTS Pulau Redang Airport,5.764804,103.004942,36,MY-11,Redang,false,WMPR,RDN
+26879,WMSA,large_airport,Sultan Abdul Aziz Shah International Airport,3.13058,101.549004,90,MY-10,Subang,true,WMSA,SZB

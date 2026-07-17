@@ -1,0 +1,44 @@
+version: 2
+
+models:
+  - name: dim_airports_my
+    description: All Malaysian airports (question 1 of the analysis).
+    columns:
+      - name: ident
+        data_tests: [unique, not_null]
+      - name: name
+        data_tests: [not_null]
+      - name: iso_region
+        description: Malaysian state/region code (e.g. MY-10).
+
+  - name: fct_airport_distances
+    description: >
+      Pairwise great-circle (haversine) distances between Malaysian airports with
+      scheduled service (question 2). One row per unordered airport pair.
+    columns:
+      - name: distance_km
+        description: Great-circle distance in kilometres.
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 5000
+
+  - name: fct_congestion
+    description: >
+      Congestion proxy (question 4): count of live aircraft within 50 km of each
+      scheduled-service Malaysian airport at snapshot time. Keyless alternative to
+      arrivals history.
+    columns:
+      - name: ident
+        data_tests: [unique, not_null]
+      - name: aircraft_within_50km
+        data_tests: [not_null]
+
+  - name: fct_arrivals
+    description: >
+      Arrivals per Malaysian airport in the past 24h (question 3). Requires OpenSky
+      credentials; empty but well-formed without them.
+    columns:
+      - name: arrival_airport_icao
+        data_tests: [unique]

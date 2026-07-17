@@ -1,0 +1,562 @@
+airport_a,airport_a_name,airport_b,airport_b_name,distance_km
+MY-LBP,Long Banga Airport,WBGB,Bintulu Airport,264.6
+MY-LBP,Long Banga Airport,WBGF,Long Lellang Airport,36.7
+WBGB,Bintulu Airport,WBGF,Long Lellang Airport,239.2
+MY-LBP,Long Banga Airport,WBGG,Kuching International Airport,592.4
+WBGB,Bintulu Airport,WBGG,Kuching International Airport,347.7
+WBGF,Long Lellang Airport,WBGG,Kuching International Airport,575.1
+MY-LBP,Long Banga Airport,WBGI,Long Seridan Airport,93.7
+WBGB,Bintulu Airport,WBGI,Long Seridan Airport,246.2
+WBGF,Long Lellang Airport,WBGI,Long Seridan Airport,62.5
+WBGG,Kuching International Airport,WBGI,Long Seridan Airport,592.2
+MY-LBP,Long Banga Airport,WBGJ,Limbang Airport,183.8
+WBGB,Bintulu Airport,WBGJ,Limbang Airport,289.5
+WBGF,Long Lellang Airport,WBGJ,Limbang Airport,155.1
+WBGG,Kuching International Airport,WBGJ,Limbang Airport,635.3
+WBGI,Long Seridan Airport,WBGJ,Limbang Airport,92.8
+MY-LBP,Long Banga Airport,WBGK,Mukah Airport,374.6
+WBGB,Bintulu Airport,WBGK,Mukah Airport,111.7
+WBGF,Long Lellang Airport,WBGK,Mukah Airport,350.5
+WBGG,Kuching International Airport,WBGK,Mukah Airport,243.6
+WBGI,Long Seridan Airport,WBGK,Mukah Airport,357.0
+WBGJ,Limbang Airport,WBGK,Mukah Airport,392.7
+MY-LBP,Long Banga Airport,WBGM,Marudi Airport,161.0
+WBGB,Bintulu Airport,WBGM,Marudi Airport,186.8
+WBGF,Long Lellang Airport,WBGM,Marudi Airport,124.3
+WBGG,Kuching International Airport,WBGM,Marudi Airport,533.5
+WBGI,Long Seridan Airport,WBGM,Marudi Airport,84.8
+WBGJ,Limbang Airport,WBGM,Marudi Airport,102.8
+WBGK,Mukah Airport,WBGM,Marudi Airport,291.9
+MY-LBP,Long Banga Airport,WBGQ,Bakalalan Airport,89.1
+WBGB,Bintulu Airport,WBGQ,Bakalalan Airport,303.4
+WBGF,Long Lellang Airport,WBGQ,Bakalalan Airport,80.2
+WBGG,Kuching International Airport,WBGQ,Bakalalan Airport,646.8
+WBGI,Long Seridan Airport,WBGQ,Bakalalan Airport,61.1
+WBGJ,Limbang Airport,WBGQ,Bakalalan Airport,114.7
+WBGK,Mukah Airport,WBGQ,Bakalalan Airport,414.9
+WBGM,Marudi Airport,WBGQ,Bakalalan Airport,144.6
+MY-LBP,Long Banga Airport,WBGR,Miri Airport,200.4
+WBGB,Bintulu Airport,WBGR,Miri Airport,171.1
+WBGF,Long Lellang Airport,WBGR,Miri Airport,163.7
+WBGG,Kuching International Airport,WBGR,Miri Airport,512.0
+WBGI,Long Seridan Airport,WBGR,Miri Airport,125.8
+WBGJ,Limbang Airport,WBGR,Miri Airport,125.6
+WBGK,Mukah Airport,WBGR,Miri Airport,268.6
+WBGM,Marudi Airport,WBGR,Miri Airport,41.3
+WBGQ,Bakalalan Airport,WBGR,Miri Airport,185.0
+MY-LBP,Long Banga Airport,WBGS,Sibu Airport,393.6
+WBGB,Bintulu Airport,WBGS,Sibu Airport,149.7
+WBGF,Long Lellang Airport,WBGS,Sibu Airport,374.8
+WBGG,Kuching International Airport,WBGS,Sibu Airport,200.8
+WBGI,Long Seridan Airport,WBGS,Sibu Airport,391.7
+WBGJ,Limbang Airport,WBGS,Sibu Airport,439.2
+WBGK,Mukah Airport,WBGS,Sibu Airport,69.3
+WBGM,Marudi Airport,WBGS,Sibu Airport,336.5
+WBGQ,Bakalalan Airport,WBGS,Sibu Airport,446.0
+WBGR,Miri Airport,WBGS,Sibu Airport,319.2
+MY-LBP,Long Banga Airport,WBGW,Lawas Airport,183.1
+WBGB,Bintulu Airport,WBGW,Lawas Airport,327.1
+WBGF,Long Lellang Airport,WBGW,Lawas Airport,161.3
+WBGG,Kuching International Airport,WBGW,Lawas Airport,674.3
+WBGI,Long Seridan Airport,WBGW,Lawas Airport,104.2
+WBGJ,Limbang Airport,WBGW,Lawas Airport,44.3
+WBGK,Mukah Airport,WBGW,Lawas Airport,432.6
+WBGM,Marudi Airport,WBGW,Lawas Airport,140.8
+WBGQ,Bakalalan Airport,WBGW,Lawas Airport,100.1
+WBGR,Miri Airport,WBGW,Lawas Airport,168.1
+WBGS,Sibu Airport,WBGW,Lawas Airport,476.5
+MY-LBP,Long Banga Airport,WBGZ,Bario Airport,59.8
+WBGB,Bintulu Airport,WBGZ,Bario Airport,281.2
+WBGF,Long Lellang Airport,WBGZ,Bario Airport,50.1
+WBGG,Kuching International Airport,WBGZ,Bario Airport,621.7
+WBGI,Long Seridan Airport,WBGZ,Bario Airport,52.9
+WBGJ,Limbang Airport,WBGZ,Bario Airport,130.2
+WBGK,Mukah Airport,WBGZ,Bario Airport,392.9
+WBGM,Marudi Airport,WBGZ,Bario Airport,136.6
+WBGQ,Bakalalan Airport,WBGZ,Bario Airport,30.8
+WBGR,Miri Airport,WBGZ,Bario Airport,177.9
+WBGS,Sibu Airport,WBGZ,Bario Airport,421.1
+WBGW,Lawas Airport,WBGZ,Bario Airport,124.2
+MY-LBP,Long Banga Airport,WBKD,Lahad Datu Airport,382.7
+WBGB,Bintulu Airport,WBKD,Lahad Datu Airport,625.3
+WBGF,Long Lellang Airport,WBKD,Lahad Datu Airport,394.5
+WBGG,Kuching International Airport,WBKD,Lahad Datu Airport,968.6
+WBGI,Long Seridan Airport,WBKD,Lahad Datu Airport,379.6
+WBGJ,Limbang Airport,WBKD,Lahad Datu Airport,368.0
+WBGK,Mukah Airport,WBKD,Lahad Datu Airport,736.5
+WBGM,Marudi Airport,WBKD,Lahad Datu Airport,452.7
+WBGQ,Bakalalan Airport,WBKD,Lahad Datu Airport,322.2
+WBGR,Miri Airport,WBKD,Lahad Datu Airport,487.1
+WBGS,Sibu Airport,WBKD,Lahad Datu Airport,767.9
+WBGW,Lawas Airport,WBKD,Lahad Datu Airport,323.7
+WBGZ,Bario Airport,WBKD,Lahad Datu Airport,346.9
+MY-LBP,Long Banga Airport,WBKK,Kota Kinabalu International Airport,312.0
+WBGB,Bintulu Airport,WBKK,Kota Kinabalu International Airport,458.6
+WBGF,Long Lellang Airport,WBKK,Kota Kinabalu International Airport,296.4
+WBGG,Kuching International Airport,WBKK,Kota Kinabalu International Airport,802.3
+WBGI,Long Seridan Airport,WBKK,Kota Kinabalu International Airport,243.2
+WBGJ,Limbang Airport,WBKK,Kota Kinabalu International Airport,169.9
+WBGK,Mukah Airport,WBKK,Kota Kinabalu International Airport,558.8
+WBGM,Marudi Airport,WBKK,Kota Kinabalu International Airport,272.6
+WBGQ,Bakalalan Airport,WBKK,Kota Kinabalu International Airport,223.0
+WBGR,Miri Airport,WBKK,Kota Kinabalu International Airport,290.2
+WBGS,Sibu Airport,WBKK,Kota Kinabalu International Airport,608.1
+WBGW,Lawas Airport,WBKK,Kota Kinabalu International Airport,139.8
+WBGZ,Bario Airport,WBKK,Kota Kinabalu International Airport,252.5
+WBKD,Lahad Datu Airport,WBKK,Kota Kinabalu International Airport,270.9
+MY-LBP,Long Banga Airport,WBKL,Labuan Airport,234.1
+WBGB,Bintulu Airport,WBKL,Labuan Airport,346.0
+WBGF,Long Lellang Airport,WBKL,Labuan Airport,209.4
+WBGG,Kuching International Airport,WBKL,Labuan Airport,689.2
+WBGI,Long Seridan Airport,WBKL,Labuan Airport,148.8
+WBGJ,Limbang Airport,WBKL,Labuan Airport,60.9
+WBGK,Mukah Airport,WBKL,Labuan Airport,445.8
+WBGM,Marudi Airport,WBKL,Labuan Airport,161.1
+WBGQ,Bakalalan Airport,WBKL,Labuan Airport,153.2
+WBGR,Miri Airport,WBKL,Labuan Airport,177.2
+WBGS,Sibu Airport,WBKL,Labuan Airport,495.3
+WBGW,Lawas Airport,WBKL,Labuan Airport,53.3
+WBGZ,Bario Airport,WBKL,Labuan Airport,176.1
+WBKD,Lahad Datu Airport,WBKL,Labuan Airport,341.9
+WBKK,Kota Kinabalu International Airport,WBKL,Labuan Airport,113.1
+MY-LBP,Long Banga Airport,WBKM,Tomanggong Airport,436.1
+WBGB,Bintulu Airport,WBKM,Tomanggong Airport,674.5
+WBGF,Long Lellang Airport,WBKM,Tomanggong Airport,446.6
+WBGG,Kuching International Airport,WBKM,Tomanggong Airport,1019.2
+WBGI,Long Seridan Airport,WBKM,Tomanggong Airport,428.3
+WBGJ,Limbang Airport,WBKM,Tomanggong Airport,409.4
+WBGK,Mukah Airport,WBKM,Tomanggong Airport,785.2
+WBGM,Marudi Airport,WBKM,Tomanggong Airport,498.4
+WBGQ,Bakalalan Airport,WBKM,Tomanggong Airport,372.4
+WBGR,Miri Airport,WBKM,Tomanggong Airport,531.2
+WBGS,Sibu Airport,WBKM,Tomanggong Airport,818.5
+WBGW,Lawas Airport,WBKM,Tomanggong Airport,365.1
+WBGZ,Bario Airport,WBKM,Tomanggong Airport,398.2
+WBKD,Lahad Datu Airport,WBKM,Tomanggong Airport,55.3
+WBKK,Kota Kinabalu International Airport,WBKM,Tomanggong Airport,294.6
+WBKL,Labuan Airport,WBKM,Tomanggong Airport,377.6
+MY-LBP,Long Banga Airport,WBKS,Sandakan Airport,420.5
+WBGB,Bintulu Airport,WBKS,Sandakan Airport,638.2
+WBGF,Long Lellang Airport,WBKS,Sandakan Airport,423.9
+WBGG,Kuching International Airport,WBKS,Sandakan Airport,985.7
+WBGI,Long Seridan Airport,WBKS,Sandakan Airport,394.5
+WBGJ,Limbang Airport,WBKS,Sandakan Airport,358.7
+WBGK,Mukah Airport,WBKS,Sandakan Airport,746.6
+WBGM,Marudi Airport,WBKS,Sandakan Airport,455.2
+WBGQ,Bakalalan Airport,WBKS,Sandakan Airport,345.0
+WBGR,Miri Airport,WBKS,Sandakan Airport,483.9
+WBGS,Sibu Airport,WBKS,Sandakan Airport,785.8
+WBGW,Lawas Airport,WBKS,Sandakan Airport,315.9
+WBGZ,Bario Airport,WBKS,Sandakan Airport,373.8
+WBKD,Lahad Datu Airport,WBKS,Sandakan Airport,100.9
+WBKK,Kota Kinabalu International Airport,WBKS,Sandakan Airport,222.3
+WBKL,Labuan Airport,WBKS,Sandakan Airport,318.1
+WBKM,Tomanggong Airport,WBKS,Sandakan Airport,86.4
+MY-LBP,Long Banga Airport,WBKT,Kudat Airport,443.3
+WBGB,Bintulu Airport,WBKT,Kudat Airport,597.7
+WBGF,Long Lellang Airport,WBKT,Kudat Airport,431.8
+WBGG,Kuching International Airport,WBKT,Kudat Airport,939.2
+WBGI,Long Seridan Airport,WBKT,Kudat Airport,381.9
+WBGJ,Limbang Airport,WBKT,Kudat Airport,310.1
+WBGK,Mukah Airport,WBKT,Kudat Airport,695.7
+WBGM,Marudi Airport,WBKT,Kudat Airport,412.5
+WBGQ,Bakalalan Airport,WBKT,Kudat Airport,354.7
+WBGR,Miri Airport,WBKT,Kudat Airport,428.0
+WBGS,Sibu Airport,WBKT,Kudat Airport,746.9
+WBGW,Lawas Airport,WBKT,Kudat Airport,279.7
+WBGZ,Bario Airport,WBKT,Kudat Airport,385.2
+WBKD,Lahad Datu Airport,WBKT,Kudat Airport,267.0
+WBKK,Kota Kinabalu International Airport,WBKT,Kudat Airport,140.5
+WBKL,Labuan Airport,WBKT,Kudat Airport,251.8
+WBKM,Tomanggong Airport,WBKT,Kudat Airport,262.9
+WBKS,Sandakan Airport,WBKT,Kudat Airport,176.6
+MY-LBP,Long Banga Airport,WBKW,Tawau Airport,326.1
+WBGB,Bintulu Airport,WBKW,Tawau Airport,581.3
+WBGF,Long Lellang Airport,WBKW,Tawau Airport,343.8
+WBGG,Kuching International Airport,WBKW,Tawau Airport,918.1
+WBGI,Long Seridan Airport,WBKW,Tawau Airport,340.8
+WBGJ,Limbang Airport,WBKW,Tawau Airport,349.3
+WBGK,Mukah Airport,WBKW,Tawau Airport,693.0
+WBGM,Marudi Airport,WBKW,Tawau Airport,420.7
+WBGQ,Bakalalan Airport,WBKW,Tawau Airport,280.2
+WBGR,Miri Airport,WBKW,Tawau Airport,458.4
+WBGS,Sibu Airport,WBKW,Tawau Airport,718.4
+WBGW,Lawas Airport,WBKW,Tawau Airport,306.6
+WBGZ,Bario Airport,WBKW,Tawau Airport,300.1
+WBKD,Lahad Datu Airport,WBKW,Tawau Airport,83.0
+WBKK,Kota Kinabalu International Airport,WBKW,Tawau Airport,291.7
+WBKL,Labuan Airport,WBKW,Tawau Airport,336.8
+WBKM,Tomanggong Airport,WBKW,Tawau Airport,134.9
+WBKS,Sandakan Airport,WBKW,Tawau Airport,176.7
+WBKT,Kudat Airport,WBKW,Tawau Airport,323.2
+MY-LBP,Long Banga Airport,WBMU,Mulu Airport,115.1
+WBGB,Bintulu Airport,WBMU,Mulu Airport,223.2
+WBGF,Long Lellang Airport,WBMU,Mulu Airport,79.8
+WBGG,Kuching International Airport,WBMU,Mulu Airport,570.6
+WBGI,Long Seridan Airport,WBMU,Mulu Airport,30.2
+WBGJ,Limbang Airport,WBMU,Mulu Airport,87.5
+WBGK,Mukah Airport,WBMU,Mulu Airport,332.8
+WBGM,Marudi Airport,WBMU,Mulu Airport,54.6
+WBGQ,Bakalalan Airport,WBMU,Mulu Airport,90.6
+WBGR,Miri Airport,WBMU,Mulu Airport,95.7
+WBGS,Sibu Airport,WBMU,Mulu Airport,370.8
+WBGW,Lawas Airport,WBMU,Mulu Airport,111.3
+WBGZ,Bario Airport,WBMU,Mulu Airport,82.5
+WBKD,Lahad Datu Airport,WBMU,Mulu Airport,405.1
+WBKK,Kota Kinabalu International Airport,WBMU,Mulu Airport,250.8
+WBKL,Labuan Airport,WBMU,Mulu Airport,147.8
+WBKM,Tomanggong Airport,WBMU,Mulu Airport,452.7
+WBKS,Sandakan Airport,WBMU,Mulu Airport,415.2
+WBKT,Kudat Airport,WBMU,Mulu Airport,390.9
+WBKW,Tawau Airport,WBMU,Mulu Airport,369.0
+MY-LBP,Long Banga Airport,WMBT,Tioman Airport,1249.0
+WBGB,Bintulu Airport,WMBT,Tioman Airport,984.4
+WBGF,Long Lellang Airport,WMBT,Tioman Airport,1222.5
+WBGG,Kuching International Airport,WMBT,Tioman Airport,703.8
+WBGI,Long Seridan Airport,WMBT,Tioman Airport,1217.5
+WBGJ,Limbang Airport,WMBT,Tioman Airport,1223.9
+WBGK,Mukah Airport,WMBT,Tioman Airport,875.5
+WBGM,Marudi Airport,WMBT,Tioman Airport,1138.8
+WBGQ,Bakalalan Airport,WMBT,Tioman Airport,1278.3
+WBGR,Miri Airport,WMBT,Tioman Airport,1103.3
+WBGS,Sibu Airport,WMBT,Tioman Airport,871.4
+WBGW,Lawas Airport,WMBT,Tioman Airport,1268.1
+WBGZ,Bario Airport,WMBT,Tioman Airport,1260.6
+WBKD,Lahad Datu Airport,WMBT,Tioman Airport,1590.3
+WBKK,Kota Kinabalu International Airport,WMBT,Tioman Airport,1362.7
+WBKL,Labuan Airport,WMBT,Tioman Airport,1260.4
+WBKM,Tomanggong Airport,WMBT,Tioman Airport,1633.2
+WBKS,Sandakan Airport,WMBT,Tioman Airport,1578.5
+WBKT,Kudat Airport,WMBT,Tioman Airport,1476.6
+WBKW,Tawau Airport,WMBT,Tioman Airport,1558.3
+WBMU,Mulu Airport,WMBT,Tioman Airport,1189.4
+MY-LBP,Long Banga Airport,WMKA,Sultan Abdul Halim Airport,1695.4
+WBGB,Bintulu Airport,WMKA,Sultan Abdul Halim Airport,1439.6
+WBGF,Long Lellang Airport,WMKA,Sultan Abdul Halim Airport,1663.6
+WBGG,Kuching International Airport,WMKA,Sultan Abdul Halim Airport,1221.7
+WBGI,Long Seridan Airport,WMKA,Sultan Abdul Halim Airport,1643.1
+WBGJ,Limbang Airport,WMKA,Sultan Abdul Halim Airport,1624.5
+WBGK,Mukah Airport,WMKA,Sultan Abdul Halim Airport,1342.0
+WBGM,Marudi Airport,WMKA,Sultan Abdul Halim Airport,1558.9
+WBGQ,Bakalalan Airport,WMKA,Sultan Abdul Halim Airport,1703.5
+WBGR,Miri Airport,WMKA,Sultan Abdul Halim Airport,1518.8
+WBGS,Sibu Airport,WMKA,Sultan Abdul Halim Airport,1356.9
+WBGW,Lawas Airport,WMKA,Sultan Abdul Halim Airport,1667.9
+WBGZ,Bario Airport,WMKA,Sultan Abdul Halim Airport,1692.6
+WBKD,Lahad Datu Airport,WMKA,Sultan Abdul Halim Airport,1987.8
+WBKK,Kota Kinabalu International Airport,WMKA,Sultan Abdul Halim Airport,1730.8
+WBKL,Labuan Airport,WMKA,Sultan Abdul Halim Airport,1645.9
+WBKM,Tomanggong Airport,WMKA,Sultan Abdul Halim Airport,2021.8
+WBKS,Sandakan Airport,WMKA,Sultan Abdul Halim Airport,1953.1
+WBKT,Kudat Airport,WMKA,Sultan Abdul Halim Airport,1817.7
+WBKW,Tawau Airport,WMKA,Sultan Abdul Halim Airport,1973.4
+WBMU,Mulu Airport,WMKA,Sultan Abdul Halim Airport,1613.1
+WMBT,Tioman Airport,WMKA,Sultan Abdul Halim Airport,560.7
+MY-LBP,Long Banga Airport,WMKC,Sultan Ismail Petra Airport,1489.5
+WBGB,Bintulu Airport,WMKC,Sultan Ismail Petra Airport,1235.9
+WBGF,Long Lellang Airport,WMKC,Sultan Ismail Petra Airport,1457.3
+WBGG,Kuching International Airport,WMKC,Sultan Ismail Petra Airport,1034.4
+WBGI,Long Seridan Airport,WMKC,Sultan Ismail Petra Airport,1435.6
+WBGJ,Limbang Airport,WMKC,Sultan Ismail Petra Airport,1415.6
+WBGK,Mukah Airport,WMKC,Sultan Ismail Petra Airport,1140.7
+WBGM,Marudi Airport,WMKC,Sultan Ismail Petra Airport,1351.2
+WBGQ,Bakalalan Airport,WMKC,Sultan Ismail Petra Airport,1495.8
+WBGR,Miri Airport,WMKC,Sultan Ismail Petra Airport,1310.9
+WBGS,Sibu Airport,WMKC,Sultan Ismail Petra Airport,1159.0
+WBGW,Lawas Airport,WMKC,Sultan Ismail Petra Airport,1458.9
+WBGZ,Bario Airport,WMKC,Sultan Ismail Petra Airport,1485.4
+WBKD,Lahad Datu Airport,WMKC,Sultan Ismail Petra Airport,1778.4
+WBKK,Kota Kinabalu International Airport,WMKC,Sultan Ismail Petra Airport,1521.3
+WBKL,Labuan Airport,WMKC,Sultan Ismail Petra Airport,1436.5
+WBKM,Tomanggong Airport,WMKC,Sultan Ismail Petra Airport,1812.3
+WBKS,Sandakan Airport,WMKC,Sultan Ismail Petra Airport,1743.6
+WBKT,Kudat Airport,WMKC,Sultan Ismail Petra Airport,1608.8
+WBKW,Tawau Airport,WMKC,Sultan Ismail Petra Airport,1764.6
+WBMU,Mulu Airport,WMKC,Sultan Ismail Petra Airport,1405.5
+WMBT,Tioman Airport,WMKC,Sultan Ismail Petra Airport,426.0
+WMKA,Sultan Abdul Halim Airport,WMKC,Sultan Ismail Petra Airport,209.5
+MY-LBP,Long Banga Airport,WMKD,Kuantan Airport,1354.8
+WBGB,Bintulu Airport,WMKD,Kuantan Airport,1091.4
+WBGF,Long Lellang Airport,WMKD,Kuantan Airport,1326.2
+WBGG,Kuching International Airport,WMKD,Kuantan Airport,833.3
+WBGI,Long Seridan Airport,WMKD,Kuantan Airport,1315.7
+WBGJ,Limbang Airport,WMKD,Kuantan Airport,1313.5
+WBGK,Mukah Airport,WMKD,Kuantan Airport,985.7
+WBGM,Marudi Airport,WMKD,Kuantan Airport,1234.5
+WBGQ,Bakalalan Airport,WMKD,Kuantan Airport,1376.8
+WBGR,Miri Airport,WMKD,Kuantan Airport,1197.0
+WBGS,Sibu Airport,WMKD,Kuantan Airport,988.9
+WBGW,Lawas Airport,WMKD,Kuantan Airport,1357.9
+WBGZ,Bario Airport,WMKD,Kuantan Airport,1361.4
+WBKD,Lahad Datu Airport,WMKD,Kuantan Airport,1681.5
+WBKK,Kota Kinabalu International Airport,WMKD,Kuantan Airport,1442.6
+WBKL,Labuan Airport,WMKD,Kuantan Airport,1345.2
+WBKM,Tomanggong Airport,WMKD,Kuantan Airport,1721.7
+WBKS,Sandakan Airport,WMKD,Kuantan Airport,1662.1
+WBKT,Kudat Airport,WMKD,Kuantan Airport,1548.6
+WBKW,Tawau Airport,WMKD,Kuantan Airport,1655.1
+WBMU,Mulu Airport,WMKD,Kuantan Airport,1286.8
+WMBT,Tioman Airport,WMKD,Kuantan Airport,149.9
+WMKA,Sultan Abdul Halim Airport,WMKD,Kuantan Airport,411.1
+WMKC,Sultan Ismail Petra Airport,WMKD,Kuantan Airport,284.6
+MY-LBP,Long Banga Airport,WMKI,Sultan Azlan Shah Airport,1594.7
+WBGB,Bintulu Airport,WMKI,Sultan Azlan Shah Airport,1333.0
+WBGF,Long Lellang Airport,WMKI,Sultan Azlan Shah Airport,1565.0
+WBGG,Kuching International Airport,WMKI,Sultan Azlan Shah Airport,1083.8
+WBGI,Long Seridan Airport,WMKI,Sultan Azlan Shah Airport,1551.1
+WBGJ,Limbang Airport,WMKI,Sultan Azlan Shah Airport,1542.7
+WBGK,Mukah Airport,WMKI,Sultan Azlan Shah Airport,1229.5
+WBGM,Marudi Airport,WMKI,Sultan Azlan Shah Airport,1468.4
+WBGQ,Bakalalan Airport,WMKI,Sultan Azlan Shah Airport,1612.1
+WBGR,Miri Airport,WMKI,Sultan Azlan Shah Airport,1429.8
+WBGS,Sibu Airport,WMKI,Sultan Azlan Shah Airport,1235.9
+WBGW,Lawas Airport,WMKI,Sultan Azlan Shah Airport,1586.8
+WBGZ,Bario Airport,WMKI,Sultan Azlan Shah Airport,1598.2
+WBKD,Lahad Datu Airport,WMKI,Sultan Azlan Shah Airport,1910.0
+WBKK,Kota Kinabalu International Airport,WMKI,Sultan Azlan Shah Airport,1663.1
+WBKL,Labuan Airport,WMKI,Sultan Azlan Shah Airport,1570.4
+WBKM,Tomanggong Airport,WMKI,Sultan Azlan Shah Airport,1948.0
+WBKS,Sandakan Airport,WMKI,Sultan Azlan Shah Airport,1884.6
+WBKT,Kudat Airport,WMKI,Sultan Azlan Shah Airport,1761.4
+WBKW,Tawau Airport,WMKI,Sultan Azlan Shah Airport,1888.1
+WBMU,Mulu Airport,WMKI,Sultan Azlan Shah Airport,1521.6
+WMBT,Tioman Airport,WMKI,Sultan Azlan Shah Airport,392.1
+WMKA,Sultan Abdul Halim Airport,WMKI,Sultan Azlan Shah Airport,196.1
+WMKC,Sultan Ismail Petra Airport,WMKI,Sultan Azlan Shah Airport,222.1
+WMKD,Kuantan Airport,WMKI,Sultan Azlan Shah Airport,250.8
+MY-LBP,Long Banga Airport,WMKJ,Senai International Airport,1314.8
+WBGB,Bintulu Airport,WMKJ,Senai International Airport,1051.7
+WBGF,Long Lellang Airport,WMKJ,Senai International Airport,1290.9
+WBGG,Kuching International Airport,WMKJ,Senai International Airport,743.0
+WBGI,Long Seridan Airport,WMKJ,Senai International Airport,1292.1
+WBGJ,Limbang Airport,WMKJ,Senai International Airport,1307.1
+WBGK,Mukah Airport,WMKJ,Senai International Airport,940.5
+WBGM,Marudi Airport,WMKJ,Senai International Airport,1216.9
+WBGQ,Bakalalan Airport,WMKJ,Senai International Airport,1352.0
+WBGR,Miri Airport,WMKJ,Senai International Airport,1183.7
+WBGS,Sibu Airport,WMKJ,Senai International Airport,926.6
+WBGW,Lawas Airport,WMKJ,Senai International Airport,1350.9
+WBGZ,Bario Airport,WMKJ,Senai International Airport,1332.0
+WBKD,Lahad Datu Airport,WMKJ,Senai International Airport,1669.5
+WBKK,Kota Kinabalu International Airport,WMKJ,Senai International Airport,1453.7
+WBKL,Labuan Airport,WMKJ,Senai International Airport,1347.8
+WBKM,Tomanggong Airport,WMKJ,Senai International Airport,1714.9
+WBKS,Sandakan Airport,WMKJ,Senai International Airport,1664.9
+WBKT,Kudat Airport,WMKJ,Senai International Airport,1573.3
+WBKW,Tawau Airport,WMKJ,Senai International Airport,1631.9
+WBMU,Mulu Airport,WMKJ,Senai International Airport,1265.2
+WMBT,Tioman Airport,WMKJ,Senai International Airport,141.7
+WMKA,Sultan Abdul Halim Airport,WMKJ,Senai International Airport,622.5
+WMKC,Sultan Ismail Petra Airport,WMKJ,Senai International Airport,525.9
+WMKD,Kuantan Airport,WMKJ,Senai International Airport,242.8
+WMKI,Sultan Azlan Shah Airport,WMKJ,Senai International Airport,433.4
+MY-LBP,Long Banga Airport,WMKK,Kuala Lumpur International Airport,1521.2
+WBGB,Bintulu Airport,WMKK,Kuala Lumpur International Airport,1256.7
+WBGF,Long Lellang Airport,WMKK,Kuala Lumpur International Airport,1494.6
+WBGG,Kuching International Airport,WMKK,Kuala Lumpur International Airport,970.5
+WBGI,Long Seridan Airport,WMKK,Kuala Lumpur International Airport,1489.0
+WBGJ,Limbang Airport,WMKK,Kuala Lumpur International Airport,1493.3
+WBGK,Mukah Airport,WMKK,Kuala Lumpur International Airport,1147.7
+WBGM,Marudi Airport,WMKK,Kuala Lumpur International Airport,1409.7
+WBGQ,Bakalalan Airport,WMKK,Kuala Lumpur International Airport,1549.8
+WBGR,Miri Airport,WMKK,Kuala Lumpur International Airport,1373.7
+WBGS,Sibu Airport,WMKK,Kuala Lumpur International Airport,1142.7
+WBGW,Lawas Airport,WMKK,Kuala Lumpur International Airport,1537.6
+WBGZ,Bario Airport,WMKK,Kuala Lumpur International Airport,1532.5
+WBKD,Lahad Datu Airport,WMKK,Kuala Lumpur International Airport,1860.4
+WBKK,Kota Kinabalu International Airport,WMKK,Kuala Lumpur International Airport,1628.7
+WBKL,Labuan Airport,WMKK,Kuala Lumpur International Airport,1528.2
+WBKM,Tomanggong Airport,WMKK,Kuala Lumpur International Airport,1902.6
+WBKS,Sandakan Airport,WMKK,Kuala Lumpur International Airport,1846.1
+WBKT,Kudat Airport,WMKK,Kuala Lumpur International Airport,1738.9
+WBKW,Tawau Airport,WMKK,Kuala Lumpur International Airport,1829.7
+WBMU,Mulu Airport,WMKK,Kuala Lumpur International Airport,1460.7
+WMBT,Tioman Airport,WMKK,Kuala Lumpur International Airport,272.2
+WMKA,Sultan Abdul Halim Airport,WMKK,Kuala Lumpur International Airport,409.6
+WMKC,Sultan Ismail Petra Airport,WMKK,Kuala Lumpur International Airport,385.9
+WMKD,Kuantan Airport,WMKK,Kuala Lumpur International Airport,202.0
+WMKI,Sultan Azlan Shah Airport,WMKK,Kuala Lumpur International Airport,213.9
+WMKJ,Senai International Airport,WMKK,Kuala Lumpur International Airport,250.0
+MY-LBP,Long Banga Airport,WMKL,Langkawi International Airport,1771.0
+WBGB,Bintulu Airport,WMKL,Langkawi International Airport,1515.2
+WBGF,Long Lellang Airport,WMKL,Langkawi International Airport,1739.1
+WBGG,Kuching International Airport,WMKL,Langkawi International Airport,1295.4
+WBGI,Long Seridan Airport,WMKL,Langkawi International Airport,1718.6
+WBGJ,Limbang Airport,WMKL,Langkawi International Airport,1699.5
+WBGK,Mukah Airport,WMKL,Langkawi International Airport,1417.5
+WBGM,Marudi Airport,WMKL,Langkawi International Airport,1634.3
+WBGQ,Bakalalan Airport,WMKL,Langkawi International Airport,1778.9
+WBGR,Miri Airport,WMKL,Langkawi International Airport,1594.2
+WBGS,Sibu Airport,WMKL,Langkawi International Airport,1432.0
+WBGW,Lawas Airport,WMKL,Langkawi International Airport,1742.9
+WBGZ,Bario Airport,WMKL,Langkawi International Airport,1768.1
+WBKD,Lahad Datu Airport,WMKL,Langkawi International Airport,2062.4
+WBKK,Kota Kinabalu International Airport,WMKL,Langkawi International Airport,1804.9
+WBKL,Labuan Airport,WMKL,Langkawi International Airport,1720.5
+WBKM,Tomanggong Airport,WMKL,Langkawi International Airport,2096.2
+WBKS,Sandakan Airport,WMKL,Langkawi International Airport,2027.1
+WBKT,Kudat Airport,WMKL,Langkawi International Airport,1890.7
+WBKW,Tawau Airport,WMKL,Langkawi International Airport,2048.5
+WBMU,Mulu Airport,WMKL,Langkawi International Airport,1688.5
+WMBT,Tioman Airport,WMKL,Langkawi International Airport,627.4
+WMKA,Sultan Abdul Halim Airport,WMKL,Langkawi International Airport,75.6
+WMKC,Sultan Ismail Petra Airport,WMKL,Langkawi International Airport,284.0
+WMKD,Kuantan Airport,WMKL,Langkawi International Airport,478.8
+WMKI,Sultan Azlan Shah Airport,WMKL,Langkawi International Airport,247.3
+WMKJ,Senai International Airport,WMKL,Langkawi International Airport,680.3
+WMKK,Kuala Lumpur International Airport,WMKL,Langkawi International Airport,455.0
+MY-LBP,Long Banga Airport,WMKM,Malacca International Airport,1464.1
+WBGB,Bintulu Airport,WMKM,Malacca International Airport,1199.7
+WBGF,Long Lellang Airport,WMKM,Malacca International Airport,1438.5
+WBGG,Kuching International Airport,WMKM,Malacca International Airport,904.3
+WBGI,Long Seridan Airport,WMKM,Malacca International Airport,1435.4
+WBGJ,Limbang Airport,WMKM,Malacca International Airport,1443.7
+WBGK,Mukah Airport,WMKM,Malacca International Airport,1089.7
+WBGM,Marudi Airport,WMKM,Malacca International Airport,1357.5
+WBGQ,Bakalalan Airport,WMKM,Malacca International Airport,1496.0
+WBGR,Miri Airport,WMKM,Malacca International Airport,1322.5
+WBGS,Sibu Airport,WMKM,Malacca International Airport,1081.3
+WBGW,Lawas Airport,WMKM,Malacca International Airport,1487.8
+WBGZ,Bario Airport,WMKM,Malacca International Airport,1477.6
+WBKD,Lahad Datu Airport,WMKM,Malacca International Airport,1809.5
+WBKK,Kota Kinabalu International Airport,WMKM,Malacca International Airport,1583.3
+WBKL,Labuan Airport,WMKM,Malacca International Airport,1480.7
+WBKM,Tomanggong Airport,WMKM,Malacca International Airport,1852.9
+WBKS,Sandakan Airport,WMKM,Malacca International Airport,1798.8
+WBKT,Kudat Airport,WMKM,Malacca International Airport,1697.0
+WBKW,Tawau Airport,WMKM,Malacca International Airport,1776.2
+WBMU,Mulu Airport,WMKM,Malacca International Airport,1407.6
+WMBT,Tioman Airport,WMKM,Malacca International Airport,220.6
+WMKA,Sultan Abdul Halim Airport,WMKM,Malacca International Airport,482.4
+WMKC,Sultan Ismail Petra Airport,WMKM,Malacca International Airport,433.8
+WMKD,Kuantan Airport,WMKM,Malacca International Airport,198.6
+WMKI,Sultan Azlan Shah Airport,WMKM,Malacca International Airport,286.6
+WMKJ,Senai International Airport,WMKM,Malacca International Airport,172.1
+WMKK,Kuala Lumpur International Airport,WMKM,Malacca International Airport,80.5
+WMKL,Langkawi International Airport,WMKM,Malacca International Airport,531.5
+MY-LBP,Long Banga Airport,WMKN,Sultan Mahmud Airport,1385.0
+WBGB,Bintulu Airport,WMKN,Sultan Mahmud Airport,1127.9
+WBGF,Long Lellang Airport,WMKN,Sultan Mahmud Airport,1353.7
+WBGG,Kuching International Airport,WMKN,Sultan Mahmud Airport,913.7
+WBGI,Long Seridan Airport,WMKN,Sultan Mahmud Airport,1335.1
+WBGJ,Limbang Airport,WMKN,Sultan Mahmud Airport,1320.3
+WBGK,Mukah Airport,WMKN,Sultan Mahmud Airport,1029.7
+WBGM,Marudi Airport,WMKN,Sultan Mahmud Airport,1251.2
+WBGQ,Bakalalan Airport,WMKN,Sultan Mahmud Airport,1395.7
+WBGR,Miri Airport,WMKN,Sultan Mahmud Airport,1211.6
+WBGS,Sibu Airport,WMKN,Sultan Mahmud Airport,1044.6
+WBGW,Lawas Airport,WMKN,Sultan Mahmud Airport,1364.1
+WBGZ,Bario Airport,WMKN,Sultan Mahmud Airport,1383.9
+WBKD,Lahad Datu Airport,WMKN,Sultan Mahmud Airport,1685.9
+WBKK,Kota Kinabalu International Airport,WMKN,Sultan Mahmud Airport,1433.8
+WBKL,Labuan Airport,WMKN,Sultan Mahmud Airport,1344.6
+WBKM,Tomanggong Airport,WMKN,Sultan Mahmud Airport,1721.9
+WBKS,Sandakan Airport,WMKN,Sultan Mahmud Airport,1655.9
+WBKT,Kudat Airport,WMKN,Sultan Mahmud Airport,1527.9
+WBKW,Tawau Airport,WMKN,Sultan Mahmud Airport,1668.2
+WBMU,Mulu Airport,WMKN,Sultan Mahmud Airport,1305.2
+WMBT,Tioman Airport,WMKN,Sultan Mahmud Airport,308.3
+WMKA,Sultan Abdul Halim Airport,WMKN,Sultan Mahmud Airport,312.4
+WMKC,Sultan Ismail Petra Airport,WMKN,Sultan Mahmud Airport,125.0
+WMKD,Kuantan Airport,WMKN,Sultan Mahmud Airport,179.1
+WMKI,Sultan Azlan Shah Airport,WMKN,Sultan Mahmud Airport,240.5
+WMKJ,Senai International Airport,WMKN,Sultan Mahmud Airport,420.7
+WMKK,Kuala Lumpur International Airport,WMKN,Sultan Mahmud Airport,331.4
+WMKL,Langkawi International Airport,WMKN,Sultan Mahmud Airport,387.8
+WMKM,Malacca International Airport,WMKN,Sultan Mahmud Airport,359.2
+MY-LBP,Long Banga Airport,WMKP,Penang International Airport,1693.2
+WBGB,Bintulu Airport,WMKP,Penang International Airport,1433.6
+WBGF,Long Lellang Airport,WMKP,Penang International Airport,1662.6
+WBGG,Kuching International Airport,WMKP,Penang International Airport,1195.8
+WBGI,Long Seridan Airport,WMKP,Penang International Airport,1645.8
+WBGJ,Limbang Airport,WMKP,Penang International Airport,1632.8
+WBGK,Mukah Airport,WMKP,Penang International Airport,1332.3
+WBGM,Marudi Airport,WMKP,Penang International Airport,1562.3
+WBGQ,Bakalalan Airport,WMKP,Penang International Airport,1706.6
+WBGR,Miri Airport,WMKP,Penang International Airport,1523.0
+WBGS,Sibu Airport,WMKP,Penang International Airport,1342.1
+WBGW,Lawas Airport,WMKP,Penang International Airport,1676.7
+WBGZ,Bario Airport,WMKP,Penang International Airport,1694.0
+WBKD,Lahad Datu Airport,WMKP,Penang International Airport,1998.8
+WBKK,Kota Kinabalu International Airport,WMKP,Penang International Airport,1746.9
+WBKL,Labuan Airport,WMKP,Penang International Airport,1657.7
+WBKM,Tomanggong Airport,WMKP,Penang International Airport,2035.0
+WBKS,Sandakan Airport,WMKP,Penang International Airport,1969.0
+WBKT,Kudat Airport,WMKP,Penang International Airport,1839.8
+WBKW,Tawau Airport,WMKP,Penang International Airport,1980.3
+WBMU,Mulu Airport,WMKP,Penang International Airport,1616.1
+WMBT,Tioman Airport,WMKP,Penang International Airport,511.3
+WMKA,Sultan Abdul Halim Airport,WMKP,Penang International Airport,100.2
+WMKC,Sultan Ismail Petra Airport,WMKP,Penang International Airport,243.2
+WMKD,Kuantan Airport,WMKP,Penang International Airport,366.4
+WMKI,Sultan Azlan Shah Airport,WMKP,Penang International Airport,121.4
+WMKJ,Senai International Airport,WMKP,Penang International Airport,554.1
+WMKK,Kuala Lumpur International Airport,WMKP,Penang International Airport,325.2
+WMKL,Langkawi International Airport,WMKP,Penang International Airport,129.9
+WMKM,Malacca International Airport,WMKP,Penang International Airport,402.1
+WMKN,Sultan Mahmud Airport,WMKP,Penang International Airport,313.1
+MY-LBP,Long Banga Airport,WMPA,Pulau Pangkor Airport,1651.7
+WBGB,Bintulu Airport,WMPA,Pulau Pangkor Airport,1389.0
+WBGF,Long Lellang Airport,WMPA,Pulau Pangkor Airport,1622.5
+WBGG,Kuching International Airport,WMPA,Pulau Pangkor Airport,1130.6
+WBGI,Long Seridan Airport,WMPA,Pulau Pangkor Airport,1610.0
+WBGJ,Limbang Airport,WMPA,Pulau Pangkor Airport,1603.7
+WBGK,Mukah Airport,WMPA,Pulau Pangkor Airport,1284.1
+WBGM,Marudi Airport,WMPA,Pulau Pangkor Airport,1527.8
+WBGQ,Bakalalan Airport,WMPA,Pulau Pangkor Airport,1671.1
+WBGR,Miri Airport,WMPA,Pulau Pangkor Airport,1489.6
+WBGS,Sibu Airport,WMPA,Pulau Pangkor Airport,1288.1
+WBGW,Lawas Airport,WMPA,Pulau Pangkor Airport,1647.9
+WBGZ,Bario Airport,WMPA,Pulau Pangkor Airport,1656.6
+WBKD,Lahad Datu Airport,WMPA,Pulau Pangkor Airport,1971.4
+WBKK,Kota Kinabalu International Airport,WMPA,Pulau Pangkor Airport,1726.4
+WBKL,Labuan Airport,WMPA,Pulau Pangkor Airport,1632.6
+WBKM,Tomanggong Airport,WMPA,Pulau Pangkor Airport,2010.0
+WBKS,Sandakan Airport,WMPA,Pulau Pangkor Airport,1947.6
+WBKT,Kudat Airport,WMPA,Pulau Pangkor Airport,1826.3
+WBKW,Tawau Airport,WMPA,Pulau Pangkor Airport,1948.1
+WBMU,Mulu Airport,WMPA,Pulau Pangkor Airport,1580.7
+WMBT,Tioman Airport,WMPA,Pulau Pangkor Airport,430.6
+WMKA,Sultan Abdul Halim Airport,WMPA,Pulau Pangkor Airport,216.9
+WMKC,Sultan Ismail Petra Airport,WMPA,Pulau Pangkor Airport,287.8
+WMKD,Kuantan Airport,WMPA,Pulau Pangkor Airport,299.2
+WMKI,Sultan Azlan Shah Airport,WMPA,Pulau Pangkor Airport,69.7
+WMKJ,Senai International Airport,WMPA,Pulau Pangkor Airport,451.2
+WMKK,Kuala Lumpur International Airport,WMPA,Pulau Pangkor Airport,210.4
+WMKL,Langkawi International Airport,WMPA,Pulau Pangkor Airport,249.2
+WMKM,Malacca International Airport,WMPA,Pulau Pangkor Airport,289.9
+WMKN,Sultan Mahmud Airport,WMPA,Pulau Pangkor Airport,309.6
+WMKP,Penang International Airport,WMPA,Pulau Pangkor Airport,120.9
+MY-LBP,Long Banga Airport,WMSA,Sultan Abdul Aziz Shah International Airport,1538.0
+WBGB,Bintulu Airport,WMSA,Sultan Abdul Aziz Shah International Airport,1273.6
+WBGF,Long Lellang Airport,WMSA,Sultan Abdul Aziz Shah International Airport,1510.7
+WBGG,Kuching International Airport,WMSA,Sultan Abdul Aziz Shah International Airport,995.0
+WBGI,Long Seridan Airport,WMSA,Sultan Abdul Aziz Shah International Airport,1503.2
+WBGJ,Limbang Airport,WMSA,Sultan Abdul Aziz Shah International Airport,1504.7
+WBGK,Mukah Airport,WMSA,Sultan Abdul Aziz Shah International Airport,1165.6
+WBGM,Marudi Airport,WMSA,Sultan Abdul Aziz Shah International Airport,1423.1
+WBGQ,Bakalalan Airport,WMSA,Sultan Abdul Aziz Shah International Airport,1564.2
+WBGR,Miri Airport,WMSA,Sultan Abdul Aziz Shah International Airport,1386.4
+WBGS,Sibu Airport,WMSA,Sultan Abdul Aziz Shah International Airport,1163.2
+WBGW,Lawas Airport,WMSA,Sultan Abdul Aziz Shah International Airport,1549.1
+WBGZ,Bario Airport,WMSA,Sultan Abdul Aziz Shah International Airport,1547.6
+WBKD,Lahad Datu Airport,WMSA,Sultan Abdul Aziz Shah International Airport,1872.4
+WBKK,Kota Kinabalu International Airport,WMSA,Sultan Abdul Aziz Shah International Airport,1637.1
+WBKL,Labuan Airport,WMSA,Sultan Abdul Aziz Shah International Airport,1538.1
+WBKM,Tomanggong Airport,WMSA,Sultan Abdul Aziz Shah International Airport,1913.7
+WBKS,Sandakan Airport,WMSA,Sultan Abdul Aziz Shah International Airport,1855.7
+WBKT,Kudat Airport,WMSA,Sultan Abdul Aziz Shah International Airport,1744.8
+WBKW,Tawau Airport,WMSA,Sultan Abdul Aziz Shah International Airport,1843.5
+WBMU,Mulu Airport,WMSA,Sultan Abdul Aziz Shah International Airport,1474.6
+WMBT,Tioman Airport,WMSA,Sultan Abdul Aziz Shah International Airport,292.0
+WMKA,Sultan Abdul Halim Airport,WMSA,Sultan Abdul Aziz Shah International Airport,363.3
+WMKC,Sultan Ismail Petra Airport,WMSA,Sultan Abdul Aziz Shah International Airport,347.5
+WMKD,Kuantan Airport,WMSA,Sultan Abdul Aziz Shah International Airport,197.7
+WMKI,Sultan Azlan Shah Airport,WMSA,Sultan Abdul Aziz Shah International Airport,167.6
+WMKJ,Senai International Airport,WMSA,Sultan Abdul Aziz Shah International Airport,288.0
+WMKK,Kuala Lumpur International Airport,WMSA,Sultan Abdul Aziz Shah International Airport,46.4
+WMKL,Langkawi International Airport,WMSA,Sultan Abdul Aziz Shah International Airport,408.9
+WMKM,Malacca International Airport,WMSA,Sultan Abdul Aziz Shah International Airport,123.9
+WMKN,Sultan Mahmud Airport,WMSA,Sultan Abdul Aziz Shah International Airport,304.0
+WMKP,Penang International Airport,WMSA,Sultan Abdul Aziz Shah International Airport,279.1
+WMPA,Pulau Pangkor Airport,WMSA,Sultan Abdul Aziz Shah International Airport,166.0

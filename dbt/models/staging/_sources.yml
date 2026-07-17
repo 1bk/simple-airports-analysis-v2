@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: raw
+    description: Raw tables loaded by dlt (see pipelines/sources.py)
+    schema: raw
+    tables:
+      - name: airports
+        description: Full OurAirports airport catalogue (keyless CSV export)
+      - name: aircraft_states
+        description: >
+          Point-in-time snapshot of live aircraft over Malaysia.
+          Source chain: OpenSky anonymous /states/all -> adsb.lol -> committed sample seed.
+      - name: arrivals
+        description: >
+          Flight arrivals at major Malaysian airports over the past 24h from the
+          OpenSky flights API. Empty unless OPENSKY_CLIENT_ID/SECRET are configured.

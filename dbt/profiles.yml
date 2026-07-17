@@ -1,0 +1,7 @@
+airports_v2:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "{{ env_var('DUCKDB_PATH', 'data/airports.duckdb') }}"
+      threads: 4

@@ -1,0 +1,40 @@
+[project]
+name = "airports-v2"
+version = "2.0.0"
+description = "Malaysian airports analysis v2 - a modern FOSS data stack demo (dlt, DuckDB, Prefect, dbt, marimo)"
+license = { text = "MIT" }
+requires-python = ">=3.12"
+dependencies = [
+    "altair>=6.2.2",
+    "dbt-core==1.12.0",
+    "dbt-duckdb>=1.10.1",
+    "dlt[duckdb]>=1.29.0",
+    "marimo>=0.23.14",
+    "pandas>=3.0.3",
+    "polars>=1.42.1",
+    "prefect>=3",
+    "prefect-dbt>=0.7",
+    "requests>=2.34.2",
+]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.6.0",
+    "ruff>=0.15.22",
+    "sqlfluff>=4.2.2",
+    "sqlfluff-templater-dbt>=4.2.2",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.ruff.lint.per-file-ignores]
+# marimo cells: the last bare expression IS the cell output
+"dashboard/*.py" = ["B018"]
+
+[tool.setuptools]
+packages = ["pipelines"]
