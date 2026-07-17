@@ -47,9 +47,28 @@ def load_airports() -> None:
     _load(airports(), "airports")
 
 
+# dlt drops all-null columns, and the fallback sources omit some fields —
+# guarantee the columns dbt expects so staging models always compile.
+EXPECTED_STATE_COLUMNS = {
+    "icao24": "varchar",
+    "callsign": "varchar",
+    "origin_country": "varchar",
+    "longitude": "double",
+    "latitude": "double",
+    "baro_altitude": "double",
+    "on_ground": "boolean",
+    "velocity": "double",
+    "snapshot_ts": "bigint",
+    "source": "varchar",
+}
+
+
 @materialize("duckdb://raw/aircraft_states")
 def load_aircraft_states() -> None:
     _load(aircraft_states(), "aircraft_states")
+    with duckdb.connect(DUCKDB_PATH) as con:
+        for col, typ in EXPECTED_STATE_COLUMNS.items():
+            con.execute(f"alter table raw.aircraft_states add column if not exists {col} {typ}")
 
 
 @materialize("duckdb://raw/arrivals")

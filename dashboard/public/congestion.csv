@@ -1,10 +1,10 @@
 ident,name,iata_code,aircraft_within_50km,aircraft_on_ground,aircraft_airborne,snapshot_at,data_source
-WMKJ,Senai International Airport,JHB,3,0,3,2026-07-18 02:10:30+08,opensky
-WMKK,Kuala Lumpur International Airport,KUL,1,0,1,2026-07-18 02:10:30+08,opensky
-WMKM,Malacca International Airport,MKZ,1,0,1,2026-07-18 02:10:30+08,opensky
-WBKT,Kudat Airport,KUD,1,0,1,2026-07-18 02:10:30+08,opensky
-WMSA,Sultan Abdul Aziz Shah International Airport,SZB,1,0,1,2026-07-18 02:10:30+08,opensky
-WBMU,Mulu Airport,MZV,1,0,1,2026-07-18 02:10:30+08,opensky
-WMKL,Langkawi International Airport,LGK,1,0,1,2026-07-18 02:10:30+08,opensky
-WBGM,Marudi Airport,MUR,1,0,1,2026-07-18 02:10:30+08,opensky
-WMKD,Kuantan Airport,KUA,1,0,1,2026-07-18 02:10:30+08,opensky
+WMKJ,Senai International Airport,JHB,3,0,3,2026-07-18 02:16:10+08,opensky
+WMKK,Kuala Lumpur International Airport,KUL,2,0,2,2026-07-18 02:16:10+08,opensky
+WBKK,Kota Kinabalu International Airport,BKI,2,0,2,2026-07-18 02:16:10+08,opensky
+WBKT,Kudat Airport,KUD,2,0,2,2026-07-18 02:16:10+08,opensky
+WBGJ,Limbang Airport,LMN,1,0,1,2026-07-18 02:16:10+08,opensky
+WMKM,Malacca International Airport,MKZ,1,0,1,2026-07-18 02:16:10+08,opensky
+WMBT,Tioman Airport,TOD,1,0,1,2026-07-18 02:16:10+08,opensky
+WMKD,Kuantan Airport,KUA,1,0,1,2026-07-18 02:16:10+08,opensky
+WMKI,Sultan Azlan Shah Airport,IPH,1,0,1,2026-07-18 02:16:10+08,opensky
