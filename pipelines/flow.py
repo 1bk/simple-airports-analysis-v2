@@ -100,7 +100,12 @@ def load_arrivals() -> None:
         con.execute("create schema if not exists raw")
         con.execute("drop table if exists raw.arrivals")
     if opensky_credentials():
-        _load(arrivals(), "arrivals")
+        try:
+            _load(arrivals(), "arrivals")
+        except Exception:
+            # Best-effort source: an OpenSky outage must not fail the pipeline —
+            # dashboards degrade to the "no arrivals data" state instead.
+            logging.warning("arrivals load failed - continuing with empty table", exc_info=True)
     # Ensure the table exists for dbt when there were no creds (or zero rows).
     with duckdb.connect(DUCKDB_PATH) as con:
         con.execute(ARRIVALS_SCHEMA_DDL.format(exists_clause="if not exists"))
@@ -123,9 +128,11 @@ def export_dashboard_data() -> None:
         for name, query in DASHBOARD_EXPORTS.items():
             con.execute(f"copy ({query}) to '{PUBLIC_DIR / name}.csv' (header, delimiter ',')")
         states_source = con.execute("select distinct source from raw.aircraft_states").fetchall()
+        arrivals_rows = con.execute("select count(*) from marts.fct_arrivals").fetchone()[0]
     meta = {
         "generated_at_utc": time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()),
-        "arrivals_available": bool(opensky_credentials()),
+        # actual data presence, not just credentials - the fetch is best-effort
+        "arrivals_available": arrivals_rows > 0,
         "aircraft_source": states_source[0][0] if states_source else "unknown",
     }
     with open(PUBLIC_DIR / "meta.csv", "w", newline="") as f:
