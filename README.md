@@ -1,5 +1,16 @@
 # Simple Airports Analysis v2 — Malaysia
 
+[![CI](https://github.com/1bk/simple-airports-analysis-v2/actions/workflows/ci.yml/badge.svg)](https://github.com/1bk/simple-airports-analysis-v2/actions/workflows/ci.yml)
+[![Deploy to GitHub Pages](https://github.com/1bk/simple-airports-analysis-v2/actions/workflows/pages.yml/badge.svg)](https://github.com/1bk/simple-airports-analysis-v2/actions/workflows/pages.yml)
+[![Release](https://img.shields.io/github/v/release/1bk/simple-airports-analysis-v2)](https://github.com/1bk/simple-airports-analysis-v2/releases)
+![Made with Python](https://img.shields.io/badge/made%20with-python%203.12-blue)
+[![Dashboard](https://img.shields.io/website?url=https%3A%2F%2F1bk.dev%2Fsimple-airports-analysis-v2%2F&label=dashboard)](https://1bk.dev/simple-airports-analysis-v2/)
+[![dbt docs](https://img.shields.io/website?url=https%3A%2F%2F1bk.dev%2Fsimple-airports-analysis-v2%2Fdbt-docs%2F&label=dbt%20docs)](https://1bk.dev/simple-airports-analysis-v2/dbt-docs/)
+![License](https://img.shields.io/github/license/1bk/simple-airports-analysis-v2)
+
+**Live:** [Interactive dashboard](https://1bk.dev/simple-airports-analysis-v2/) ·
+[dbt docs & lineage](https://1bk.dev/simple-airports-analysis-v2/dbt-docs/)
+
 A revival of [simple-airports-analysis](https://github.com/1bk/simple-airports-analysis)
 (2020) rebuilt on a modern, fully open-source data stack. Same questions, new tools:
 
