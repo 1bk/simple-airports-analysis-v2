@@ -180,9 +180,11 @@ Releases are cut by tagging:
 git tag vX.Y.Z && git push origin vX.Y.Z
 ```
 
-which triggers a GitHub Actions workflow that creates a GitHub release with
-auto-generated notes. `v2.0.0` is the first release of the v2 rewrite (v1 being the
-original 2020 repo).
+which triggers a GitHub Actions workflow that publishes a GitHub release using that
+version's entry in [CHANGELOG.md](CHANGELOG.md) (written per
+[Keep a Changelog](https://keepachangelog.com); the release fails if the entry is
+missing, so notes can't be forgotten). `v2.0.0` is the first release of the v2 rewrite
+(v1 being the original 2020 repo).
 
 ## Credits
 
