@@ -1,0 +1,4 @@
+# Committed on purpose (only .dlt/secrets.toml is gitignored): telemetry off
+# for every clone and CI run.
+[runtime]
+dlthub_telemetry = false

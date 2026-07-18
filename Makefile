@@ -2,6 +2,12 @@
 
 DUCKDB_PATH ?= data/airports.duckdb
 
+# No telemetry, ever: DO_NOT_TRACK is the cross-tool standard; the explicit
+# flags cover dbt/Fusion and the Prefect server, which don't all honor it.
+export DO_NOT_TRACK = 1
+export DBT_SEND_ANONYMOUS_USAGE_STATS = false
+export PREFECT_SERVER_ANALYTICS_ENABLED = false
+
 all: install pipeline
 
 install:

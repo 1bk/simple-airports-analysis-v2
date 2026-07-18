@@ -2,6 +2,9 @@ name: airports_v2
 version: "2.0.0"
 profile: airports_v2
 
+flags:
+  send_anonymous_usage_stats: false
+
 model-paths: ["models"]
 macro-paths: ["macros"]
 
