@@ -1,3 +1,13 @@
+# /// script
+# requires-python = ">=3.12"
+# dependencies = [
+#     "marimo",
+#     "altair",
+#     "polars",
+#     "folium",
+# ]
+# ///
+
 import marimo
 
 __generated_with = "0.23.14"
@@ -33,7 +43,7 @@ def _(meta, mo):
         # Airports Analysis (Classic)
 
         A dense, grid-style rebuild of the original v1 Metabase dashboard —
-        see the [Q&A-style walkthrough](../) for the narrative version.
+        see the [Q&A-style walkthrough](../dashboard/) for the narrative version.
         """
             ),
             mo.md(f"Data generated at **{meta['generated_at_utc']} UTC**").right(),
@@ -68,41 +78,39 @@ def _(airports, arrivals, congestion, meta, mo):
 
 
 @app.cell
-def _(mo):
-    import json
+def _(airports, mo):
+    import folium
 
-    try:
-        _text = (mo.notebook_location() / "public" / "malaysia.geo.json").read_text()
-    except (FileNotFoundError, NotImplementedError, AttributeError, OSError):
-        from pyodide.http import open_url
-
-        _text = open_url(str(mo.notebook_location() / "public" / "malaysia.geo.json")).read()
-    malaysia_geojson = json.loads(_text)
-    return (malaysia_geojson,)
-
-
-@app.cell
-def _(airports, alt, malaysia_geojson, mo):
-    _basemap = alt.Chart(alt.Data(values=malaysia_geojson["features"])).mark_geoshape(
-        fill="#e8e8e8", stroke="#999"
+    _colors = {
+        "large_airport": "steelblue",
+        "medium_airport": "orange",
+        "small_airport": "indianred",
+    }
+    _map = folium.Map(tiles="OpenStreetMap")
+    for _row in airports.iter_rows(named=True):
+        folium.CircleMarker(
+            location=[_row["latitude"], _row["longitude"]],
+            radius=9 if _row["has_scheduled_service"] else 5,
+            color=_colors.get(_row["airport_type"], "gray"),
+            fill=True,
+            fill_color=_colors.get(_row["airport_type"], "gray"),
+            fill_opacity=0.85,
+            weight=1,
+            popup=folium.Popup(
+                f"<b>{_row['name']}</b><br>"
+                f"IATA: {_row['iata_code'] or '—'}<br>"
+                f"{_row['municipality']}<br>"
+                f"{_row['airport_type'].replace('_', ' ').title()}",
+                max_width=250,
+            ),
+        ).add_to(_map)
+    _map.fit_bounds(
+        [
+            [airports["latitude"].min(), airports["longitude"].min()],
+            [airports["latitude"].max(), airports["longitude"].max()],
+        ]
     )
-    _points = (
-        alt.Chart(airports)
-        .mark_circle(opacity=0.7)
-        .encode(
-            longitude="longitude:Q",
-            latitude="latitude:Q",
-            color=alt.Color("airport_type:N", title="Type"),
-            size=alt.condition(alt.datum.has_scheduled_service, alt.value(140), alt.value(40)),
-            tooltip=["name:N", "ident:N", "iata_code:N", "municipality:N", "airport_type:N"],
-        )
-    )
-    _map = (
-        (_basemap + _points)
-        .project("mercator")
-        .properties(width=420, height=340, title="Airports of Malaysia")
-    )
-    # rendered directly: mo.ui.altair_chart selections don't support geo projections
+    # rendered via mo.iframe: real OSM tiles, pan/zoom, per-airport popups
     _airports_table = mo.ui.table(
         airports.select(
             "name", "iata_code", "municipality", "airport_type", "latitude", "longitude"
@@ -111,7 +119,15 @@ def _(airports, alt, malaysia_geojson, mo):
         page_size=8,
         label="Airports",
     )
-    mo.hstack([_map, _airports_table], widths=[1, 1], gap=1, align="start")
+    mo.hstack(
+        [
+            mo.iframe(_map.get_root().render(), width="420px", height="450px"),
+            _airports_table,
+        ],
+        widths=[1, 1],
+        gap=1,
+        align="start",
+    )
     return
 
 

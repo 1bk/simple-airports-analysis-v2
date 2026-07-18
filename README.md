@@ -6,11 +6,13 @@
 ![Made with Python](https://img.shields.io/badge/made%20with-python%203.12-blue)
 ![Code size](https://img.shields.io/github/languages/code-size/1bk/simple-airports-analysis-v2)
 ![Repo size](https://img.shields.io/github/repo-size/1bk/simple-airports-analysis-v2)
-[![Dashboard](https://img.shields.io/website?url=https%3A%2F%2F1bk.dev%2Fsimple-airports-analysis-v2%2F&label=dashboard)](https://1bk.dev/simple-airports-analysis-v2/)
+[![Dashboard](https://img.shields.io/website?url=https%3A%2F%2F1bk.dev%2Fsimple-airports-analysis-v2%2Fdashboard%2F&label=dashboard)](https://1bk.dev/simple-airports-analysis-v2/dashboard/)
+[![Classic dashboard](https://img.shields.io/website?url=https%3A%2F%2F1bk.dev%2Fsimple-airports-analysis-v2%2Fclassic%2F&label=classic%20dashboard)](https://1bk.dev/simple-airports-analysis-v2/classic/)
 [![dbt docs](https://img.shields.io/website?url=https%3A%2F%2F1bk.dev%2Fsimple-airports-analysis-v2%2Fdbt-docs%2F&label=dbt%20docs)](https://1bk.dev/simple-airports-analysis-v2/dbt-docs/)
 ![License](https://img.shields.io/github/license/1bk/simple-airports-analysis-v2)
 
-**Live:** [Interactive dashboard](https://1bk.dev/simple-airports-analysis-v2/) ·
+**Live:** [Project overview](https://1bk.dev/simple-airports-analysis-v2/) ·
+[Interactive dashboard](https://1bk.dev/simple-airports-analysis-v2/dashboard/) ·
 [classic dashboard](https://1bk.dev/simple-airports-analysis-v2/classic/) ·
 [dbt docs & lineage](https://1bk.dev/simple-airports-analysis-v2/dbt-docs/)
 
@@ -68,6 +70,12 @@ for the one-liner) to try the new UI against this project's models:
 
 ![dbt Docs v2 preview](docs/img/dbt-docs-v2.png)
 *The new Fusion-powered dbt Docs v2 UI, served locally via `make docs-v2`.*
+
+![dbt Docs v2 model page](docs/img/dbt-docs-v2-model.png)
+*Asset-centric model page for `fct_congestion` — a searchable column list with types, alongside a description and test-results panel on the General tab, richer than classic docs' flat columns table.*
+
+![dbt Docs v2 lineage](docs/img/dbt-docs-v2-lineage.png)
+*The redesigned lineage graph (sources → staging → mart → tests) in fullscreen, with a "Lenses" control for filtering by resource type. Compiling with `--static-analysis strict --write-lineage` did produce column-level lineage data with no dbt-platform login required, but the interactive per-column trace in this UI is gated behind "download and login" to dbt platform — so the graph above shows table-level lineage only.*
 
 ## Architecture
 

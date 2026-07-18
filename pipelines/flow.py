@@ -48,6 +48,12 @@ def _load(resource, asset_name: str) -> None:
         destination=dlt.destinations.duckdb(DUCKDB_PATH),
         dataset_name="raw",
     )
+    # All loads are write_disposition="replace": a half-loaded package from a
+    # previous failed run must never be retried into the next run.
+    try:
+        pipeline.drop_pending_packages()
+    except Exception:
+        logging.warning("could not drop pending dlt packages", exc_info=True)
     info = pipeline.run(resource)
     logging.info("loaded %s: %s", asset_name, info)
 
@@ -81,34 +87,17 @@ def load_aircraft_states() -> None:
             con.execute(f"alter table raw.aircraft_states add column if not exists {col} {typ}")
 
 
-ARRIVALS_SCHEMA_DDL = """
-    create table {exists_clause} raw.arrivals (
-        icao24 varchar, first_seen bigint, est_departure_airport varchar,
-        last_seen bigint, est_arrival_airport varchar, callsign varchar,
-        arrival_airport_icao varchar
-    )
-"""
-
-
 @materialize("duckdb://raw/arrivals")
 def load_arrivals() -> None:
-    # Always drop first: a credential-less run must not keep stale rows from a
-    # previous credentialed run, and dlt must create its own table on load —
-    # pre-creating an empty one makes dlt ALTER in its internal NOT NULL
-    # columns, which DuckDB rejects.
-    with duckdb.connect(DUCKDB_PATH) as con:
-        con.execute("create schema if not exists raw")
-        con.execute("drop table if exists raw.arrivals")
+    # dlt fully owns raw.arrivals (write_disposition="replace"); stg_arrivals
+    # compiles to an empty typed relation when the table doesn't exist yet.
+    # A failed or credential-less run keeps the last successful load's rows —
+    # deliberate: last-known-good beats wiping data on every OpenSky hiccup.
     if opensky_credentials():
         try:
             _load(arrivals(), "arrivals")
         except Exception:
-            # Best-effort source: an OpenSky outage must not fail the pipeline —
-            # dashboards degrade to the "no arrivals data" state instead.
-            logging.warning("arrivals load failed - continuing with empty table", exc_info=True)
-    # Ensure the table exists for dbt when there were no creds (or zero rows).
-    with duckdb.connect(DUCKDB_PATH) as con:
-        con.execute(ARRIVALS_SCHEMA_DDL.format(exists_clause="if not exists"))
+            logging.warning("arrivals load failed - keeping previous data", exc_info=True)
 
 
 @task

@@ -40,15 +40,17 @@ docs-v2:
 	$(FUSION_BIN) compile --write-index --project-dir dbt --profiles-dir dbt
 	$(FUSION_BIN) docs serve --target-path dbt/target
 
-# Static marimo dashboard (WASM) -> _site/
+# Static marimo dashboards (WASM) -> _site/dashboard/, _site/classic/
 dashboard:
-	uv run marimo export html-wasm dashboard/dashboard.py -o _site --mode run --no-show-code
-	rm -f _site/CLAUDE.md
+	uv run marimo export html-wasm dashboard/dashboard.py -o _site/dashboard --mode run --no-show-code
+	rm -f _site/dashboard/CLAUDE.md
 	uv run marimo export html-wasm dashboard/classic.py -o _site/classic --mode run --no-show-code
 	rm -f _site/classic/CLAUDE.md
 
-# Full static site: dashboard at root, dbt docs at /dbt-docs/
+# Full static site: landing page (rendered README) at root, Q&A dashboard at
+# /dashboard/, classic dashboard at /classic/, dbt docs at /dbt-docs/
 site: dashboard docs
+	uv run python scripts/build_landing.py
 
 clean:
 	rm -rf _site dbt/target data/*.duckdb data/*.duckdb.wal
