@@ -30,6 +30,10 @@ jobs:
 
       - name: Run pipeline (refresh data for the dashboard)
         run: make pipeline
+        env:
+          # optional: arrivals data lights up when these repo secrets exist
+          OPENSKY_CLIENT_ID: ${{ secrets.OPENSKY_CLIENT_ID }}
+          OPENSKY_CLIENT_SECRET: ${{ secrets.OPENSKY_CLIENT_SECRET }}
 
       - name: Build static site (dashboard at /, dbt docs at /dbt-docs/)
         run: make site

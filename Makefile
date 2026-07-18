@@ -44,6 +44,8 @@ docs-v2:
 dashboard:
 	uv run marimo export html-wasm dashboard/dashboard.py -o _site --mode run --no-show-code
 	rm -f _site/CLAUDE.md
+	uv run marimo export html-wasm dashboard/classic.py -o _site/classic --mode run --no-show-code
+	rm -f _site/classic/CLAUDE.md
 
 # Full static site: dashboard at root, dbt docs at /dbt-docs/
 site: dashboard docs

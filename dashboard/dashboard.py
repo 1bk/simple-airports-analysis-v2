@@ -42,6 +42,28 @@ def _(meta, mo):
 
 
 @app.cell
+def _(airports, congestion, distances, mo):
+    _scheduled = airports.filter(airports["has_scheduled_service"]).height
+    _top = congestion.row(0, named=True) if congestion.height else None
+    _busiest = (
+        f"{_top['name']} ({_top['aircraft_within_50km']} aircraft)"
+        if _top and _top["aircraft_within_50km"] > 0
+        else "quiet right now"
+    )
+    mo.hstack(
+        [
+            mo.stat(value=airports.height, label="Airports", bordered=True),
+            mo.stat(value=_scheduled, label="Scheduled service", bordered=True),
+            mo.stat(value=distances.height, label="Distance pairs", bordered=True),
+            mo.stat(value=_busiest, label="Busiest airport now", bordered=True),
+        ],
+        widths="equal",
+        gap=1,
+    )
+    return
+
+
+@app.cell
 def _(airports, mo):
     _scheduled = airports.filter(airports["has_scheduled_service"]).height
     mo.md(
@@ -56,8 +78,25 @@ def _(airports, mo):
 
 
 @app.cell
-def _(airports, alt, mo):
-    _map = (
+def _(mo):
+    import json
+
+    try:
+        _text = (mo.notebook_location() / "public" / "malaysia.geo.json").read_text()
+    except (FileNotFoundError, NotImplementedError, AttributeError, OSError):
+        from pyodide.http import open_url
+
+        _text = open_url(str(mo.notebook_location() / "public" / "malaysia.geo.json")).read()
+    malaysia_geojson = json.loads(_text)
+    return (malaysia_geojson,)
+
+
+@app.cell
+def _(airports, alt, malaysia_geojson, mo):
+    _basemap = alt.Chart(alt.Data(values=malaysia_geojson["features"])).mark_geoshape(
+        fill="#e8e8e8", stroke="#999"
+    )
+    _points = (
         alt.Chart(airports)
         .mark_circle(opacity=0.7)
         .encode(
@@ -67,6 +106,9 @@ def _(airports, alt, mo):
             size=alt.condition(alt.datum.has_scheduled_service, alt.value(140), alt.value(40)),
             tooltip=["name:N", "ident:N", "iata_code:N", "municipality:N", "airport_type:N"],
         )
+    )
+    _map = (
+        (_basemap + _points)
         .project("mercator")
         .properties(
             width=700, height=350, title="Airports of Malaysia (larger = scheduled service)"
@@ -121,10 +163,75 @@ def _(airport_picker, distances, mo, pl):
 
 
 @app.cell
-def _(arrivals, meta, mo):
-    mo.md("## 3. How many flights are landing at Malaysian airports?")
+def _(mo):
+    mo.md(
+        """
+    ### Full distance matrix
+
+    Every scheduled-service airport against every other, by IATA code —
+    darker cells are farther apart.
+    """
+    )
+    return
+
+
+@app.cell
+def _(alt, distances, mo, pl):
+    _iata_names = dict(
+        zip(distances["iata_a"].to_list(), distances["airport_a_name"].to_list(), strict=True)
+    )
+    _iata_names.update(
+        zip(distances["iata_b"].to_list(), distances["airport_b_name"].to_list(), strict=True)
+    )
+    _symmetric = pl.concat(
+        [
+            distances.select(
+                pl.col("iata_a").alias("from_iata"),
+                pl.col("iata_b").alias("to_iata"),
+                "distance_km",
+            ),
+            distances.select(
+                pl.col("iata_b").alias("from_iata"),
+                pl.col("iata_a").alias("to_iata"),
+                "distance_km",
+            ),
+        ]
+    ).with_columns(
+        pl.col("from_iata").replace(_iata_names).alias("from_name"),
+        pl.col("to_iata").replace(_iata_names).alias("to_name"),
+    )
+    _order = sorted(_iata_names)
+    _heatmap = (
+        alt.Chart(_symmetric)
+        .mark_rect()
+        .encode(
+            x=alt.X("to_iata:N", title="To", sort=_order),
+            y=alt.Y("from_iata:N", title="From", sort=_order),
+            color=alt.Color("distance_km:Q", title="km", scale=alt.Scale(scheme="viridis")),
+            tooltip=["from_name:N", "to_name:N", "distance_km:Q"],
+        )
+        .properties(width=640, height=640, title="Distance matrix (km)")
+    )
+    mo.ui.altair_chart(_heatmap)
+    return
+
+
+@app.cell
+def _(alt, arrivals, meta, mo):
+    _heading = mo.md("## 3. How many flights are landing at Malaysian airports?")
     if meta["arrivals_available"] and arrivals.height > 0:
-        _out = mo.ui.table(arrivals, selection=None)
+        _table = mo.ui.table(arrivals, selection=None)
+        _bars = (
+            alt.Chart(arrivals)
+            .mark_bar()
+            .encode(
+                x=alt.X("arrivals_24h:Q", title="Arrivals (24h)"),
+                y=alt.Y("airport_name:N", sort="-x", title=None),
+                tooltip=["airport_name:N", "iata_code:N", "arrivals_24h:Q"],
+            )
+            .properties(width=650, title="Arrivals in the last 24h")
+        )
+        _out = mo.vstack([mo.ui.altair_chart(_bars), _table])
     else:
         _out = mo.callout(
             mo.md(
@@ -136,7 +243,7 @@ def _(arrivals, meta, mo):
             ),
             kind="info",
         )
-    _out
+    mo.vstack([_heading, _out])
     return
 
 
@@ -162,25 +269,42 @@ def _(congestion, meta, mo):
 
 @app.cell
 def _(alt, congestion, mo):
-    _bars = (
-        alt.Chart(congestion)
-        .mark_bar()
-        .encode(
-            x=alt.X("aircraft_within_50km:Q", title="Aircraft within 50 km"),
-            y=alt.Y("name:N", sort="-x", title=None),
-            color=alt.Color(
-                "aircraft_airborne:Q", title="Airborne", scale=alt.Scale(scheme="blues")
-            ),
-            tooltip=[
-                "name:N",
-                "aircraft_within_50km:Q",
-                "aircraft_on_ground:Q",
-                "aircraft_airborne:Q",
-            ],
+    _busy = congestion.filter(congestion["aircraft_within_50km"] > 0)
+    if _busy.height:
+        _bars = (
+            alt.Chart(_busy)
+            .mark_bar()
+            .encode(
+                x=alt.X("aircraft_within_50km:Q", title="Aircraft within 50 km"),
+                y=alt.Y("name:N", sort="-x", title=None),
+                color=alt.Color(
+                    "aircraft_airborne:Q", title="Airborne", scale=alt.Scale(scheme="blues")
+                ),
+                tooltip=[
+                    "name:N",
+                    "aircraft_within_50km:Q",
+                    "aircraft_on_ground:Q",
+                    "aircraft_airborne:Q",
+                ],
+            )
+            .properties(width=650, title="Live aircraft near Malaysian airports")
         )
-        .properties(width=650, title="Live aircraft near Malaysian airports")
-    )
-    mo.ui.altair_chart(_bars)
+        _chart = mo.ui.altair_chart(_bars)
+    else:
+        _chart = mo.callout(mo.md("No aircraft near any airport in this snapshot."), kind="info")
+    _chart
+    return
+
+
+@app.cell
+def _(mo):
+    mo.md("All 34 scheduled-service airports, including those with zero nearby traffic:")
+    return
+
+
+@app.cell
+def _(congestion, mo):
+    mo.ui.table(congestion, selection=None, page_size=10)
     return
 
 

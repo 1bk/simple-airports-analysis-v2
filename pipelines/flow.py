@@ -11,6 +11,7 @@ from pathlib import Path
 
 import dlt
 import duckdb
+from dotenv import load_dotenv
 from prefect import flow, task
 from prefect.assets import materialize
 from prefect_dbt import PrefectDbtRunner, PrefectDbtSettings
@@ -20,13 +21,22 @@ from pipelines.sources import aircraft_states, airports, arrivals, opensky_crede
 logging.basicConfig(level=logging.INFO)
 
 REPO_ROOT = Path(__file__).parent.parent
+load_dotenv(REPO_ROOT / ".env")  # optional local secrets, see .env.example
 DUCKDB_PATH = os.environ.get("DUCKDB_PATH", str(REPO_ROOT / "data" / "airports.duckdb"))
 PUBLIC_DIR = REPO_ROOT / "dashboard" / "public"
 
 # Marts exported for the static (WASM) dashboard, keyed by output filename stem.
 DASHBOARD_EXPORTS = {
     "airports_my": "select * from marts.dim_airports_my",
-    "distances": "select * from marts.fct_airport_distances",
+    "distances": """
+        select
+            d.*,
+            coalesce(nullif(a.iata_code, ''), d.airport_a) as iata_a,
+            coalesce(nullif(b.iata_code, ''), d.airport_b) as iata_b
+        from marts.fct_airport_distances as d
+        left join marts.dim_airports_my as a on d.airport_a = a.ident
+        left join marts.dim_airports_my as b on d.airport_b = b.ident
+    """,
     "congestion": "select * from marts.fct_congestion",
     "arrivals": "select * from marts.fct_arrivals",
 }
@@ -82,18 +92,16 @@ ARRIVALS_SCHEMA_DDL = """
 
 @materialize("duckdb://raw/arrivals")
 def load_arrivals() -> None:
-    # Always start from an empty table: without this, a credential-less run
-    # would keep stale rows from a previous credentialed run (dlt's
-    # write_disposition="replace" only replaces the table when the resource
-    # actually yields rows).
+    # Always drop first: a credential-less run must not keep stale rows from a
+    # previous credentialed run, and dlt must create its own table on load —
+    # pre-creating an empty one makes dlt ALTER in its internal NOT NULL
+    # columns, which DuckDB rejects.
     with duckdb.connect(DUCKDB_PATH) as con:
         con.execute("create schema if not exists raw")
         con.execute("drop table if exists raw.arrivals")
-        con.execute(ARRIVALS_SCHEMA_DDL.format(exists_clause="if not exists"))
     if opensky_credentials():
         _load(arrivals(), "arrivals")
-    # Ensure the table still exists even if the resource yielded zero rows
-    # (dlt creates nothing in that case).
+    # Ensure the table exists for dbt when there were no creds (or zero rows).
     with duckdb.connect(DUCKDB_PATH) as con:
         con.execute(ARRIVALS_SCHEMA_DDL.format(exists_clause="if not exists"))
 

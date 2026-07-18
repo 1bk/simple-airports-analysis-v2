@@ -11,6 +11,7 @@
 ![License](https://img.shields.io/github/license/1bk/simple-airports-analysis-v2)
 
 **Live:** [Interactive dashboard](https://1bk.dev/simple-airports-analysis-v2/) ·
+[classic dashboard](https://1bk.dev/simple-airports-analysis-v2/classic/) ·
 [dbt docs & lineage](https://1bk.dev/simple-airports-analysis-v2/dbt-docs/)
 
 A revival of [simple-airports-analysis](https://github.com/1bk/simple-airports-analysis)
@@ -43,6 +44,11 @@ The result is a **static site** — an interactive [marimo](https://marimo.io) d
 ![Interactive marimo dashboard](docs/img/dashboard-marimo.png)
 *The static WASM dashboard, covering the analysis questions in the browser — no server required
 (arrivals lights up when OpenSky credentials are configured).*
+
+![Classic grid-style dashboard](docs/img/dashboard-classic.png)
+*A [second, grid-style dashboard](https://1bk.dev/simple-airports-analysis-v2/classic/) that mirrors the
+original v1 Metabase layout — stat cards, map, busyness scatter, arrivals chart, and distance matrix —
+served alongside the Q&A version at `/classic/`.*
 
 ![dbt lineage graph](docs/img/dbt-lineage.png)
 *Table lineage from raw sources through staging to the congestion mart, via dbt docs.*
@@ -118,6 +124,9 @@ python3 -m http.server --directory _site   # view it locally
 ```
 
 Other targets: `make lint` (pre-commit: gitleaks, ruff, sqlfluff), `make clean`.
+
+Optional: `cp .env.example .env` and fill in free OpenSky credentials to enable the
+arrivals data — everything else works without it.
 
 To develop the dashboard interactively: `uv run marimo edit dashboard/dashboard.py`.
 
