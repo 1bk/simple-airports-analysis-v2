@@ -1,4 +1,4 @@
-.PHONY: all install pipeline docs dashboard site clean lint ui
+.PHONY: all install pipeline docs docs-v2 dashboard site clean lint ui
 
 DUCKDB_PATH ?= data/airports.duckdb
 
@@ -24,6 +24,21 @@ docs:
 	uv run dbt docs generate --project-dir dbt --profiles-dir dbt --static
 	mkdir -p _site/dbt-docs
 	cp dbt/target/static_index.html _site/dbt-docs/index.html
+
+# Local-only demo of dbt Docs v2 (alpha, dbt Fusion engine). Docs v2 needs a
+# running server (parquet artifacts + local HTTP server), so it isn't
+# static-hostable yet -- the hosted site keeps the classic static dbt docs
+# above. Requires the sandboxed Fusion CLI; install with:
+#   curl -fsSL https://public.cdn.getdbt.com/fs/install/install.sh | sh -s -- --to .fusion
+FUSION_BIN ?= .fusion/dbt
+docs-v2:
+	@test -x "$(FUSION_BIN)" || { \
+		echo "Fusion CLI not found at $(FUSION_BIN). Install it (sandboxed, won't shadow your dbt) with:"; \
+		echo "  curl -fsSL https://public.cdn.getdbt.com/fs/install/install.sh | sh -s -- --to .fusion"; \
+		exit 1; \
+	}
+	$(FUSION_BIN) compile --write-index --project-dir dbt --profiles-dir dbt
+	$(FUSION_BIN) docs serve --target-path dbt/target
 
 # Static marimo dashboard (WASM) -> _site/
 dashboard:

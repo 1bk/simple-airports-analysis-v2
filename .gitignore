@@ -16,6 +16,9 @@ dbt/dbt_packages/
 dbt/logs/
 logs/
 
+# dbt Fusion CLI (sandboxed, local-only install for `make docs-v2`)
+.fusion/
+
 # Site builds
 _site/
 dashboard/__marimo__/
