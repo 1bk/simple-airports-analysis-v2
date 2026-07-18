@@ -91,6 +91,10 @@ def _states_from_adsblol() -> list[dict]:
             if hexid in seen or ac.get("lat") is None:
                 continue
             seen.add(hexid)
+            # adsb.lol/readsb reports alt_baro in feet and gs in knots, while
+            # downstream (OpenSky-shaped) columns expect metres and m/s.
+            alt_baro = ac.get("alt_baro")
+            gs = ac.get("gs")
             rows.append(
                 {
                     "icao24": hexid,
@@ -98,9 +102,9 @@ def _states_from_adsblol() -> list[dict]:
                     "origin_country": None,
                     "longitude": ac.get("lon"),
                     "latitude": ac.get("lat"),
-                    "baro_altitude": ac.get("alt_baro") if ac.get("alt_baro") != "ground" else 0,
-                    "on_ground": ac.get("alt_baro") == "ground",
-                    "velocity": ac.get("gs"),
+                    "baro_altitude": alt_baro * 0.3048 if alt_baro != "ground" else 0,
+                    "on_ground": alt_baro == "ground",
+                    "velocity": gs * 0.514444 if gs is not None else None,
                     "snapshot_ts": snapshot_ts,
                     "source": "adsb.lol",
                 }

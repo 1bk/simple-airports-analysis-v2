@@ -71,22 +71,31 @@ def load_aircraft_states() -> None:
             con.execute(f"alter table raw.aircraft_states add column if not exists {col} {typ}")
 
 
+ARRIVALS_SCHEMA_DDL = """
+    create table {exists_clause} raw.arrivals (
+        icao24 varchar, first_seen bigint, est_departure_airport varchar,
+        last_seen bigint, est_arrival_airport varchar, callsign varchar,
+        arrival_airport_icao varchar
+    )
+"""
+
+
 @materialize("duckdb://raw/arrivals")
 def load_arrivals() -> None:
-    if opensky_credentials():
-        _load(arrivals(), "arrivals")
-    # Ensure the table always exists so dbt models compile without creds.
+    # Always start from an empty table: without this, a credential-less run
+    # would keep stale rows from a previous credentialed run (dlt's
+    # write_disposition="replace" only replaces the table when the resource
+    # actually yields rows).
     with duckdb.connect(DUCKDB_PATH) as con:
         con.execute("create schema if not exists raw")
-        con.execute(
-            """
-            create table if not exists raw.arrivals (
-                icao24 varchar, first_seen bigint, est_departure_airport varchar,
-                last_seen bigint, est_arrival_airport varchar, callsign varchar,
-                arrival_airport_icao varchar
-            )
-            """
-        )
+        con.execute("drop table if exists raw.arrivals")
+        con.execute(ARRIVALS_SCHEMA_DDL.format(exists_clause="if not exists"))
+    if opensky_credentials():
+        _load(arrivals(), "arrivals")
+    # Ensure the table still exists even if the resource yielded zero rows
+    # (dlt creates nothing in that case).
+    with duckdb.connect(DUCKDB_PATH) as con:
+        con.execute(ARRIVALS_SCHEMA_DDL.format(exists_clause="if not exists"))
 
 
 @task

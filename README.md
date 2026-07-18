@@ -11,7 +11,7 @@ A revival of [simple-airports-analysis](https://github.com/1bk/simple-airports-a
 The result is a **static site** — an interactive [marimo](https://marimo.io) dashboard
 (running entirely in your browser via WebAssembly) with browsable
 [dbt docs](https://docs.getdbt.com/docs/build/documentation) and table lineage at
-`/dbt-docs/` — deployed to GitHub Pages on every push. No servers anywhere.
+`/dbt-docs/` — deployed to GitHub Pages on every push to `main`. No servers anywhere.
 
 ## What changed since v1
 
@@ -19,7 +19,7 @@ The result is a **static site** — an interactive [marimo](https://marimo.io) d
 |---|---|---|---|
 | Warehouse | Postgres (Docker) | [DuckDB](https://duckdb.org) | Zero infra, single file, no Docker |
 | Extract/Load | Hand-rolled Python + scraping | [dlt](https://dlthub.com) | Declarative, schema-inferring EL |
-| Orchestration | Luigi | [Prefect 3](https://prefect.io) | Runs headless as plain Python; dbt models surface as Prefect assets with lineage. (Prefect acquired Dagster in July 2026 — one ecosystem to learn) |
+| Orchestration | Luigi | [Prefect 3](https://prefect.io) | Runs headless as plain Python; dbt models surface as Prefect assets with lineage. (Prefect announced its acquisition of Dagster Labs in July 2026) |
 | Transformation | dbt | dbt-core 1.12 + [dbt-duckdb](https://github.com/duckdb/dbt-duckdb) | Still the right tool |
 | Dashboard | Metabase (Docker) | [marimo](https://marimo.io) | Notebook-as-code in git, exports to static WASM — the dashboard itself is hostable on GitHub Pages |
 | Packaging | requirements.txt | [uv](https://docs.astral.sh/uv/) | Fast, lockfile-native |
@@ -28,7 +28,8 @@ The result is a **static site** — an interactive [marimo](https://marimo.io) d
 ## Showcase
 
 ![Interactive marimo dashboard](docs/img/dashboard-marimo.png)
-*The static WASM dashboard, answering all four questions in the browser — no server required.*
+*The static WASM dashboard, covering the analysis questions in the browser — no server required
+(arrivals lights up when OpenSky credentials are configured).*
 
 ![dbt lineage graph](docs/img/dbt-lineage.png)
 *Table lineage from raw sources through staging to the congestion mart, via dbt docs.*
@@ -132,6 +133,8 @@ original 2020 repo).
 
 Original assessment project: [1bk/simple-airports-analysis](https://github.com/1bk/simple-airports-analysis).
 Airport data © [OurAirports](https://ourairports.com/data/) (public domain).
-Live aircraft data from the [OpenSky Network](https://opensky-network.org) research API.
+Live aircraft data from the [OpenSky Network](https://opensky-network.org) research API, with
+[adsb.lol](https://adsb.lol) ([ODbL](https://opendatacommons.org/licenses/odbl/)-licensed ADS-B
+data) as a fallback source.
 
 MIT licensed.

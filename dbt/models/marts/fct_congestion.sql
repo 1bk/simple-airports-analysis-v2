@@ -30,12 +30,11 @@ select
     ident,
     name,
     iata_code,
-    count(*) as aircraft_within_50km,
-    count(*) filter (where is_on_ground) as aircraft_on_ground,
-    count(*) filter (where not is_on_ground) as aircraft_airborne,
+    count(*) filter (where distance_km <= 50) as aircraft_within_50km,
+    count(*) filter (where distance_km <= 50 and is_on_ground) as aircraft_on_ground,
+    count(*) filter (where distance_km <= 50 and not is_on_ground) as aircraft_airborne,
     max(snapshot_at) as snapshot_at,
     max(data_source) as data_source
 from paired
-where distance_km <= 50
 group by ident, name, iata_code
 order by aircraft_within_50km desc
