@@ -11,5 +11,8 @@ select
 from {{ ref('stg_arrivals') }} as arrivals
 left join {{ ref('dim_airports_my') }} as airports
     on arrivals.arrival_airport_icao = airports.icao_code
+-- explicit window: stg_arrivals can span far more than 7 days once snapshot
+-- history accumulates; fct_arrivals_daily keeps the full time series
+where arrivals.arrived_at >= current_timestamp - interval 7 day
 group by arrivals.arrival_airport_icao, airports.name, airports.iata_code
 order by arrivals_7d desc

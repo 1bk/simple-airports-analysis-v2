@@ -1,4 +1,4 @@
-.PHONY: all install pipeline docs docs-v2 dashboard site clean lint ui
+.PHONY: all install pipeline snapshot docs docs-v2 dashboard site clean lint ui
 
 DUCKDB_PATH ?= data/airports.duckdb
 
@@ -17,6 +17,11 @@ install:
 pipeline:
 	uv run dbt deps --project-dir dbt --profiles-dir dbt
 	uv run python -m pipelines.flow
+
+# Merge a live aircraft-state + arrivals snapshot into committed history/*.parquet
+# (run on a schedule by .github/workflows/snapshot.yml)
+snapshot:
+	uv run python -m pipelines.snapshot
 
 lint:
 	uv run pre-commit run --all-files

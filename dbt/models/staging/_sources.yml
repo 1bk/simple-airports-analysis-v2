@@ -13,5 +13,16 @@ sources:
           Source chain: OpenSky anonymous /states/all -> adsb.lol -> committed sample seed.
       - name: arrivals
         description: >
-          Flight arrivals at major Malaysian airports over the past 24h from the
-          OpenSky flights API. Empty unless OPENSKY_CLIENT_ID/SECRET are configured.
+          Flight arrivals at major Malaysian airports over the past 7 days from the
+          OpenSky flights API. Absent unless OPENSKY_CLIENT_ID/SECRET are configured
+          and the fetch succeeded.
+      - name: aircraft_states_history
+        description: >
+          Accumulated aircraft-state snapshots loaded from committed
+          history/aircraft_states.parquet (written by pipelines/snapshot.py on a
+          schedule). Absent until the first snapshot is committed.
+      - name: arrivals_history
+        description: >
+          Accumulated 7-day arrival windows loaded from committed
+          history/arrivals.parquet, deduplicated per flight. Absent until the
+          first credentialed snapshot is committed.

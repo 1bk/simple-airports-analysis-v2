@@ -1,0 +1,61 @@
+name: Snapshot history
+
+# Accumulate aircraft-state + arrivals snapshots into committed history/*.parquet
+# (last-known-good pattern). OpenSky sometimes blocks GitHub runner IPs, so any
+# single run may collect nothing — that's fine, it just commits nothing.
+
+on:
+  schedule:
+    - cron: "23 */6 * * *" # every 6 hours, offset from top-of-hour load
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write # to dispatch the Pages redeploy after a data commit
+
+concurrency:
+  group: snapshot
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: astral-sh/setup-uv@v8.3.2
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Collect snapshot into history/*.parquet
+        run: make snapshot
+        env:
+          OPENSKY_CLIENT_ID: ${{ secrets.OPENSKY_CLIENT_ID }}
+          OPENSKY_CLIENT_SECRET: ${{ secrets.OPENSKY_CLIENT_SECRET }}
+
+      - name: Commit new history (only when data changed)
+        id: commit
+        run: |
+          git config user.name 1bk
+          git config user.email 31307125+1bk@users.noreply.github.com
+          git add history
+          if git diff --cached --quiet; then
+            echo "no new history this run"
+            echo "pushed=false" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "Snapshot history $(date -u +'%Y-%m-%d %H:%M') UTC"
+            git pull --rebase origin main
+            git push
+            echo "pushed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      # pushes made with GITHUB_TOKEN don't fire `on: push` workflows, so kick
+      # the Pages deploy explicitly to publish the fresh history
+      - name: Trigger Pages redeploy
+        if: steps.commit.outputs.pushed == 'true'
+        run: gh workflow run pages.yml --repo "$GITHUB_REPOSITORY"
+        env:
+          GH_TOKEN: ${{ github.token }}

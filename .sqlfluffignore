@@ -1,3 +1,4 @@
 # Uses dbt runtime objects (adapter.get_relation, target) that sqlfluff's
 # jinja templater cannot resolve.
 dbt/models/staging/stg_arrivals.sql
+dbt/models/staging/stg_aircraft_states_history.sql

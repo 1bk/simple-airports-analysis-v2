@@ -1,0 +1,69 @@
+ident,name,iata_code,snapshot_at,aircraft_within_50km,aircraft_airborne
+WMKK,Kuala Lumpur International Airport,KUL,2026-07-19 01:02:02+08,6,6
+WMSA,Sultan Abdul Aziz Shah International Airport,SZB,2026-07-19 01:02:02+08,5,5
+WMKJ,Senai International Airport,JHB,2026-07-19 01:02:02+08,5,5
+WMKD,Kuantan Airport,KUA,2026-07-19 01:02:02+08,3,3
+WMPA,Pulau Pangkor Airport,PKG,2026-07-19 01:02:02+08,2,2
+WMBT,Tioman Airport,TOD,2026-07-19 01:02:02+08,2,2
+WMKI,Sultan Azlan Shah Airport,IPH,2026-07-19 01:02:02+08,2,2
+WBKL,Labuan Airport,LBU,2026-07-19 01:02:02+08,2,2
+WBGW,Lawas Airport,LWY,2026-07-19 01:02:02+08,1,1
+WMKM,Malacca International Airport,MKZ,2026-07-19 01:02:02+08,1,1
+WBKT,Kudat Airport,KUD,2026-07-19 01:02:02+08,1,1
+WMKP,Penang International Airport,PEN,2026-07-19 01:02:02+08,1,1
+WBKK,Kota Kinabalu International Airport,BKI,2026-07-19 01:02:02+08,1,1
+WBGJ,Limbang Airport,LMN,2026-07-19 01:02:02+08,0,0
+WBGZ,Bario Airport,BBN,2026-07-19 01:02:02+08,0,0
+WBGR,Miri Airport,MYY,2026-07-19 01:02:02+08,0,0
+WBGK,Mukah Airport,MKM,2026-07-19 01:02:02+08,0,0
+WBKW,Tawau Airport,TWU,2026-07-19 01:02:02+08,0,0
+WBKM,Tomanggong Airport,TMG,2026-07-19 01:02:02+08,0,0
+WBGQ,Bakalalan Airport,BKM,2026-07-19 01:02:02+08,0,0
+WBMU,Mulu Airport,MZV,2026-07-19 01:02:02+08,0,0
+WBGS,Sibu Airport,SBW,2026-07-19 01:02:02+08,0,0
+WBKS,Sandakan Airport,SDK,2026-07-19 01:02:02+08,0,0
+WMKN,Sultan Mahmud Airport,TGG,2026-07-19 01:02:02+08,0,0
+WBGI,Long Seridan Airport,ODN,2026-07-19 01:02:02+08,0,0
+WBKD,Lahad Datu Airport,LDU,2026-07-19 01:02:02+08,0,0
+WMKA,Sultan Abdul Halim Airport,AOR,2026-07-19 01:02:02+08,0,0
+WMKL,Langkawi International Airport,LGK,2026-07-19 01:02:02+08,0,0
+WBGB,Bintulu Airport,BTU,2026-07-19 01:02:02+08,0,0
+WBGF,Long Lellang Airport,LGL,2026-07-19 01:02:02+08,0,0
+WBGG,Kuching International Airport,KCH,2026-07-19 01:02:02+08,0,0
+MY-LBP,Long Banga Airport,LBP,2026-07-19 01:02:02+08,0,0
+WBGM,Marudi Airport,MUR,2026-07-19 01:02:02+08,0,0
+WMKC,Sultan Ismail Petra Airport,KBR,2026-07-19 01:02:02+08,0,0
+WMSA,Sultan Abdul Aziz Shah International Airport,SZB,2026-07-19 01:03:02+08,8,8
+WMKK,Kuala Lumpur International Airport,KUL,2026-07-19 01:03:02+08,6,6
+WMKJ,Senai International Airport,JHB,2026-07-19 01:03:02+08,4,4
+WMKD,Kuantan Airport,KUA,2026-07-19 01:03:02+08,3,3
+WBKL,Labuan Airport,LBU,2026-07-19 01:03:02+08,2,2
+WMKI,Sultan Azlan Shah Airport,IPH,2026-07-19 01:03:02+08,2,2
+WMKM,Malacca International Airport,MKZ,2026-07-19 01:03:02+08,1,1
+WMPA,Pulau Pangkor Airport,PKG,2026-07-19 01:03:02+08,1,1
+WMKP,Penang International Airport,PEN,2026-07-19 01:03:02+08,1,1
+WBGW,Lawas Airport,LWY,2026-07-19 01:03:02+08,1,1
+WBKK,Kota Kinabalu International Airport,BKI,2026-07-19 01:03:02+08,1,1
+WBKT,Kudat Airport,KUD,2026-07-19 01:03:02+08,1,1
+WMBT,Tioman Airport,TOD,2026-07-19 01:03:02+08,1,1
+WBGQ,Bakalalan Airport,BKM,2026-07-19 01:03:02+08,0,0
+WBKW,Tawau Airport,TWU,2026-07-19 01:03:02+08,0,0
+WBGK,Mukah Airport,MKM,2026-07-19 01:03:02+08,0,0
+WMKN,Sultan Mahmud Airport,TGG,2026-07-19 01:03:02+08,0,0
+WBKS,Sandakan Airport,SDK,2026-07-19 01:03:02+08,0,0
+WBGS,Sibu Airport,SBW,2026-07-19 01:03:02+08,0,0
+WMKC,Sultan Ismail Petra Airport,KBR,2026-07-19 01:03:02+08,0,0
+WBGR,Miri Airport,MYY,2026-07-19 01:03:02+08,0,0
+WBKM,Tomanggong Airport,TMG,2026-07-19 01:03:02+08,0,0
+WBGM,Marudi Airport,MUR,2026-07-19 01:03:02+08,0,0
+WBGZ,Bario Airport,BBN,2026-07-19 01:03:02+08,0,0
+WBGJ,Limbang Airport,LMN,2026-07-19 01:03:02+08,0,0
+WBMU,Mulu Airport,MZV,2026-07-19 01:03:02+08,0,0
+WMKA,Sultan Abdul Halim Airport,AOR,2026-07-19 01:03:02+08,0,0
+WBGI,Long Seridan Airport,ODN,2026-07-19 01:03:02+08,0,0
+WBGG,Kuching International Airport,KCH,2026-07-19 01:03:02+08,0,0
+WBKD,Lahad Datu Airport,LDU,2026-07-19 01:03:02+08,0,0
+WBGF,Long Lellang Airport,LGL,2026-07-19 01:03:02+08,0,0
+WMKL,Langkawi International Airport,LGK,2026-07-19 01:03:02+08,0,0
+MY-LBP,Long Banga Airport,LBP,2026-07-19 01:03:02+08,0,0
+WBGB,Bintulu Airport,BTU,2026-07-19 01:03:02+08,0,0

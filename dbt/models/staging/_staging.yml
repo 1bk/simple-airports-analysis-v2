@@ -35,7 +35,22 @@ models:
               values: [opensky, adsb.lol, sample]
 
   - name: stg_arrivals
-    description: Arrivals at major Malaysian airports over the past 24h. Empty without OpenSky credentials.
+    description: >
+      Arrivals at major Malaysian airports: this run's live 7-day fetch unioned with
+      committed snapshot history, deduplicated per flight. Empty only when neither exists.
     columns:
       - name: arrival_airport_icao
         data_tests: [not_null]
+
+  - name: stg_aircraft_states_history
+    description: >
+      Accumulated aircraft-state snapshots from committed history parquet, one row per
+      aircraft per snapshot. Empty until the snapshot workflow commits history.
+    columns:
+      - name: icao24
+        data_tests: [not_null]
+      - name: data_source
+        description: Which live source produced the snapshot (never the sample seed).
+        data_tests:
+          - accepted_values:
+              values: [opensky, adsb.lol]

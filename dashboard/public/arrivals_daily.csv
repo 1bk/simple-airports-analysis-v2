@@ -1,7 +1,27 @@
 arrival_airport_icao,airport_name,iata_code,arrival_date,arrivals
-WMKK,Kuala Lumpur International Airport,KUL,2026-07-17,4
-WMKP,Penang International Airport,PEN,2026-07-17,2
-WBKK,Kota Kinabalu International Airport,BKI,2026-07-17,1
+WMKK,Kuala Lumpur International Airport,KUL,2026-07-12,495
+WBKK,Kota Kinabalu International Airport,BKI,2026-07-12,76
+WMKJ,Senai International Airport,JHB,2026-07-12,39
+WMKK,Kuala Lumpur International Airport,KUL,2026-07-13,526
+WBKK,Kota Kinabalu International Airport,BKI,2026-07-13,89
+WMKJ,Senai International Airport,JHB,2026-07-13,49
+WMKP,Penang International Airport,PEN,2026-07-13,19
+WMKK,Kuala Lumpur International Airport,KUL,2026-07-14,507
+WBKK,Kota Kinabalu International Airport,BKI,2026-07-14,92
+WMKJ,Senai International Airport,JHB,2026-07-14,45
+WMKP,Penang International Airport,PEN,2026-07-14,30
+WMKK,Kuala Lumpur International Airport,KUL,2026-07-15,503
+WBKK,Kota Kinabalu International Airport,BKI,2026-07-15,84
+WMKP,Penang International Airport,PEN,2026-07-15,43
+WMKJ,Senai International Airport,JHB,2026-07-15,43
+WMKK,Kuala Lumpur International Airport,KUL,2026-07-16,511
+WBKK,Kota Kinabalu International Airport,BKI,2026-07-16,82
+WMKJ,Senai International Airport,JHB,2026-07-16,45
+WMKP,Penang International Airport,PEN,2026-07-16,28
+WMKK,Kuala Lumpur International Airport,KUL,2026-07-17,526
+WBKK,Kota Kinabalu International Airport,BKI,2026-07-17,88
+WMKJ,Senai International Airport,JHB,2026-07-17,42
+WMKP,Penang International Airport,PEN,2026-07-17,40
 WMKK,Kuala Lumpur International Airport,KUL,2026-07-18,105
 WBKK,Kota Kinabalu International Airport,BKI,2026-07-18,13
 WMKP,Penang International Airport,PEN,2026-07-18,12

@@ -35,10 +35,22 @@ models:
       - name: aircraft_within_50km
         data_tests: [not_null]
 
+  - name: fct_congestion_history
+    description: >
+      Question 4 over time: aircraft within 50 km of each scheduled-service airport
+      per committed history snapshot, collected by the scheduled snapshot workflow.
+    columns:
+      - name: ident
+        data_tests: [not_null]
+      - name: snapshot_at
+        data_tests: [not_null]
+      - name: aircraft_within_50km
+        data_tests: [not_null]
+
   - name: fct_arrivals
     description: >
-      Arrivals per Malaysian airport over the past 7 days (question 3). Requires
-      OpenSky credentials; empty but well-formed without them.
+      Arrivals per Malaysian airport over the past 7 days (question 3), from the live
+      fetch and/or committed snapshot history; empty but well-formed without either.
     columns:
       - name: arrival_airport_icao
         data_tests: [unique]
@@ -49,8 +61,8 @@ models:
 
   - name: fct_arrivals_daily
     description: >
-      Daily arrivals per Malaysian airport over the fetched window — congestion by
-      period of interest. Empty without OpenSky credentials.
+      Daily arrivals per Malaysian airport over all collected history — congestion by
+      period of interest, growing as the snapshot workflow accumulates data.
     columns:
       - name: arrival_date
         description: Local calendar date of arrival.

@@ -141,7 +141,6 @@ def opensky_credentials() -> tuple[str, str] | None:
     return (cid, secret) if cid and secret else None
 
 
-# OpenSky's arrivals endpoint caps each request at a 7-day interval
 ARRIVALS_WINDOW_SECONDS = 7 * 86400
 
 
@@ -149,7 +148,10 @@ ARRIVALS_WINDOW_SECONDS = 7 * 86400
 def arrivals():
     """Arrivals over the past 7 days at major MY airports.
 
-    Requires OpenSky credentials; skips gracefully otherwise.
+    Requires OpenSky credentials; skips gracefully otherwise. Fetched in 1-day
+    chunks: OpenSky rejects queries spanning more than 2 day-partitions. A
+    failed chunk is logged and skipped, so one bad request doesn't lose the
+    other six days (downstream dedupes on icao24/airport/first_seen anyway).
     """
     creds = opensky_credentials()
     if not creds:
@@ -164,17 +166,23 @@ def arrivals():
     token_resp.raise_for_status()
     headers = {"Authorization": f"Bearer {token_resp.json()['access_token']}"}
     end = int(time.time())
-    begin = end - ARRIVALS_WINDOW_SECONDS
+    window_start = end - ARRIVALS_WINDOW_SECONDS
     for icao in ARRIVAL_AIRPORTS_ICAO:
-        resp = requests.get(
-            OPENSKY_ARRIVALS_URL,
-            params={"airport": icao, "begin": begin, "end": end},
-            headers=headers,
-            timeout=60,
-        )
-        if resp.status_code == 404:  # no flights found for this airport/window
-            continue
-        resp.raise_for_status()
-        for flight in resp.json():
-            flight["arrival_airport_icao"] = icao
-            yield flight
+        for chunk_end in range(end, window_start, -86400):
+            chunk_begin = max(chunk_end - 86400, window_start)
+            try:
+                resp = requests.get(
+                    OPENSKY_ARRIVALS_URL,
+                    params={"airport": icao, "begin": chunk_begin, "end": chunk_end},
+                    headers=headers,
+                    timeout=60,
+                )
+                if resp.status_code == 404:  # no flights found for this airport/day
+                    continue
+                resp.raise_for_status()
+            except Exception as exc:  # noqa: BLE001 - keep the other chunks
+                log.warning("arrivals: %s [%s, %s] failed (%s)", icao, chunk_begin, chunk_end, exc)
+                continue
+            for flight in resp.json():
+                flight["arrival_airport_icao"] = icao
+                yield flight

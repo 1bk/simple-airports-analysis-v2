@@ -24,6 +24,7 @@ REPO_ROOT = Path(__file__).parent.parent
 load_dotenv(REPO_ROOT / ".env")  # optional local secrets, see .env.example
 DUCKDB_PATH = os.environ.get("DUCKDB_PATH", str(REPO_ROOT / "data" / "airports.duckdb"))
 PUBLIC_DIR = REPO_ROOT / "dashboard" / "public"
+HISTORY_DIR = REPO_ROOT / "history"  # committed parquet, written by pipelines/snapshot.py
 
 # Marts exported for the static (WASM) dashboard, keyed by output filename stem.
 DASHBOARD_EXPORTS = {
@@ -38,6 +39,7 @@ DASHBOARD_EXPORTS = {
         left join marts.dim_airports_my as b on d.airport_b = b.ident
     """,
     "congestion": "select * from marts.fct_congestion",
+    "congestion_history": "select * from marts.fct_congestion_history",
     "arrivals": "select * from marts.fct_arrivals",
     "arrivals_daily": "select * from marts.fct_arrivals_daily",
 }
@@ -101,6 +103,20 @@ def load_arrivals() -> None:
             logging.warning("arrivals load failed - keeping previous data", exc_info=True)
 
 
+@materialize("duckdb://raw/aircraft_states_history", "duckdb://raw/arrivals_history")
+def load_history() -> None:
+    """Committed history parquet -> raw tables. Works with zero API access, so
+    arrivals/congestion time series survive OpenSky being unreachable from CI."""
+    with duckdb.connect(DUCKDB_PATH) as con:
+        for name in ("aircraft_states", "arrivals"):
+            path = HISTORY_DIR / f"{name}.parquet"
+            if path.exists():
+                con.execute(
+                    f"create or replace table raw.{name}_history as "
+                    f"select * from read_parquet('{path}')"
+                )
+
+
 @task
 def dbt_build() -> None:
     settings = PrefectDbtSettings(
@@ -137,6 +153,7 @@ def elt() -> None:
     load_airports()
     load_aircraft_states()
     load_arrivals()
+    load_history()
     dbt_build()
     export_dashboard_data()
 

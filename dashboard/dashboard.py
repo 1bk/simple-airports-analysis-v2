@@ -29,10 +29,11 @@ def _(mo, pl):
     airports = pl.read_csv(str(_base / "airports_my.csv"))
     distances = pl.read_csv(str(_base / "distances.csv"))
     congestion = pl.read_csv(str(_base / "congestion.csv"))
+    congestion_history = pl.read_csv(str(_base / "congestion_history.csv"))
     arrivals = pl.read_csv(str(_base / "arrivals.csv"))
     arrivals_daily = pl.read_csv(str(_base / "arrivals_daily.csv"))
     meta = pl.read_csv(str(_base / "meta.csv")).row(0, named=True)
-    return airports, arrivals, arrivals_daily, congestion, distances, meta
+    return airports, arrivals, arrivals_daily, congestion, congestion_history, distances, meta
 
 
 @app.cell
@@ -318,6 +319,43 @@ def _(alt, congestion, mo):
     else:
         _chart = mo.callout(mo.md("No aircraft near any airport in this snapshot."), kind="info")
     _chart
+    return
+
+
+@app.cell
+def _(alt, congestion_history, mo, pl):
+    _heading = mo.md(
+        "### Congestion over time\n\n"
+        "A scheduled workflow snapshots live traffic into committed Parquet, so the "
+        "50 km congestion proxy becomes a time series that grows with every run."
+    )
+    if congestion_history.height:
+        # keep the chart legible: only airports that ever saw traffic
+        _active = (
+            congestion_history.group_by("iata_code")
+            .agg(pl.col("aircraft_within_50km").max().alias("peak"))
+            .filter(pl.col("peak") > 0)["iata_code"]
+        )
+        _trend = (
+            alt.Chart(congestion_history.filter(pl.col("iata_code").is_in(_active)))
+            .mark_line(point=True, strokeWidth=2)
+            .encode(
+                x=alt.X("snapshot_at:T", title=None),
+                y=alt.Y("aircraft_within_50km:Q", title="Aircraft within 50 km"),
+                color=alt.Color(
+                    "iata_code:N", title="Airport", scale=alt.Scale(scheme="tableau10")
+                ),
+                tooltip=["snapshot_at:T", "iata_code:N", "aircraft_within_50km:Q"],
+            )
+            .properties(width=650, height=240, title="Aircraft near each airport, by snapshot")
+        )
+        _out = mo.ui.altair_chart(_trend)
+    else:
+        _out = mo.callout(
+            mo.md("No snapshot history committed yet — the scheduled workflow fills this in."),
+            kind="info",
+        )
+    mo.vstack([_heading, _out])
     return
 
 

@@ -93,10 +93,15 @@ flowchart LR
     end
     DB[(DuckDB)]
     SITE[Static site on GitHub Pages]
+    SNAP[Scheduled snapshot workflow]
+    HIST[(Committed Parquet history)]
 
     OA --> DLT
     OS --> DLT
     AR -.-> DLT
+    OS --> SNAP
+    AR -.-> SNAP
+    SNAP --> HIST --> DB
     DLT --> DB --> DBT --> EXP --> SITE
     DBT -- dbt docs generate --> SITE
 ```
@@ -105,9 +110,14 @@ flowchart LR
 - **Congestion** is a keyless proxy: a live snapshot of aircraft near each airport from
   OpenSky's anonymous API (fallbacks: [adsb.lol](https://api.adsb.lol), then a committed
   sample so the pipeline is always reproducible).
-- **Arrivals history** (question 3) needs free OpenSky credentials. Without
-  `OPENSKY_CLIENT_ID`/`OPENSKY_CLIENT_SECRET` set, the pipeline skips it gracefully and
-  the dashboard says so.
+- **Arrivals** (question 3) need free OpenSky credentials for the live fetch. Without
+  `OPENSKY_CLIENT_ID`/`OPENSKY_CLIENT_SECRET` set, the pipeline falls back to the
+  committed snapshot history and degrades gracefully if that's missing too.
+- **Snapshot history**: a [scheduled workflow](.github/workflows/snapshot.yml) (and
+  `make snapshot` locally) merges each aircraft-state snapshot and 7-day arrivals window
+  into deduplicated Parquet under `history/`, committed to the repo. Every deploy loads
+  it into DuckDB, so congestion and arrivals are real time series that keep working even
+  when OpenSky throttles CI runner IPs — last-known-good by construction.
 
 ### Orchestration (Prefect)
 
@@ -131,7 +141,8 @@ make site       # build the static site into _site/ (dashboard + dbt docs)
 python3 -m http.server --directory _site   # view it locally
 ```
 
-Other targets: `make lint` (pre-commit: gitleaks, ruff, sqlfluff), `make clean`.
+Other targets: `make lint` (pre-commit: gitleaks, ruff, sqlfluff), `make snapshot`
+(merge a fresh data snapshot into `history/`), `make clean`.
 
 Optional: `cp .env.example .env` and fill in free OpenSky credentials to enable the
 arrivals data — everything else works without it.
@@ -144,6 +155,7 @@ To develop the dashboard interactively: `uv run marimo edit dashboard/dashboard.
 pipelines/     dlt sources + Prefect flow (the entrypoint: python -m pipelines.flow)
 dbt/           dbt project: staging views + marts, tests, docs
 dashboard/     marimo notebook + public/ data baked for the WASM build
+history/       committed Parquet time series, grown by the snapshot workflow
 seeds/         committed sample aircraft snapshot (offline/CI fallback)
 .github/       CI (lint + pipeline + site build) and Pages deploy workflows
 ```
