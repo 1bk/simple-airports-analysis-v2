@@ -37,8 +37,22 @@ models:
 
   - name: fct_arrivals
     description: >
-      Arrivals per Malaysian airport in the past 24h (question 3). Requires OpenSky
-      credentials; empty but well-formed without them.
+      Arrivals per Malaysian airport over the past 7 days (question 3). Requires
+      OpenSky credentials; empty but well-formed without them.
     columns:
       - name: arrival_airport_icao
         data_tests: [unique]
+      - name: arrivals_7d
+        description: Total arrivals in the fetched 7-day window.
+      - name: arrivals_per_day
+        description: Average arrivals per day over the window.
+
+  - name: fct_arrivals_daily
+    description: >
+      Daily arrivals per Malaysian airport over the fetched window — congestion by
+      period of interest. Empty without OpenSky credentials.
+    columns:
+      - name: arrival_date
+        description: Local calendar date of arrival.
+      - name: arrivals
+        data_tests: [not_null]

@@ -1,0 +1,8 @@
+arrival_airport_icao,airport_name,iata_code,arrival_date,arrivals
+WMKK,Kuala Lumpur International Airport,KUL,2026-07-17,4
+WMKP,Penang International Airport,PEN,2026-07-17,2
+WBKK,Kota Kinabalu International Airport,BKI,2026-07-17,1
+WMKK,Kuala Lumpur International Airport,KUL,2026-07-18,105
+WBKK,Kota Kinabalu International Airport,BKI,2026-07-18,13
+WMKP,Penang International Airport,PEN,2026-07-18,12
+WMKJ,Senai International Airport,JHB,2026-07-18,4

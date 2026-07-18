@@ -39,6 +39,7 @@ DASHBOARD_EXPORTS = {
     """,
     "congestion": "select * from marts.fct_congestion",
     "arrivals": "select * from marts.fct_arrivals",
+    "arrivals_daily": "select * from marts.fct_arrivals_daily",
 }
 
 

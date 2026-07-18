@@ -30,8 +30,9 @@ def _(mo, pl):
     distances = pl.read_csv(str(_base / "distances.csv"))
     congestion = pl.read_csv(str(_base / "congestion.csv"))
     arrivals = pl.read_csv(str(_base / "arrivals.csv"))
+    arrivals_daily = pl.read_csv(str(_base / "arrivals_daily.csv"))
     meta = pl.read_csv(str(_base / "meta.csv")).row(0, named=True)
-    return airports, arrivals, congestion, distances, meta
+    return airports, arrivals, arrivals_daily, congestion, distances, meta
 
 
 @app.cell
@@ -40,13 +41,16 @@ def _(meta, mo):
         [
             mo.md(
                 """
-        # Airports Analysis (Classic)
+        # Airports Analysis · Classic
 
-        A dense, grid-style rebuild of the original v1 Metabase dashboard —
-        see the [Q&A-style walkthrough](../dashboard/) for the narrative version.
+        *A compact, grid-style view of the same dataset — see the
+        [Q&A walkthrough](../dashboard/) for the narrative version.*
         """
             ),
-            mo.md(f"Data generated at **{meta['generated_at_utc']} UTC**").right(),
+            mo.md(
+                f"<span style='font-size:0.8rem;color:var(--gray-9)'>"
+                f"generated {meta['generated_at_utc']} UTC</span>"
+            ).right(),
         ],
         justify="space-between",
         align="start",
@@ -57,23 +61,29 @@ def _(meta, mo):
 @app.cell
 def _(airports, arrivals, congestion, meta, mo):
     _scheduled = airports.filter(airports["has_scheduled_service"]).height
-    _total_arrivals = arrivals["arrivals_24h"].sum() if meta["arrivals_available"] else 0
+    _total_arrivals = arrivals["arrivals_7d"].sum() if meta["arrivals_available"] else 0
     _top = congestion.row(0, named=True) if congestion.height else None
     _busiest = (
-        f"{_top['name']} ({_top['aircraft_within_50km']} aircraft)"
+        f"{_top['iata_code']} · {_top['aircraft_within_50km']} aircraft"
         if _top and _top["aircraft_within_50km"] > 0
-        else "quiet right now"
+        else "quiet now"
     )
     mo.hstack(
         [
-            mo.stat(value=airports.height, label="Airports in Malaysia", bordered=True),
-            mo.stat(value=_scheduled, label="Scheduled airports", bordered=True),
-            mo.stat(value=_total_arrivals, label="Arrivals (24h)", bordered=True),
-            mo.stat(value=_busiest, label="Busiest airport now", bordered=True),
+            mo.stat(value=airports.height, label="Airports", bordered=True),
+            mo.stat(value=_scheduled, label="Scheduled", bordered=True),
+            mo.stat(value=_total_arrivals, label="Arrivals (7d total)", bordered=True),
+            mo.stat(value=_busiest, label="Busiest now", bordered=True),
         ],
         widths="equal",
         gap=1,
     )
+    return
+
+
+@app.cell
+def _(mo):
+    mo.md("### Airports map")
     return
 
 
@@ -86,7 +96,7 @@ def _(airports, mo):
         "medium_airport": "orange",
         "small_airport": "indianred",
     }
-    _map = folium.Map(tiles="OpenStreetMap")
+    _map = folium.Map(location=[4.0, 108.5], zoom_start=6, tiles="OpenStreetMap")
     for _row in airports.iter_rows(named=True):
         folium.CircleMarker(
             location=[_row["latitude"], _row["longitude"]],
@@ -104,24 +114,18 @@ def _(airports, mo):
                 max_width=250,
             ),
         ).add_to(_map)
-    _map.fit_bounds(
-        [
-            [airports["latitude"].min(), airports["longitude"].min()],
-            [airports["latitude"].max(), airports["longitude"].max()],
-        ]
-    )
-    # rendered via mo.iframe: real OSM tiles, pan/zoom, per-airport popups
+    # rendered via mo.iframe: real OSM tiles, pan/zoom, per-airport popups;
+    # centered on Malaysia rather than fit_bounds, so outlying reef/island
+    # airports don't zoom the whole map out to a speck
     _airports_table = mo.ui.table(
-        airports.select(
-            "name", "iata_code", "municipality", "airport_type", "latitude", "longitude"
-        ),
+        airports.select("name", "iata_code", "municipality", "airport_type"),
         selection=None,
         page_size=8,
         label="Airports",
     )
     mo.hstack(
         [
-            mo.iframe(_map.get_root().render(), width="420px", height="450px"),
+            mo.iframe(_map.get_root().render(), width="480px", height="420px"),
             _airports_table,
         ],
         widths=[1, 1],
@@ -132,53 +136,78 @@ def _(airports, mo):
 
 
 @app.cell
-def _(airports, alt, congestion, mo):
-    _busy = airports.join(
-        congestion.select("ident", "aircraft_within_50km"), on="ident", how="inner"
+def _(mo):
+    mo.md("### Busiest airports right now")
+    return
+
+
+@app.cell
+def _(alt, congestion, mo):
+    _busy = (
+        congestion.filter(congestion["aircraft_within_50km"] > 0)
+        .sort("aircraft_within_50km", descending=True)
+        .head(10)
     )
-    _scatter = (
-        alt.Chart(_busy)
-        .mark_circle(opacity=0.75)
-        .encode(
-            x=alt.X("longitude:Q", title="Longitude"),
-            y=alt.Y("aircraft_within_50km:Q", title="Aircraft within 50km"),
-            size=alt.Size("aircraft_within_50km:Q", legend=None),
-            color=alt.Color("airport_type:N", title="Type"),
-            tooltip=["name:N", "iata_code:N", "aircraft_within_50km:Q"],
+    if _busy.height:
+        _bars = (
+            alt.Chart(_busy)
+            .mark_bar()
+            .encode(
+                x=alt.X("aircraft_within_50km:Q", title="Aircraft within 50 km"),
+                y=alt.Y("name:N", sort="-x", title=None),
+                color=alt.Color(
+                    "aircraft_within_50km:Q", scale=alt.Scale(scheme="blues"), legend=None
+                ),
+                tooltip=["name:N", "iata_code:N", "aircraft_within_50km:Q"],
+            )
+            .properties(width=650, height=260)
         )
-        .properties(width=650, height=260, title="Airport Busyness")
+        _chart = mo.ui.altair_chart(_bars)
+    else:
+        _chart = mo.callout(mo.md("No aircraft near any airport in this snapshot."), kind="info")
+    _caption = mo.md(
+        "*Top 10 scheduled-service airports by live aircraft count within 50 km, "
+        "a keyless proxy for current congestion.*"
     )
-    mo.ui.altair_chart(_scatter)
+    mo.vstack([_chart, _caption])
     return
 
 
 @app.cell
-def _(meta, mo):
-    mo.md(
-        f"""
-    <div style="text-align:center; font-size:2rem; font-weight:600; padding: 0.5rem 0;">
-    Arrivals snapshot as of {meta["generated_at_utc"]} UTC
-    </div>
-    """
-    )
+def _(mo):
+    mo.md("### Arrivals, last 7 days")
     return
 
 
 @app.cell
-def _(alt, arrivals, meta, mo):
+def _(alt, arrivals, arrivals_daily, meta, mo):
     if meta["arrivals_available"] and arrivals.height > 0:
+        _trend = (
+            alt.Chart(arrivals_daily)
+            .mark_line(point=True, strokeWidth=2)
+            .encode(
+                x=alt.X("arrival_date:T", title=None),
+                y=alt.Y("arrivals:Q", title="Arrivals"),
+                color=alt.Color(
+                    "iata_code:N", title="Airport", scale=alt.Scale(scheme="tableau10")
+                ),
+                tooltip=["arrival_date:T", "iata_code:N", "arrivals:Q"],
+            )
+            .properties(width=650, height=220, title="Daily arrivals by airport")
+        )
         _bars = (
             alt.Chart(arrivals)
             .mark_bar()
             .encode(
-                x=alt.X("arrivals_24h:Q", title="Arrivals (24h)"),
+                x=alt.X("arrivals_7d:Q", title="Arrivals (7 days)"),
                 y=alt.Y("airport_name:N", sort="-x", title=None),
-                tooltip=["airport_name:N", "iata_code:N", "arrivals_24h:Q"],
+                color=alt.Color("arrivals_7d:Q", scale=alt.Scale(scheme="blues"), legend=None),
+                tooltip=["airport_name:N", "iata_code:N", "arrivals_7d:Q", "arrivals_per_day:Q"],
             )
-            .properties(width=650, height=260, title="Arrivals in the last 24h, per airport")
+            .properties(width=650, height=220, title="Total arrivals per airport")
         )
         _table = mo.ui.table(arrivals, selection=None, page_size=10, label="Arrivals detail")
-        _out = mo.vstack([mo.ui.altair_chart(_bars), _table])
+        _out = mo.vstack([mo.ui.altair_chart(_trend), mo.ui.altair_chart(_bars), _table])
     else:
         _out = mo.callout(
             mo.md(
@@ -195,7 +224,7 @@ def _(alt, arrivals, meta, mo):
 
 @app.cell
 def _(mo):
-    mo.md("### Distance Between Malaysian Airports (in KM)")
+    mo.md("### Distance matrix (km)")
     return
 
 
@@ -224,7 +253,12 @@ def _(distances, mo, pl):
     _matrix = _symmetric.pivot(on="to_iata", index="from_iata", values="distance_km").sort(
         "from_iata"
     )
-    mo.ui.table(_matrix, selection=None, page_size=15, label="Distance matrix (km)")
+    _table = mo.ui.table(_matrix, selection=None, page_size=10, label="Distance matrix (km)")
+    _caption = mo.md(
+        "*Great-circle distance in km between every pair of scheduled-service "
+        "airports, by IATA code.*"
+    )
+    mo.vstack([_table, _caption])
     return
 
 

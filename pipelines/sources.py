@@ -141,9 +141,16 @@ def opensky_credentials() -> tuple[str, str] | None:
     return (cid, secret) if cid and secret else None
 
 
+# OpenSky's arrivals endpoint caps each request at a 7-day interval
+ARRIVALS_WINDOW_SECONDS = 7 * 86400
+
+
 @dlt.resource(name="arrivals", write_disposition="replace")
 def arrivals():
-    """Arrivals over the past 24h at major MY airports. Requires OpenSky creds; skips otherwise."""
+    """Arrivals over the past 7 days at major MY airports.
+
+    Requires OpenSky credentials; skips gracefully otherwise.
+    """
     creds = opensky_credentials()
     if not creds:
         log.info("arrivals: no OpenSky credentials set, skipping (dashboards degrade gracefully)")
@@ -157,7 +164,7 @@ def arrivals():
     token_resp.raise_for_status()
     headers = {"Authorization": f"Bearer {token_resp.json()['access_token']}"}
     end = int(time.time())
-    begin = end - 86400
+    begin = end - ARRIVALS_WINDOW_SECONDS
     for icao in ARRIVAL_AIRPORTS_ICAO:
         resp = requests.get(
             OPENSKY_ARRIVALS_URL,

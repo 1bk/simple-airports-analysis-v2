@@ -1,35 +1,35 @@
 ident,name,iata_code,aircraft_within_50km,aircraft_on_ground,aircraft_airborne,snapshot_at,data_source
-WMSA,Sultan Abdul Aziz Shah International Airport,SZB,7,0,7,2026-07-18 23:31:51+08,opensky
-WMKK,Kuala Lumpur International Airport,KUL,6,0,6,2026-07-18 23:31:51+08,opensky
-WMKJ,Senai International Airport,JHB,5,0,5,2026-07-18 23:31:51+08,opensky
-WBKT,Kudat Airport,KUD,2,0,2,2026-07-18 23:31:51+08,opensky
-WMKP,Penang International Airport,PEN,1,0,1,2026-07-18 23:31:51+08,opensky
-WMKI,Sultan Azlan Shah Airport,IPH,1,0,1,2026-07-18 23:31:51+08,opensky
-WMBT,Tioman Airport,TOD,1,0,1,2026-07-18 23:31:51+08,opensky
-WBGM,Marudi Airport,MUR,1,0,1,2026-07-18 23:31:51+08,opensky
-WBGQ,Bakalalan Airport,BKM,1,0,1,2026-07-18 23:31:51+08,opensky
-WMKM,Malacca International Airport,MKZ,1,0,1,2026-07-18 23:31:51+08,opensky
-WBKK,Kota Kinabalu International Airport,BKI,1,1,0,2026-07-18 23:31:51+08,opensky
-WBGR,Miri Airport,MYY,1,0,1,2026-07-18 23:31:51+08,opensky
-WBMU,Mulu Airport,MZV,0,0,0,2026-07-18 23:31:51+08,opensky
-WBGS,Sibu Airport,SBW,0,0,0,2026-07-18 23:31:51+08,opensky
-WBKM,Tomanggong Airport,TMG,0,0,0,2026-07-18 23:31:51+08,opensky
-WMKD,Kuantan Airport,KUA,0,0,0,2026-07-18 23:31:51+08,opensky
-WMKN,Sultan Mahmud Airport,TGG,0,0,0,2026-07-18 23:31:51+08,opensky
-WMPA,Pulau Pangkor Airport,PKG,0,0,0,2026-07-18 23:31:51+08,opensky
-WBKD,Lahad Datu Airport,LDU,0,0,0,2026-07-18 23:31:51+08,opensky
-WBGJ,Limbang Airport,LMN,0,0,0,2026-07-18 23:31:51+08,opensky
-WBKS,Sandakan Airport,SDK,0,0,0,2026-07-18 23:31:51+08,opensky
-MY-LBP,Long Banga Airport,LBP,0,0,0,2026-07-18 23:31:51+08,opensky
-WBKL,Labuan Airport,LBU,0,0,0,2026-07-18 23:31:51+08,opensky
-WMKL,Langkawi International Airport,LGK,0,0,0,2026-07-18 23:31:51+08,opensky
-WBGB,Bintulu Airport,BTU,0,0,0,2026-07-18 23:31:51+08,opensky
-WBKW,Tawau Airport,TWU,0,0,0,2026-07-18 23:31:51+08,opensky
-WBGK,Mukah Airport,MKM,0,0,0,2026-07-18 23:31:51+08,opensky
-WBGW,Lawas Airport,LWY,0,0,0,2026-07-18 23:31:51+08,opensky
-WBGZ,Bario Airport,BBN,0,0,0,2026-07-18 23:31:51+08,opensky
-WMKA,Sultan Abdul Halim Airport,AOR,0,0,0,2026-07-18 23:31:51+08,opensky
-WMKC,Sultan Ismail Petra Airport,KBR,0,0,0,2026-07-18 23:31:51+08,opensky
-WBGI,Long Seridan Airport,ODN,0,0,0,2026-07-18 23:31:51+08,opensky
-WBGF,Long Lellang Airport,LGL,0,0,0,2026-07-18 23:31:51+08,opensky
-WBGG,Kuching International Airport,KCH,0,0,0,2026-07-18 23:31:51+08,opensky
+WMSA,Sultan Abdul Aziz Shah International Airport,SZB,6,0,6,2026-07-18 23:50:11+08,opensky
+WMKK,Kuala Lumpur International Airport,KUL,4,0,4,2026-07-18 23:50:11+08,opensky
+WMKP,Penang International Airport,PEN,2,0,2,2026-07-18 23:50:11+08,opensky
+WMKM,Malacca International Airport,MKZ,2,0,2,2026-07-18 23:50:11+08,opensky
+WMKJ,Senai International Airport,JHB,2,0,2,2026-07-18 23:50:11+08,opensky
+WBKK,Kota Kinabalu International Airport,BKI,1,0,1,2026-07-18 23:50:11+08,opensky
+WMBT,Tioman Airport,TOD,1,0,1,2026-07-18 23:50:11+08,opensky
+WBGW,Lawas Airport,LWY,1,0,1,2026-07-18 23:50:11+08,opensky
+WMKA,Sultan Abdul Halim Airport,AOR,1,0,1,2026-07-18 23:50:11+08,opensky
+WMKI,Sultan Azlan Shah Airport,IPH,1,0,1,2026-07-18 23:50:11+08,opensky
+WMKD,Kuantan Airport,KUA,1,0,1,2026-07-18 23:50:11+08,opensky
+WBKL,Labuan Airport,LBU,1,0,1,2026-07-18 23:50:11+08,opensky
+WBKW,Tawau Airport,TWU,0,0,0,2026-07-18 23:50:11+08,opensky
+WBKT,Kudat Airport,KUD,0,0,0,2026-07-18 23:50:11+08,opensky
+WBGK,Mukah Airport,MKM,0,0,0,2026-07-18 23:50:11+08,opensky
+WBGZ,Bario Airport,BBN,0,0,0,2026-07-18 23:50:11+08,opensky
+WBGQ,Bakalalan Airport,BKM,0,0,0,2026-07-18 23:50:11+08,opensky
+WBGR,Miri Airport,MYY,0,0,0,2026-07-18 23:50:11+08,opensky
+WBGG,Kuching International Airport,KCH,0,0,0,2026-07-18 23:50:11+08,opensky
+WBGF,Long Lellang Airport,LGL,0,0,0,2026-07-18 23:50:11+08,opensky
+WBGB,Bintulu Airport,BTU,0,0,0,2026-07-18 23:50:11+08,opensky
+WBGJ,Limbang Airport,LMN,0,0,0,2026-07-18 23:50:11+08,opensky
+WBKD,Lahad Datu Airport,LDU,0,0,0,2026-07-18 23:50:11+08,opensky
+WBMU,Mulu Airport,MZV,0,0,0,2026-07-18 23:50:11+08,opensky
+WBGI,Long Seridan Airport,ODN,0,0,0,2026-07-18 23:50:11+08,opensky
+WBKS,Sandakan Airport,SDK,0,0,0,2026-07-18 23:50:11+08,opensky
+WMKC,Sultan Ismail Petra Airport,KBR,0,0,0,2026-07-18 23:50:11+08,opensky
+WMPA,Pulau Pangkor Airport,PKG,0,0,0,2026-07-18 23:50:11+08,opensky
+MY-LBP,Long Banga Airport,LBP,0,0,0,2026-07-18 23:50:11+08,opensky
+WBGM,Marudi Airport,MUR,0,0,0,2026-07-18 23:50:11+08,opensky
+WBGS,Sibu Airport,SBW,0,0,0,2026-07-18 23:50:11+08,opensky
+WBKM,Tomanggong Airport,TMG,0,0,0,2026-07-18 23:50:11+08,opensky
+WMKN,Sultan Mahmud Airport,TGG,0,0,0,2026-07-18 23:50:11+08,opensky
+WMKL,Langkawi International Airport,LGK,0,0,0,2026-07-18 23:50:11+08,opensky

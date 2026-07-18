@@ -12,9 +12,9 @@ jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: astral-sh/setup-uv@v5
+      - uses: astral-sh/setup-uv@v8
         with:
           enable-cache: true
 
@@ -27,5 +27,5 @@ jobs:
       - name: Run pipeline (dlt -> DuckDB -> dbt build via Prefect)
         run: make pipeline
 
-      - name: Build static site (marimo WASM + dbt docs)
+      - name: Build static site (landing page + both marimo WASM dashboards + dbt docs)
         run: make site

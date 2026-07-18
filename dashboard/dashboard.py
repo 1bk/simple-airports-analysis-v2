@@ -30,8 +30,9 @@ def _(mo, pl):
     distances = pl.read_csv(str(_base / "distances.csv"))
     congestion = pl.read_csv(str(_base / "congestion.csv"))
     arrivals = pl.read_csv(str(_base / "arrivals.csv"))
+    arrivals_daily = pl.read_csv(str(_base / "arrivals_daily.csv"))
     meta = pl.read_csv(str(_base / "meta.csv")).row(0, named=True)
-    return airports, arrivals, congestion, distances, meta
+    return airports, arrivals, arrivals_daily, congestion, distances, meta
 
 
 @app.cell
@@ -58,9 +59,9 @@ def _(airports, congestion, distances, mo):
     _scheduled = airports.filter(airports["has_scheduled_service"]).height
     _top = congestion.row(0, named=True) if congestion.height else None
     _busiest = (
-        f"{_top['name']} ({_top['aircraft_within_50km']} aircraft)"
+        f"{_top['iata_code']} · {_top['aircraft_within_50km']} aircraft"
         if _top and _top["aircraft_within_50km"] > 0
-        else "quiet right now"
+        else "quiet now"
     )
     mo.hstack(
         [
@@ -225,21 +226,37 @@ def _(alt, distances, mo, pl):
 
 
 @app.cell
-def _(alt, arrivals, meta, mo):
-    _heading = mo.md("## 3. How many flights are landing at Malaysian airports?")
+def _(alt, arrivals, arrivals_daily, meta, mo):
+    _heading = mo.md(
+        "## 3. How many flights are landing at Malaysian airports?\n\n"
+        "Looking at the last **7 days** of arrivals."
+    )
     if meta["arrivals_available"] and arrivals.height > 0:
         _table = mo.ui.table(arrivals, selection=None)
+        _trend = (
+            alt.Chart(arrivals_daily)
+            .mark_line(point=True, strokeWidth=2)
+            .encode(
+                x=alt.X("arrival_date:T", title=None),
+                y=alt.Y("arrivals:Q", title="Arrivals"),
+                color=alt.Color(
+                    "iata_code:N", title="Airport", scale=alt.Scale(scheme="tableau10")
+                ),
+                tooltip=["arrival_date:T", "iata_code:N", "arrivals:Q"],
+            )
+            .properties(width=650, height=220, title="Daily arrivals by airport")
+        )
         _bars = (
             alt.Chart(arrivals)
             .mark_bar()
             .encode(
-                x=alt.X("arrivals_24h:Q", title="Arrivals (24h)"),
+                x=alt.X("arrivals_7d:Q", title="Arrivals (7 days)"),
                 y=alt.Y("airport_name:N", sort="-x", title=None),
-                tooltip=["airport_name:N", "iata_code:N", "arrivals_24h:Q"],
+                tooltip=["airport_name:N", "iata_code:N", "arrivals_7d:Q"],
             )
-            .properties(width=650, title="Arrivals in the last 24h")
+            .properties(width=650, title="Arrivals in the last 7 days")
         )
-        _out = mo.vstack([mo.ui.altair_chart(_bars), _table])
+        _out = mo.vstack([mo.ui.altair_chart(_trend), mo.ui.altair_chart(_bars), _table])
     else:
         _out = mo.callout(
             mo.md(
