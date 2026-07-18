@@ -1,4 +1,4 @@
-.PHONY: all install pipeline docs dashboard site clean lint
+.PHONY: all install pipeline docs dashboard site clean lint ui
 
 DUCKDB_PATH ?= data/airports.duckdb
 
@@ -14,6 +14,10 @@ pipeline:
 
 lint:
 	uv run pre-commit run --all-files
+
+# Optional: Prefect UI to watch flow runs (pair with PREFECT_API_URL=http://127.0.0.1:4200/api make pipeline)
+ui:
+	uv run prefect server start
 
 # Static dbt docs -> _site/dbt-docs/
 docs:
