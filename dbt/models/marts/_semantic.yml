@@ -62,6 +62,47 @@ semantic_models:
       - name: has_scheduled_service
         type: categorical
 
+  - name: arrival_origins
+    description: >
+      Arrival origins (extends question 3): one row per (arrival airport, origin
+      airport, arrival date) for the ~44% of arrivals where OpenSky determined
+      est_departure_airport. Joins the airports semantic model through the shared
+      airport entity.
+    model: ref('fct_arrival_origins')
+    defaults:
+      agg_time_dimension: arrival_date
+    primary_entity: route
+    entities:
+      - name: airport
+        type: foreign
+        expr: arrival_airport_icao
+    dimensions:
+      - name: arrival_date
+        type: time
+        type_params:
+          time_granularity: day
+      - name: origin_country
+        type: categorical
+      - name: is_international
+        type: categorical
+    measures:
+      - name: origin_flights
+        description: Count of arriving flights with a known origin airport.
+        agg: sum
+        expr: flights
+      - name: origin_airports
+        description: Distinct origin airports.
+        agg: count_distinct
+        expr: origin_ident
+      - name: international_flights
+        description: Arriving flights whose known origin is outside Malaysia.
+        agg: sum
+        expr: case when is_international then flights else 0 end
+      - name: domestic_flights
+        description: Arriving flights whose known origin is inside Malaysia.
+        agg: sum
+        expr: case when not is_international then flights else 0 end
+
   - name: airport_congestion
     description: Aircraft within 50 km of each scheduled-service airport, per committed history snapshot.
     model: ref('fct_congestion_history')
@@ -138,3 +179,39 @@ metrics:
     type: simple
     type_params:
       measure: peak_aircraft_within_50km
+
+  - name: origin_flights_total
+    description: Total arrivals with a known origin airport (denominator for international_share).
+    label: Arrivals with known origin
+    type: simple
+    type_params:
+      measure: origin_flights
+
+  - name: international_arrivals
+    description: Arrivals whose known origin airport is outside Malaysia.
+    label: International arrivals
+    type: simple
+    type_params:
+      measure: international_flights
+
+  - name: domestic_arrivals
+    description: Arrivals whose known origin airport is inside Malaysia.
+    label: Domestic arrivals
+    type: simple
+    type_params:
+      measure: domestic_flights
+
+  - name: international_share
+    description: Share of known-origin arrivals that are international.
+    label: International share
+    type: ratio
+    type_params:
+      numerator: international_arrivals
+      denominator: origin_flights_total
+
+  - name: distinct_origin_airports
+    description: Distinct origin airports across arrivals with a known origin.
+    label: Distinct origin airports
+    type: simple
+    type_params:
+      measure: origin_airports

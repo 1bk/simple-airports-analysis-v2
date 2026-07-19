@@ -26,6 +26,10 @@ A revival of [simple-airports-analysis](https://github.com/1bk/simple-airports-a
 3. How many flights are landing at Malaysian airports?
 4. Which airport is the most congested?
 
+Plus one new question v1 never asked, answerable now that the pipeline sees live
+traffic: **where do flights into Malaysia come from?** (domestic vs international,
+by origin airport and country).
+
 The result is a **static site** — an interactive [marimo](https://marimo.io) dashboard
 (running entirely in your browser via WebAssembly) with browsable
 [dbt docs](https://docs.getdbt.com/docs/build/documentation) and table lineage at
@@ -143,10 +147,11 @@ make mf ARGS='query --metrics avg_airport_congestion --group-by airport__iata_co
 ```
 
 The definitions live in [`dbt/models/marts/_semantic.yml`](dbt/models/marts/_semantic.yml):
-three semantic models (arrivals, airports, congestion history) joined through a shared
-`airport` entity, and six metrics including a rolling 7-day cumulative and a
-day-over-day derived metric — both computed against a
-[time spine](dbt/models/marts/time_spine_daily.sql).
+four semantic models (arrivals, airports, congestion history, arrival origins) joined
+through a shared `airport` entity, and eleven metrics — including a rolling 7-day
+cumulative and a day-over-day derived metric (both computed against a
+[time spine](dbt/models/marts/time_spine_daily.sql)), and an `international_share`
+ratio metric splitting known-origin arrivals into international vs domestic.
 
 Two honest footnotes: the MetricFlow CLI runs sandboxed via `uvx` because it currently
 pins `dbt-core < 1.12` (this project is on 1.12 — the semantic YAML uses the
@@ -167,7 +172,7 @@ a query engine; each surface gets its data differently:
 | `make mf` (semantic layer) | The DuckDB warehouse directly — MetricFlow writes the SQL | The moment you ask |
 | dbt MCP (AI clients) | The dbt project + DuckDB directly | The moment the AI asks |
 
-The marts answer this project's four *fixed* questions, and the static site serves those
+The marts answer this project's five *fixed* questions, and the static site serves those
 precomputed answers. The semantic layer and MCP are the two *ad-hoc* paths: they answer
 questions nobody wrote SQL for — new groupings, new time windows — but they run against
 the warehouse, so they're local-only (clone the repo, run `make all`, then ask). The
@@ -182,7 +187,7 @@ The repo ships with the official (Apache-2.0)
 opened in this repo can explore lineage, compile models, and query the warehouse —
 grounded in the real project, not guesswork:
 
-![dbt MCP demo](docs/img/dbt-mcp-demo.png)
+![dbt MCP demo](docs/img/dbt-mcp-demo.gif)
 
 Try it yourself after cloning (needs [uv](https://docs.astral.sh/uv/) and one
 `make all` to build the DuckDB file):
@@ -203,11 +208,15 @@ Cloud-only tool groups (Semantic Layer API, Discovery, Admin) are disabled in th
 launcher, and telemetry is off, as everywhere in this repo.
 
 And on the live site itself: **[chat with the data](https://1bk.dev/simple-airports-analysis-v2/chat/)** —
-a bring-your-own-API-key Claude chat over the dashboard's datasets. The page is pure
-static WASM (no backend, no proxy): your key goes from your browser straight to
-`api.anthropic.com` via Anthropic's
-[CORS support for direct browser access](https://simonwillison.net/2024/Aug/23/anthropic-dangerous-direct-browser-access/),
-and is never stored anywhere.
+a bring-your-own-API-key chat over the dashboard's datasets, with your pick of
+**Anthropic, OpenAI, Gemini, or GLM** models. The page is pure static WASM (no backend,
+no proxy): your key goes from your browser straight to the provider's API (all four
+support
+[direct browser CORS access](https://simonwillison.net/2024/Aug/23/anthropic-dangerous-direct-browser-access/))
+and is never stored anywhere. The model list is dynamic where the provider allows it:
+with a key entered, the page queries the provider's own models endpoint and filters to
+current chat models, so new releases appear without a redeploy (GLM has no public list
+endpoint, so it gets a curated static list).
 
 ![Data chat page](docs/img/data-chat.png)
 
@@ -274,10 +283,9 @@ roughly the size of the data itself.
 ## Future features
 
 - **sqlmesh** as an alternative transformation engine alongside dbt
-- **More chat providers**: let the [data chat](https://1bk.dev/simple-airports-analysis-v2/chat/)
-  use other well-known models (e.g. Gemini; each provider must support direct
-  browser CORS calls, which not all do)
 - **dbt Docs v2 hosting** once dbt Labs ships a static export (see the preview section above)
+- **Departures analysis**: OpenSky also has a departures endpoint — the mirror image of
+  the arrival-origins analysis (where do flights *from* Malaysia go?)
 
 ## Versioning & releases
 

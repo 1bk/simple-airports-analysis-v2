@@ -32,8 +32,18 @@ def _(mo, pl):
     congestion_history = pl.read_csv(str(_base / "congestion_history.csv"))
     arrivals = pl.read_csv(str(_base / "arrivals.csv"))
     arrivals_daily = pl.read_csv(str(_base / "arrivals_daily.csv"))
+    arrival_origins = pl.read_csv(str(_base / "arrival_origins.csv"))
     meta = pl.read_csv(str(_base / "meta.csv")).row(0, named=True)
-    return airports, arrivals, arrivals_daily, congestion, congestion_history, distances, meta
+    return (
+        airports,
+        arrival_origins,
+        arrivals,
+        arrivals_daily,
+        congestion,
+        congestion_history,
+        distances,
+        meta,
+    )
 
 
 @app.cell
@@ -369,6 +379,61 @@ def _(mo):
 @app.cell
 def _(congestion, mo):
     mo.ui.table(congestion, selection=None, page_size=10)
+    return
+
+
+@app.cell
+def _(arrival_origins, mo, pl):
+    _known = arrival_origins["flights"].sum()
+    _intl = arrival_origins.filter(pl.col("is_international"))["flights"].sum()
+    _intl_pct = round(100 * _intl / _known)
+    _top = arrival_origins.sort("flights", descending=True).row(0, named=True)
+    mo.md(
+        f"""
+    ## 5. Where do flights into Malaysia come from?
+
+    OpenSky can't always establish where an arriving flight departed from, so this
+    only covers the roughly 44% of arrivals with a known origin — **{_known:,} flights**
+    across **{arrival_origins.height} origin-airport routes**. Of those known origins,
+    **{_intl_pct}%** are international, with the busiest single route being
+    **{_top["origin_name"]} ({_top["origin_country"]}) → {_top["arrival_airport_name"]}**,
+    at **{_top["flights"]} flights**.
+    """
+    )
+    return
+
+
+@app.cell
+def _(alt, arrival_origins, mo, pl):
+    _by_origin = (
+        arrival_origins.group_by(
+            "origin_ident", "origin_name", "origin_country", "is_international"
+        )
+        .agg(pl.col("flights").sum())
+        .with_columns(
+            (pl.col("origin_name") + " (" + pl.col("origin_country") + ")").alias("label"),
+            pl.when(pl.col("is_international"))
+            .then(pl.lit("International"))
+            .otherwise(pl.lit("Domestic"))
+            .alias("flight_type"),
+        )
+        .sort("flights", descending=True)
+        .head(15)
+    )
+    _color_scale = alt.Scale(domain=["Domestic", "International"], range=["#4C78A8", "#F58518"])
+    _bars = (
+        alt.Chart(_by_origin)
+        .mark_bar()
+        .encode(
+            x=alt.X("flights:Q", title="Flights"),
+            y=alt.Y("label:N", sort="-x", title=None),
+            color=alt.Color("flight_type:N", title="Origin", scale=_color_scale),
+            tooltip=["origin_name:N", "origin_country:N", "flight_type:N", "flights:Q"],
+        )
+        .properties(width=650, title="Top 15 origin airports by flights")
+    )
+    _table = mo.ui.table(arrival_origins, selection=None, page_size=10)
+    mo.vstack([mo.ui.altair_chart(_bars), _table])
     return
 
 

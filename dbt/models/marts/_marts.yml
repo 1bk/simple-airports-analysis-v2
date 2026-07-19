@@ -69,3 +69,26 @@ models:
         description: Local calendar date of arrival.
       - name: arrivals
         data_tests: [not_null]
+
+  - name: fct_arrival_origins
+    description: >
+      Arrival origins (extends question 3): one row per (arrival airport, origin
+      airport, arrival date) for flights where OpenSky determined
+      est_departure_airport — roughly 44% of arrivals; the remainder have an
+      unknown origin and are excluded, not zero-origin. Origin metadata is
+      worldwide (from stg_airports), so covers both international and
+      domestic origins.
+    columns:
+      - name: arrival_airport_icao
+        data_tests: [not_null]
+      - name: origin_ident
+        description: OurAirports ident (usually ICAO) of the estimated departure airport.
+        data_tests: [not_null]
+      - name: origin_country
+        description: ISO country code of the origin airport (247 distinct values worldwide).
+        data_tests: [not_null]
+      - name: is_international
+        description: True when the origin airport is outside Malaysia.
+        data_tests: [not_null]
+      - name: flights
+        data_tests: [not_null]

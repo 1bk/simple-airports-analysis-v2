@@ -15,11 +15,12 @@ app = marimo.App(width="medium", app_title="Chat with the Airports Data")
 @app.cell
 def _():
     import json
+    import re
 
     import marimo as mo
     import polars as pl
 
-    return json, mo, pl
+    return json, mo, pl, re
 
 
 @app.cell
@@ -81,13 +82,12 @@ def _(mo):
     # Chat with the Airports Data
 
     Ask questions about Malaysian airports, arrivals, and congestion — answered by
-    Claude using this dashboard's actual data.
+    a model of your choice using this dashboard's actual data.
 
     **Bring your own API key.** This page is a static site with no backend: the
     notebook runs entirely in your browser (WebAssembly), and your key is sent
-    directly from your browser to `api.anthropic.com` — nowhere else. It is never
-    stored or logged. Get a key at
-    [console.anthropic.com](https://console.anthropic.com/settings/keys).
+    directly from your browser to the provider you pick below — nowhere else. It
+    is never stored or logged.
 
     [Q&A dashboard](../dashboard/) · [classic](../classic/) · [project overview](../)
     """
@@ -97,35 +97,164 @@ def _(mo):
 
 @app.cell
 def _(mo):
-    api_key_input = mo.ui.text(
-        kind="password", label="Anthropic API key", placeholder="sk-ant-...", full_width=True
-    )
-    model_picker = mo.ui.dropdown(
+    provider_picker = mo.ui.dropdown(
         options={
+            "Anthropic (Claude)": "anthropic",
+            "OpenAI (GPT)": "openai",
+            "Gemini (Google)": "gemini",
+            "GLM (Zhipu)": "glm",
+        },
+        value="Anthropic (Claude)",
+        label="Provider",
+    )
+    provider_picker
+    return (provider_picker,)
+
+
+@app.cell
+def _(mo, provider_picker):
+    # Placeholder / help link adapt to the chosen provider. Redefining the text
+    # input here (keyed off provider_picker) also clears the field on provider
+    # switch, so a key never gets silently sent to the wrong API.
+    _provider_meta = {
+        "anthropic": ("sk-ant-...", "https://console.anthropic.com/settings/keys"),
+        "openai": ("sk-...", "https://platform.openai.com/api-keys"),
+        "gemini": ("AIza...", "https://aistudio.google.com/apikey"),
+        "glm": ("...", "https://z.ai/manage-apikey/apikey-list"),
+    }
+    _placeholder, _key_url = _provider_meta[provider_picker.value]
+    api_key_input = mo.ui.text(
+        kind="password",
+        label="API key",
+        placeholder=_placeholder,
+        full_width=True,
+    )
+    key_help = mo.md(f"Get a key at [{_key_url}]({_key_url}).")
+    return api_key_input, key_help
+
+
+@app.cell
+async def _(api_key_input, json, mo, provider_picker, re):
+    async def _get_json(url: str, headers: dict) -> dict:
+        try:
+            from pyodide.http import pyfetch  # running in the browser (WASM)
+
+            resp = await pyfetch(url, method="GET", headers=headers)
+            return await resp.json()
+        except ImportError:  # running locally (marimo edit / run)
+            import urllib.error
+            import urllib.request
+
+            req = urllib.request.Request(url, headers=headers, method="GET")
+            try:
+                with urllib.request.urlopen(req, timeout=15) as resp:
+                    return json.loads(resp.read())
+            except urllib.error.HTTPError as exc:
+                return json.loads(exc.read())
+
+    # Small curated fallbacks, used when there's no key yet or the live fetch
+    # fails (network error, bad key, provider outage).
+    _fallback_models = {
+        "anthropic": {
             "Claude Opus 4.8 (most capable)": "claude-opus-4-8",
             "Claude Sonnet 5 (balanced)": "claude-sonnet-5",
             "Claude Haiku 4.5 (fastest)": "claude-haiku-4-5",
         },
-        value="Claude Opus 4.8 (most capable)",
-        label="Model",
+        "openai": {
+            "GPT-5.6 Sol (most capable)": "gpt-5.6-sol",
+            "GPT-5.6 Terra (balanced)": "gpt-5.6-terra",
+            "GPT-5.6 Luna (fastest)": "gpt-5.6-luna",
+        },
+        "gemini": {
+            "Gemini 3.1 Pro (most capable)": "gemini-3.1-pro-preview",
+            "Gemini 3.5 Flash (balanced)": "gemini-3.5-flash",
+            "Gemini 2.5 Flash-Lite (fastest)": "gemini-2.5-flash-lite",
+        },
+        "glm": {
+            "GLM-5.2 (most capable)": "glm-5.2",
+            "GLM-5-Turbo (fastest)": "glm-5-turbo",
+            "GLM-4.6 (previous flagship)": "glm-4.6",
+        },
+    }
+
+    async def _fetch_anthropic_models(key: str) -> dict | None:
+        headers = {
+            "x-api-key": key,
+            "anthropic-version": "2023-06-01",
+            "anthropic-dangerous-direct-browser-access": "true",
+        }
+        data = await _get_json("https://api.anthropic.com/v1/models", headers)
+        # The API already returns newest-released-first; no re-sort needed.
+        _models = {m["display_name"]: m["id"] for m in data.get("data", [])}
+        return _models or None
+
+    async def _fetch_openai_models(key: str) -> dict | None:
+        headers = {"Authorization": f"Bearer {key}"}
+        data = await _get_json("https://api.openai.com/v1/models", headers)
+        _include = re.compile(r"^(gpt-|o[0-9])")
+        _exclude = re.compile(
+            r"audio|realtime|transcribe|tts|whisper|embed|image|dall-e|moderation|instruct|search"
+        )
+        _ids = sorted(
+            (
+                m["id"]
+                for m in data.get("data", [])
+                if _include.match(m["id"]) and not _exclude.search(m["id"])
+            ),
+            reverse=True,
+        )
+        return {_id: _id for _id in _ids} or None
+
+    async def _fetch_gemini_models(key: str) -> dict | None:
+        url = f"https://generativelanguage.googleapis.com/v1beta/models?key={key}"
+        data = await _get_json(url, {})
+        _ids = []
+        for m in data.get("models", []):
+            _name = m.get("name", "")
+            _methods = m.get("supportedGenerationMethods", [])
+            if "generateContent" in _methods and "gemini" in _name and "embedding" not in _name:
+                _ids.append(_name.removeprefix("models/"))
+        return {_id: _id for _id in _ids} or None
+
+    async def _fetch_live_models(provider: str, key: str) -> dict | None:
+        try:
+            if provider == "anthropic":
+                return await _fetch_anthropic_models(key)
+            if provider == "openai":
+                return await _fetch_openai_models(key)
+            if provider == "gemini":
+                return await _fetch_gemini_models(key)
+        except Exception:
+            return None  # any fetch/parse failure -> fall back to the static list
+        return None  # glm has no reliable public models-list endpoint
+
+    _provider = provider_picker.value
+    _key = api_key_input.value.strip()
+    _live_models = await _fetch_live_models(_provider, _key) if _key else None
+    model_options = _live_models or _fallback_models[_provider]
+    model_source = "your account's live model list" if _live_models else "a static fallback list"
+    model_picker = mo.ui.dropdown(
+        options=model_options, value=next(iter(model_options)), label="Model"
     )
-    mo.hstack([api_key_input, model_picker], widths=[2, 1], gap=1, align="end")
-    return api_key_input, model_picker
+    mo.hstack(
+        [api_key_input, model_picker],
+        widths=[2, 1],
+        gap=1,
+        align="end",
+    )
+    return model_picker, model_source
 
 
 @app.cell
-def _(DATA_CONTEXT, api_key_input, json, mo, model_picker):
-    async def _post_anthropic(payload: dict, key: str) -> dict:
-        url = "https://api.anthropic.com/v1/messages"
-        headers = {
-            "content-type": "application/json",
-            "x-api-key": key,
-            "anthropic-version": "2023-06-01",
-            # required for direct browser -> API calls (CORS); the "danger" is
-            # exposing a key in shipped frontend code - here the user supplies
-            # their own key at runtime, which is the intended BYO-key pattern
-            "anthropic-dangerous-direct-browser-access": "true",
-        }
+def _(key_help, mo, model_source):
+    mo.vstack([key_help, mo.md(f"*Showing {model_source}.*")])
+    return
+
+
+@app.cell
+def _(DATA_CONTEXT, api_key_input, json, mo, model_picker, provider_picker):
+    async def _post_json(url: str, headers: dict, payload: dict) -> dict:
+        headers = {**headers, "content-type": "application/json"}
         body = json.dumps(payload)
         try:
             from pyodide.http import pyfetch  # running in the browser (WASM)
@@ -133,6 +262,7 @@ def _(DATA_CONTEXT, api_key_input, json, mo, model_picker):
             resp = await pyfetch(url, method="POST", headers=headers, body=body)
             return await resp.json()
         except ImportError:  # running locally (marimo edit / run)
+            import urllib.error
             import urllib.request
 
             req = urllib.request.Request(url, data=body.encode(), headers=headers, method="POST")
@@ -142,17 +272,22 @@ def _(DATA_CONTEXT, api_key_input, json, mo, model_picker):
             except urllib.error.HTTPError as exc:
                 return json.loads(exc.read())
 
-    async def claude_model(messages, config):
-        key = api_key_input.value.strip()
-        if not key:
-            return "Please paste your Anthropic API key above first."
+    async def _call_anthropic(key: str, model: str, messages) -> str:
+        headers = {
+            "x-api-key": key,
+            "anthropic-version": "2023-06-01",
+            # required for direct browser -> API calls (CORS); the "danger" is
+            # exposing a key in shipped frontend code - here the user supplies
+            # their own key at runtime, which is the intended BYO-key pattern
+            "anthropic-dangerous-direct-browser-access": "true",
+        }
         payload = {
-            "model": model_picker.value,
+            "model": model,
             "max_tokens": 2048,
             "system": DATA_CONTEXT,
             "messages": [{"role": m.role, "content": str(m.content)} for m in messages],
         }
-        data = await _post_anthropic(payload, key)
+        data = await _post_json("https://api.anthropic.com/v1/messages", headers, payload)
         if data.get("type") == "error":
             return f"**API error** ({data['error'].get('type')}): {data['error'].get('message')}"
         if data.get("stop_reason") == "refusal":
@@ -160,8 +295,70 @@ def _(DATA_CONTEXT, api_key_input, json, mo, model_picker):
         texts = [b["text"] for b in data.get("content", []) if b.get("type") == "text"]
         return "\n\n".join(texts) or "*(empty response)*"
 
+    async def _call_openai_compatible(url: str, key: str, model: str, messages) -> str:
+        headers = {"Authorization": f"Bearer {key}"}
+        _history = [{"role": m.role, "content": str(m.content)} for m in messages]
+        payload = {
+            "model": model,
+            "max_tokens": 2048,
+            "messages": [{"role": "system", "content": DATA_CONTEXT}, *_history],
+        }
+        data = await _post_json(url, headers, payload)
+        if "error" in data:
+            _err = data["error"]
+            _msg = _err.get("message") if isinstance(_err, dict) else _err
+            return f"**API error**: {_msg}"
+        _choices = data.get("choices", [])
+        if not _choices:
+            return "*(empty response)*"
+        return _choices[0].get("message", {}).get("content") or "*(empty response)*"
+
+    async def _call_gemini(key: str, model: str, messages) -> str:
+        _base = "https://generativelanguage.googleapis.com/v1beta/models"
+        url = f"{_base}/{model}:generateContent?key={key}"
+        _contents = [
+            {
+                "role": "model" if m.role == "assistant" else "user",
+                "parts": [{"text": str(m.content)}],
+            }
+            for m in messages
+        ]
+        payload = {
+            "contents": _contents,
+            "systemInstruction": {"parts": [{"text": DATA_CONTEXT}]},
+        }
+        data = await _post_json(url, {}, payload)
+        if "error" in data:
+            return f"**API error**: {data['error'].get('message')}"
+        _candidates = data.get("candidates", [])
+        if not _candidates:
+            return "*(empty response)*"
+        _parts = _candidates[0].get("content", {}).get("parts", [])
+        _texts = [p["text"] for p in _parts if "text" in p]
+        return "".join(_texts) or "*(empty response)*"
+
+    async def chat_model(messages, config):
+        key = api_key_input.value.strip()
+        provider = provider_picker.value
+        if not key:
+            return "Please paste your API key above first."
+        model = model_picker.value
+        if provider == "anthropic":
+            return await _call_anthropic(key, model, messages)
+        if provider == "openai":
+            return await _call_openai_compatible(
+                "https://api.openai.com/v1/chat/completions", key, model, messages
+            )
+        if provider == "gemini":
+            return await _call_gemini(key, model, messages)
+        if provider == "glm":
+            return await _call_openai_compatible(
+                "https://api.z.ai/api/paas/v4/chat/completions", key, model, messages
+            )
+        return f"Unknown provider: {provider}"
+
     chat = mo.ui.chat(
-        claude_model,
+        chat_model,
         prompts=[
             "Which airport is the most congested right now?",
             "How many arrivals did KUL get in the last 7 days, per day on average?",

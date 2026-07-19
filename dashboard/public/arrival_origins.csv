@@ -1,0 +1,110 @@
+arrival_airport_icao,arrival_airport_name,origin_ident,origin_name,origin_country,is_international,flights
+WMKK,Kuala Lumpur International Airport,WBKK,Kota Kinabalu International Airport,MY,false,147
+WMKK,Kuala Lumpur International Airport,WIII,Soekarno-Hatta International Airport,ID,true,137
+WMKK,Kuala Lumpur International Airport,WSAC,Changi Air Base (East),SG,true,113
+WMKK,Kuala Lumpur International Airport,WSSS,Singapore Changi Airport,SG,true,99
+WMKK,Kuala Lumpur International Airport,ZGSZ,Shenzhen Bao'an International Airport,CN,true,65
+WMKK,Kuala Lumpur International Airport,VTBD,Don Mueang International Airport,TH,true,63
+WMKK,Kuala Lumpur International Airport,VHHH,Hong Kong International Airport,HK,true,63
+WMKK,Kuala Lumpur International Airport,WMKJ,Senai International Airport,MY,false,55
+WMKK,Kuala Lumpur International Airport,VTBS,Suvarnabhumi Airport,TH,true,53
+WMKJ,Senai International Airport,WMKJ,Senai International Airport,MY,false,51
+WMKJ,Senai International Airport,WMSA,Sultan Abdul Aziz Shah International Airport,MY,false,41
+WMKK,Kuala Lumpur International Airport,RPLL,Ninoy Aquino International Airport,PH,true,40
+WMKK,Kuala Lumpur International Airport,YSSY,Sydney Kingsford Smith International Airport,AU,true,40
+WMKK,Kuala Lumpur International Airport,WMKP,Penang International Airport,MY,false,40
+WMKK,Kuala Lumpur International Airport,YPPH,Perth International Airport,AU,true,36
+WMKK,Kuala Lumpur International Airport,YMML,Melbourne Airport,AU,true,31
+WMKK,Kuala Lumpur International Airport,RJAA,Narita International Airport,JP,true,29
+WMKK,Kuala Lumpur International Airport,VIDP,Indira Gandhi International Airport,IN,true,27
+WMKK,Kuala Lumpur International Airport,RKSI,Incheon International Airport,KR,true,24
+WBKK,Kota Kinabalu International Airport,WBKL,Labuan Airport,MY,false,23
+WMKK,Kuala Lumpur International Airport,VNKT,Tribhuvan International Airport,NP,true,22
+WMKK,Kuala Lumpur International Airport,RCTP,Taiwan Taoyuan International Airport,TW,true,22
+WMKP,Penang International Airport,WMSA,Sultan Abdul Aziz Shah International Airport,MY,false,19
+WMKK,Kuala Lumpur International Airport,OTHH,Hamad International Airport,QA,true,19
+WMKP,Penang International Airport,WMKK,Kuala Lumpur International Airport,MY,false,19
+WMKK,Kuala Lumpur International Airport,EGLL,London Heathrow Airport,GB,true,19
+WMKK,Kuala Lumpur International Airport,OMDB,Dubai International Airport,AE,true,18
+WMKK,Kuala Lumpur International Airport,WMKK,Kuala Lumpur International Airport,MY,false,18
+WMKP,Penang International Airport,WSAC,Changi Air Base (East),SG,true,17
+WBKK,Kota Kinabalu International Airport,WMKK,Kuala Lumpur International Airport,MY,false,16
+WBKK,Kota Kinabalu International Airport,RKSI,Incheon International Airport,KR,true,16
+WBKK,Kota Kinabalu International Airport,WBKK,Kota Kinabalu International Airport,MY,false,15
+WMKK,Kuala Lumpur International Airport,VOCI,Cochin International Airport,IN,true,15
+WMKK,Kuala Lumpur International Airport,RJTT,Tokyo Haneda International Airport,JP,true,14
+WMKK,Kuala Lumpur International Airport,VAJJ,Juhu Aerodrome,IN,true,13
+WMKP,Penang International Airport,VHHH,Hong Kong International Airport,HK,true,13
+WMKK,Kuala Lumpur International Airport,LTFM,İstanbul Airport,TR,true,13
+WMKK,Kuala Lumpur International Airport,VYYY,Yangon International Airport,MM,true,13
+WMKK,Kuala Lumpur International Airport,VOBL,Kempegowda International Airport Bengaluru,IN,true,13
+WMKJ,Senai International Airport,WBKK,Kota Kinabalu International Airport,MY,false,12
+WMKK,Kuala Lumpur International Airport,VECC,Netaji Subhash Chandra Bose International Airport,IN,true,12
+WBKK,Kota Kinabalu International Airport,WMKJ,Senai International Airport,MY,false,12
+WMKJ,Senai International Airport,WMKK,Kuala Lumpur International Airport,MY,false,12
+WMKP,Penang International Airport,WIII,Soekarno-Hatta International Airport,ID,true,11
+WBKK,Kota Kinabalu International Airport,WBSB,Brunei International Airport,BN,true,11
+WMKK,Kuala Lumpur International Airport,YBBN,Brisbane International Airport,AU,true,11
+WMKP,Penang International Airport,WSSS,Singapore Changi Airport,SG,true,11
+WBKK,Kota Kinabalu International Airport,VHHH,Hong Kong International Airport,HK,true,11
+WMKK,Kuala Lumpur International Airport,RJBB,Kansai International Airport,JP,true,9
+WMKK,Kuala Lumpur International Airport,NZAA,Auckland International Airport,NZ,true,9
+WMKK,Kuala Lumpur International Airport,WBSB,Brunei International Airport,BN,true,9
+WMKK,Kuala Lumpur International Airport,VTCC,Chiang Mai International Airport,TH,true,9
+WMKK,Kuala Lumpur International Airport,VOTV,Thiruvananthapuram International Airport,IN,true,9
+WMKJ,Senai International Airport,WIII,Soekarno-Hatta International Airport,ID,true,8
+WMKJ,Senai International Airport,VTBD,Don Mueang International Airport,TH,true,8
+WMKP,Penang International Airport,VTBS,Suvarnabhumi Airport,TH,true,8
+WMKK,Kuala Lumpur International Airport,OMAA,Zayed International Airport,AE,true,7
+WMKK,Kuala Lumpur International Airport,EHAM,Amsterdam Airport Schiphol,NL,true,7
+WMKK,Kuala Lumpur International Airport,RCKH,Kaohsiung International Airport,TW,true,7
+WMKK,Kuala Lumpur International Airport,VOYK,Yelahanka Air Force Station,IN,true,7
+WBKK,Kota Kinabalu International Airport,RCTP,Taiwan Taoyuan International Airport,TW,true,6
+WMKK,Kuala Lumpur International Airport,LFPG,Charles de Gaulle International Airport,FR,true,6
+WMKJ,Senai International Airport,WMKP,Penang International Airport,MY,false,6
+WMKK,Kuala Lumpur International Airport,YPAD,Adelaide International Airport,AU,true,6
+WMKK,Kuala Lumpur International Airport,WBKL,Labuan Airport,MY,false,6
+WBKK,Kota Kinabalu International Airport,WMSA,Sultan Abdul Aziz Shah International Airport,MY,false,6
+WBKK,Kota Kinabalu International Airport,WSSS,Singapore Changi Airport,SG,true,6
+WMKK,Kuala Lumpur International Airport,WMKB,RMAF Butterworth Air Base,MY,false,6
+WMKP,Penang International Airport,WBKK,Kota Kinabalu International Airport,MY,false,5
+WMKK,Kuala Lumpur International Airport,ZGGG,Guangzhou Baiyun International Airport,CN,true,5
+WMKP,Penang International Airport,WMKJ,Senai International Airport,MY,false,5
+WMKK,Kuala Lumpur International Airport,OMSJ,Sharjah International Airport,AE,true,5
+WBKK,Kota Kinabalu International Airport,ZGSZ,Shenzhen Bao'an International Airport,CN,true,5
+WMKK,Kuala Lumpur International Airport,OPLA,Allama Iqbal International Airport,PK,true,5
+WBKK,Kota Kinabalu International Airport,RPLL,Ninoy Aquino International Airport,PH,true,4
+WMKP,Penang International Airport,ZGSZ,Shenzhen Bao'an International Airport,CN,true,4
+WMKP,Penang International Airport,VTBD,Don Mueang International Airport,TH,true,3
+WMKP,Penang International Airport,RCTP,Taiwan Taoyuan International Airport,TW,true,3
+WBKK,Kota Kinabalu International Airport,WMKP,Penang International Airport,MY,false,3
+WMKK,Kuala Lumpur International Airport,WIDD,Hang Nadim International Airport,ID,true,3
+WMKK,Kuala Lumpur International Airport,LTFJ,Istanbul Sabiha Gökçen International Airport,TR,true,3
+WBKK,Kota Kinabalu International Airport,WBKB,Kota Belud Airport,MY,false,3
+WBKK,Kota Kinabalu International Airport,WIII,Soekarno-Hatta International Airport,ID,true,3
+WMKK,Kuala Lumpur International Airport,LHBP,Budapest Liszt Ferenc International Airport,HU,true,2
+WMKK,Kuala Lumpur International Airport,LIMC,Milan Malpensa International Airport,IT,true,2
+WBKK,Kota Kinabalu International Airport,WSAC,Changi Air Base (East),SG,true,2
+WBKK,Kota Kinabalu International Airport,RKPK,Gimhae International Airport,KR,true,2
+WMKJ,Senai International Airport,ZGGG,Guangzhou Baiyun International Airport,CN,true,2
+WBKK,Kota Kinabalu International Airport,ZGGG,Guangzhou Baiyun International Airport,CN,true,2
+WMKK,Kuala Lumpur International Airport,ELLX,Luxembourg-Findel International Airport,LU,true,2
+WMKP,Penang International Airport,WSSL,Seletar Airport,SG,true,2
+WMKP,Penang International Airport,WMKP,Penang International Airport,MY,false,1
+WMKK,Kuala Lumpur International Airport,EDDM,Munich Airport,DE,true,1
+WMKK,Kuala Lumpur International Airport,WMSA,Sultan Abdul Aziz Shah International Airport,MY,false,1
+WMKJ,Senai International Airport,WMKM,Malacca International Airport,MY,false,1
+WBKK,Kota Kinabalu International Airport,YAMB,RAAF Base Amberley,AU,true,1
+WMKK,Kuala Lumpur International Airport,KIAD,Washington Dulles International Airport,US,true,1
+WMKK,Kuala Lumpur International Airport,KJFK,John F. Kennedy International Airport,US,true,1
+WMKP,Penang International Airport,ZGGG,Guangzhou Baiyun International Airport,CN,true,1
+WMKK,Kuala Lumpur International Airport,EGKK,London Gatwick Airport,GB,true,1
+WMKK,Kuala Lumpur International Airport,ZSFZ,Fuzhou Changle International Airport,CN,true,1
+WMKK,Kuala Lumpur International Airport,VVGL,Gia Lam Air Base,VN,true,1
+WMKP,Penang International Airport,RKSI,Incheon International Airport,KR,true,1
+WMKK,Kuala Lumpur International Airport,RJFF,Fukuoka Airport,JP,true,1
+WMKJ,Senai International Airport,VABB,Chhatrapati Shivaji Maharaj International Airport,IN,true,1
+WMKK,Kuala Lumpur International Airport,LEMD,Adolfo Suárez Madrid–Barajas Airport,ES,true,1
+WMKJ,Senai International Airport,WSSL,Seletar Airport,SG,true,1
+WMKP,Penang International Airport,RPLC,Clark International Airport / Clark Air Base,PH,true,1
+WMKJ,Senai International Airport,WMKB,RMAF Butterworth Air Base,MY,false,1

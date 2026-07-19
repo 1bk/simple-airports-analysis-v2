@@ -42,6 +42,25 @@ DASHBOARD_EXPORTS = {
     "congestion_history": "select * from marts.fct_congestion_history",
     "arrivals": "select * from marts.fct_arrivals",
     "arrivals_daily": "select * from marts.fct_arrivals_daily",
+    "arrival_origins": """
+        select
+            arrival_airport_icao,
+            arrival_airport_name,
+            origin_ident,
+            origin_name,
+            origin_country,
+            is_international,
+            sum(flights) as flights
+        from marts.fct_arrival_origins
+        group by
+            arrival_airport_icao,
+            arrival_airport_name,
+            origin_ident,
+            origin_name,
+            origin_country,
+            is_international
+        order by flights desc
+    """,
 }
 
 

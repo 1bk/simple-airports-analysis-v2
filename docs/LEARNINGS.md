@@ -74,6 +74,13 @@ is a thing that cost real debugging time — recorded so it only costs it once.
   are hard *errors* in Fusion — and while `compile --write-index` still exits
   "successfully", semantic models and metrics are dropped from the docs index.
   Migrate to the nested `arguments:` form (dbt-core 1.12 accepts it too).
+- **MetricFlow measure names are global across the whole project** (legacy
+  spec) — reusing a measure name in two semantic models, or referencing the
+  same filtered measure from both a simple metric and a ratio metric's
+  numerator, fails validation with an alias conflict. Keep measure names
+  unique project-wide; for international/domestic-style splits, a plain
+  conditional-sum measure (`case when flag then x else 0 end`) sidesteps the
+  filtered-alias machinery entirely.
 - **The classic dbt docs DAG already renders the semantic layer** — semantic
   models and metrics appear as pink nodes in the static `dbt docs generate`
   lineage graph. No Docs v2 required to *see* the semantic layer.

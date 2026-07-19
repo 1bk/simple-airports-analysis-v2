@@ -9,7 +9,26 @@ new models, sources, or dashboard features, PATCH for fixes.
 
 ## [Unreleased]
 
+### Added
+
+- **Arrival-origins analysis** (question 5): new `fct_arrival_origins` mart
+  joining arrivals to the worldwide OurAirports catalogue — where flights into
+  Malaysia come from, split domestic vs international. Both dashboards gained
+  a "Where flights come from" section (top origins, by country, live
+  domestic/international stats), and the semantic layer grew to four semantic
+  models and eleven metrics (including an `international_share` ratio).
+- **Multi-provider data chat**: the `/chat/` page now supports Anthropic,
+  OpenAI, Gemini, and GLM. Model lists are discovered live from each
+  provider's models endpoint with the user's own key (static fallback lists
+  otherwise), so new models appear without a redeploy. All four providers
+  support direct browser CORS calls — keys still never leave the browser
+  except to the provider.
+
 ### Changed
+
+- The dbt MCP demo is now an animated terminal recording (gif) of a real
+  headless `claude -p` session querying the warehouse — it answers the new
+  question 5 using the MCP tools. Prefect UI screenshots refreshed.
 
 - **Snapshot history is now partitioned monthly**: snapshots merge into
   append-only `history/{dataset}/{YYYY-MM}.parquet` files instead of rewriting

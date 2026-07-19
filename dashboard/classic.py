@@ -33,8 +33,18 @@ def _(mo, pl):
     congestion_history = pl.read_csv(str(_base / "congestion_history.csv"))
     arrivals = pl.read_csv(str(_base / "arrivals.csv"))
     arrivals_daily = pl.read_csv(str(_base / "arrivals_daily.csv"))
+    arrival_origins = pl.read_csv(str(_base / "arrival_origins.csv"))
     meta = pl.read_csv(str(_base / "meta.csv")).row(0, named=True)
-    return airports, arrivals, arrivals_daily, congestion, congestion_history, distances, meta
+    return (
+        airports,
+        arrival_origins,
+        arrivals,
+        arrivals_daily,
+        congestion,
+        congestion_history,
+        distances,
+        meta,
+    )
 
 
 @app.cell
@@ -305,6 +315,98 @@ def _(WIDTH, alt, arrivals, arrivals_daily, meta, mo, pl):
             kind="info",
         )
     _out
+    return
+
+
+@app.cell
+def _(mo):
+    mo.md("### Where flights come from")
+    return
+
+
+@app.cell
+def _(WIDTH, alt, arrival_origins, mo, pl):
+    _known = arrival_origins["flights"].sum()
+    _intl = arrival_origins.filter(pl.col("is_international"))["flights"].sum()
+    _intl_pct = round(100 * _intl / _known)
+    _dom_pct = 100 - _intl_pct
+
+    _by_origin = (
+        arrival_origins.group_by(
+            "origin_ident", "origin_name", "origin_country", "is_international"
+        )
+        .agg(pl.col("flights").sum())
+        .with_columns(
+            (pl.col("origin_name") + " (" + pl.col("origin_country") + ")").alias("label"),
+            pl.when(pl.col("is_international"))
+            .then(pl.lit("International"))
+            .otherwise(pl.lit("Domestic"))
+            .alias("flight_type"),
+        )
+        .sort("flights", descending=True)
+        .head(15)
+    )
+    _color_scale = alt.Scale(domain=["Domestic", "International"], range=["#4C78A8", "#F58518"])
+    _top_bars = (
+        alt.Chart(_by_origin)
+        .mark_bar()
+        .encode(
+            x=alt.X("flights:Q", title="Flights", axis=alt.Axis(format="d", tickMinStep=1)),
+            y=alt.Y("label:N", sort="-x", title=None),
+            color=alt.Color("flight_type:N", title="Origin", scale=_color_scale),
+            tooltip=["origin_name:N", "origin_country:N", "flight_type:N", "flights:Q"],
+        )
+        .properties(
+            width=WIDTH, height=26 * _by_origin.height, title="Top 15 origin airports by flights"
+        )
+    )
+
+    _by_country = (
+        arrival_origins.group_by("origin_country")
+        .agg(pl.col("flights").sum())
+        .with_columns(
+            pl.when(pl.col("origin_country") == "MY")
+            .then(pl.lit("MY (Domestic)"))
+            .otherwise(pl.col("origin_country"))
+            .alias("label")
+        )
+        .sort("flights", descending=True)
+        .head(12)
+    )
+    _country_bars = (
+        alt.Chart(_by_country)
+        .mark_bar(cornerRadiusEnd=3)
+        .encode(
+            x=alt.X("flights:Q", title="Flights", axis=alt.Axis(format="d", tickMinStep=1)),
+            y=alt.Y("label:N", sort="-x", title=None),
+            color=alt.Color("flights:Q", scale=alt.Scale(scheme="blues"), legend=None),
+            tooltip=["label:N", "flights:Q"],
+        )
+        .properties(width=WIDTH, height=26 * _by_country.height, title="Flights by origin country")
+    )
+
+    _table = mo.ui.table(arrival_origins, selection=None, page_size=10, show_column_summaries=False)
+    _stats = mo.hstack(
+        [
+            mo.stat(value=f"{_dom_pct}%", label="Domestic (of known origins)", bordered=True),
+            mo.stat(value=f"{_intl_pct}%", label="International (of known origins)", bordered=True),
+        ],
+        widths="equal",
+        gap=1,
+    )
+    _out = mo.ui.tabs(
+        {
+            "Top origins": mo.ui.altair_chart(_top_bars),
+            "By country": mo.ui.altair_chart(_country_bars),
+            "Table": _table,
+        }
+    )
+    _caption = mo.md(
+        "*OpenSky can't always pin down where an arriving flight departed from — a "
+        "departure airport is known for roughly 44% of arrival flights in this window. "
+        f"Of those known origins, **{_intl_pct}%** are international.*"
+    )
+    mo.vstack([_stats, _out, _caption])
     return
 
 
