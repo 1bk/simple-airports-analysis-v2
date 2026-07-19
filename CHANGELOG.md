@@ -9,6 +9,17 @@ new models, sources, or dashboard features, PATCH for fixes.
 
 ## [Unreleased]
 
+### Changed
+
+- README: "Who consumes what" section explaining how each surface gets its
+  data (baked mart extracts for the static site vs. on-demand semantic-layer /
+  MCP queries against the warehouse); lineage screenshot now shows the
+  semantic-layer nodes; chat screenshot shows a real conversation.
+- Generic test arguments migrated to the nested `arguments:` YAML form
+  (the top-level form is deprecated in dbt-core and errors in Fusion,
+  silently dropping semantic nodes from the Docs v2 index).
+- `docs/LEARNINGS.md` records the non-obvious gotchas hit while building.
+
 ## [2.6.0] - 2026-07-19
 
 ### Added

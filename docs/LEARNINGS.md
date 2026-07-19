@@ -63,6 +63,14 @@ is a thing that cost real debugging time — recorded so it only costs it once.
 - **dbt Docs v2 (Fusion) is not static-hostable** — it needs a running server
   over parquet artifacts, so the hosted site keeps classic static docs and
   `make docs-v2` demos v2 locally.
+- **Deprecated test-argument YAML silently degrades Fusion's index.** Test
+  args at the top level (`values:`, `min_value:` directly under the test name)
+  are hard *errors* in Fusion — and while `compile --write-index` still exits
+  "successfully", semantic models and metrics are dropped from the docs index.
+  Migrate to the nested `arguments:` form (dbt-core 1.12 accepts it too).
+- **The classic dbt docs DAG already renders the semantic layer** — semantic
+  models and metrics appear as pink nodes in the static `dbt docs generate`
+  lineage graph. No Docs v2 required to *see* the semantic layer.
 
 ## APIs & data sources
 

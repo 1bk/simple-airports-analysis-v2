@@ -14,7 +14,8 @@ models:
         description: Size classification.
         data_tests:
           - accepted_values:
-              values: [large_airport, medium_airport, small_airport]
+              arguments:
+                values: [large_airport, medium_airport, small_airport]
       - name: latitude
         data_tests: [not_null]
       - name: longitude
@@ -32,7 +33,8 @@ models:
         description: Which source produced the snapshot (opensky, adsb.lol, or sample).
         data_tests:
           - accepted_values:
-              values: [opensky, adsb.lol, sample]
+              arguments:
+                values: [opensky, adsb.lol, sample]
 
   - name: stg_arrivals
     description: >
@@ -53,4 +55,5 @@ models:
         description: Which live source produced the snapshot (never the sample seed).
         data_tests:
           - accepted_values:
-              values: [opensky, adsb.lol]
+              arguments:
+                values: [opensky, adsb.lol]
