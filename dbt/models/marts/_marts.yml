@@ -3,21 +3,86 @@ version: 2
 models:
   - name: dim_airports_my
     description: All Malaysian airports (question 1 of the analysis).
+    config:
+      contract:
+        enforced: true
     columns:
-      - name: ident
+      - name: airport_id
+        data_type: integer
+        description: OurAirports numeric identifier.
+        constraints:
+          - type: not_null
         data_tests: [unique, not_null]
+      - name: ident
+        data_type: varchar
+        description: Airport identifier (usually ICAO code, else local/GPS code).
+        constraints:
+          - type: not_null
+        data_tests: [unique, not_null]
+      - name: airport_type
+        data_type: varchar
+        description: Size classification (large_airport, medium_airport, small_airport).
+        constraints:
+          - type: not_null
       - name: name
+        data_type: varchar
+        constraints:
+          - type: not_null
         data_tests: [not_null]
+      - name: latitude
+        data_type: double
+        constraints:
+          - type: not_null
+      - name: longitude
+        data_type: double
+        constraints:
+          - type: not_null
+      - name: elevation_ft
+        data_type: integer
+        description: Field elevation in feet. Null for a small number of airports missing the source value.
       - name: iso_region
+        data_type: varchar
         description: Malaysian state/region code (e.g. MY-10).
+      - name: municipality
+        data_type: varchar
+      - name: has_scheduled_service
+        data_type: boolean
+      - name: icao_code
+        data_type: varchar
+        description: ICAO code, when distinct from ident. Null for airports without one.
+      - name: iata_code
+        data_type: varchar
+        description: IATA code. Null for airports without one.
 
   - name: fct_airport_distances
     description: >
       Pairwise great-circle (haversine) distances between Malaysian airports with
       scheduled service (question 2). One row per unordered airport pair.
+    config:
+      contract:
+        enforced: true
     columns:
+      - name: airport_a
+        data_type: varchar
+        constraints:
+          - type: not_null
+      - name: airport_a_name
+        data_type: varchar
+        constraints:
+          - type: not_null
+      - name: airport_b
+        data_type: varchar
+        constraints:
+          - type: not_null
+      - name: airport_b_name
+        data_type: varchar
+        constraints:
+          - type: not_null
       - name: distance_km
+        data_type: double
         description: Great-circle distance in kilometres.
+        constraints:
+          - type: not_null
         data_tests:
           - not_null
           - dbt_utils.accepted_range:
@@ -30,44 +95,132 @@ models:
       Congestion proxy (question 4): count of live aircraft within 50 km of each
       scheduled-service Malaysian airport at snapshot time. Keyless alternative to
       arrivals history.
+    config:
+      contract:
+        enforced: true
     columns:
       - name: ident
+        data_type: varchar
+        constraints:
+          - type: not_null
         data_tests: [unique, not_null]
+      - name: name
+        data_type: varchar
+        constraints:
+          - type: not_null
+      - name: iata_code
+        data_type: varchar
       - name: aircraft_within_50km
+        data_type: bigint
+        constraints:
+          - type: not_null
         data_tests: [not_null]
+      - name: aircraft_on_ground
+        data_type: bigint
+        constraints:
+          - type: not_null
+      - name: aircraft_airborne
+        data_type: bigint
+        constraints:
+          - type: not_null
+      - name: snapshot_at
+        data_type: timestamp with time zone
+      - name: data_source
+        data_type: varchar
+        description: Which source produced the snapshot (opensky, adsb.lol, or sample).
 
   - name: fct_congestion_history
     description: >
       Question 4 over time: aircraft within 50 km of each scheduled-service airport
       per committed history snapshot, collected by the scheduled snapshot workflow.
+    config:
+      contract:
+        enforced: true
     columns:
       - name: ident
+        data_type: varchar
+        constraints:
+          - type: not_null
         data_tests: [not_null]
+      - name: name
+        data_type: varchar
+        constraints:
+          - type: not_null
+      - name: iata_code
+        data_type: varchar
       - name: snapshot_at
+        data_type: timestamp with time zone
+        constraints:
+          - type: not_null
         data_tests: [not_null]
       - name: aircraft_within_50km
+        data_type: bigint
+        constraints:
+          - type: not_null
         data_tests: [not_null]
+      - name: aircraft_airborne
+        data_type: bigint
+        constraints:
+          - type: not_null
 
   - name: fct_arrivals
     description: >
       Arrivals per Malaysian airport over the past 7 days (question 3), from the live
       fetch and/or committed snapshot history; empty but well-formed without either.
+    config:
+      contract:
+        enforced: true
     columns:
       - name: arrival_airport_icao
-        data_tests: [unique]
+        data_type: varchar
+        constraints:
+          - type: not_null
+        data_tests: [unique, is_icao_code]
+      - name: airport_name
+        data_type: varchar
+      - name: iata_code
+        data_type: varchar
       - name: arrivals_7d
+        data_type: bigint
         description: Total arrivals in the fetched 7-day window.
+        constraints:
+          - type: not_null
       - name: arrivals_per_day
+        data_type: double
         description: Average arrivals per day over the window.
+        constraints:
+          - type: not_null
+      - name: earliest_arrival
+        data_type: timestamp with time zone
+      - name: latest_arrival
+        data_type: timestamp with time zone
 
   - name: fct_arrivals_daily
     description: >
       Daily arrivals per Malaysian airport over all collected history — congestion by
       period of interest, growing as the snapshot workflow accumulates data.
+    config:
+      contract:
+        enforced: true
     columns:
+      - name: arrival_airport_icao
+        data_type: varchar
+        constraints:
+          - type: not_null
+        data_tests: [is_icao_code]
+      - name: airport_name
+        data_type: varchar
+      - name: iata_code
+        data_type: varchar
       - name: arrival_date
+        data_type: date
         description: Local calendar date of arrival.
+        constraints:
+          - type: not_null
       - name: arrivals
+        data_type: bigint
+        constraints:
+          - type: not_null
         data_tests: [not_null]
 
   - name: fct_arrival_origins
@@ -78,17 +231,47 @@ models:
       unknown origin and are excluded, not zero-origin. Origin metadata is
       worldwide (from stg_airports), so covers both international and
       domestic origins.
+    config:
+      contract:
+        enforced: true
     columns:
       - name: arrival_airport_icao
-        data_tests: [not_null]
+        data_type: varchar
+        constraints:
+          - type: not_null
+        data_tests: [not_null, is_icao_code]
+      - name: arrival_airport_name
+        data_type: varchar
+      - name: arrival_date
+        data_type: date
+        constraints:
+          - type: not_null
       - name: origin_ident
+        data_type: varchar
         description: OurAirports ident (usually ICAO) of the estimated departure airport.
-        data_tests: [not_null]
+        constraints:
+          - type: not_null
+        data_tests:
+          - not_null
+          - is_icao_code
+      - name: origin_name
+        data_type: varchar
       - name: origin_country
+        data_type: varchar
         description: ISO country code of the origin airport (247 distinct values worldwide).
+        constraints:
+          - type: not_null
         data_tests: [not_null]
+      - name: origin_municipality
+        data_type: varchar
       - name: is_international
+        data_type: boolean
         description: True when the origin airport is outside Malaysia.
+        constraints:
+          - type: not_null
         data_tests: [not_null]
       - name: flights
+        data_type: bigint
+        constraints:
+          - type: not_null
         data_tests: [not_null]

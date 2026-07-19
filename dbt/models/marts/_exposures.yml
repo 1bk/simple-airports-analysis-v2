@@ -1,0 +1,97 @@
+version: 2
+
+# The four public-facing surfaces this project ships, so they show up in dbt
+# docs' lineage graph next to the marts that feed them (see README's live-site
+# links). depends_on lists mirror pipelines/flow.py's DASHBOARD_EXPORTS (the
+# marts baked to CSV for the static WASM apps) and, for the MCP server, every
+# model in the project (it can inspect/run any of them via the dbt CLI).
+
+exposures:
+  - name: qa_dashboard
+    label: Q&A dashboard
+    description: >
+      Question-driven marimo WASM dashboard (dashboard/dashboard.py) answering the
+      project's four guiding questions from static CSV extracts of the marts below.
+    type: dashboard
+    maturity: medium
+    url: https://1bk.dev/simple-airports-analysis-v2/dashboard/
+    owner:
+      name: 1bk
+      url: https://github.com/1bk/simple-airports-analysis-v2
+    depends_on:
+      - ref('dim_airports_my')
+      - ref('fct_airport_distances')
+      - ref('fct_congestion')
+      - ref('fct_congestion_history')
+      - ref('fct_arrivals')
+      - ref('fct_arrivals_daily')
+      - ref('fct_arrival_origins')
+
+  - name: classic_dashboard
+    label: Classic dashboard
+    description: >
+      Grid-style marimo WASM dashboard (dashboard/classic.py) mirroring the Q&A
+      dashboard's charts in a conventional multi-panel layout, from the same
+      static CSV extracts.
+    type: dashboard
+    maturity: medium
+    url: https://1bk.dev/simple-airports-analysis-v2/classic/
+    owner:
+      name: 1bk
+      url: https://github.com/1bk/simple-airports-analysis-v2
+    depends_on:
+      - ref('dim_airports_my')
+      - ref('fct_airport_distances')
+      - ref('fct_congestion')
+      - ref('fct_congestion_history')
+      - ref('fct_arrivals')
+      - ref('fct_arrivals_daily')
+      - ref('fct_arrival_origins')
+
+  - name: data_chat
+    label: Data chat
+    description: >
+      BYO-key, multi-provider chat app (dashboard/chat.py) that embeds the same
+      mart CSV extracts as the dashboards directly in the model's prompt, so
+      questions can be asked in natural language instead of by clicking charts.
+    type: application
+    maturity: medium
+    url: https://1bk.dev/simple-airports-analysis-v2/chat/
+    owner:
+      name: 1bk
+      url: https://github.com/1bk/simple-airports-analysis-v2
+    depends_on:
+      - ref('dim_airports_my')
+      - ref('fct_airport_distances')
+      - ref('fct_congestion')
+      - ref('fct_congestion_history')
+      - ref('fct_arrivals')
+      - ref('fct_arrivals_daily')
+      - ref('fct_arrival_origins')
+
+  - name: dbt_mcp_server
+    label: dbt MCP server
+    description: >
+      dbt-labs/dbt-mcp wired into this repo's .mcp.json (scripts/dbt_mcp.sh), giving
+      any MCP-aware AI assistant tool access to run/inspect the whole dbt project
+      (dbt-core tool group only; semantic layer, discovery, and admin API are
+      disabled — see scripts/dbt_mcp.sh).
+    type: application
+    maturity: low
+    url: https://github.com/dbt-labs/dbt-mcp
+    owner:
+      name: 1bk
+      url: https://github.com/1bk/simple-airports-analysis-v2
+    depends_on:
+      - ref('stg_airports')
+      - ref('stg_aircraft_states')
+      - ref('stg_aircraft_states_history')
+      - ref('stg_arrivals')
+      - ref('dim_airports_my')
+      - ref('fct_airport_distances')
+      - ref('fct_congestion')
+      - ref('fct_congestion_history')
+      - ref('fct_arrivals')
+      - ref('fct_arrivals_daily')
+      - ref('fct_arrival_origins')
+      - ref('time_spine_daily')

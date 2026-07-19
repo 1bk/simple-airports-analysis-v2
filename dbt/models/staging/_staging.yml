@@ -29,6 +29,9 @@ models:
       - name: icao24
         description: Aircraft ICAO 24-bit transponder address.
         data_tests: [not_null]
+      - name: snapshot_ts
+        description: Snapshot time as unix epoch seconds.
+        data_tests: [is_recent_epoch]
       - name: data_source
         description: Which source produced the snapshot (opensky, adsb.lol, or sample).
         data_tests:
@@ -51,6 +54,9 @@ models:
     columns:
       - name: icao24
         data_tests: [not_null]
+      - name: snapshot_ts
+        description: Snapshot time as unix epoch seconds.
+        data_tests: [is_recent_epoch]
       - name: data_source
         description: Which live source produced the snapshot (never the sample seed).
         data_tests:

@@ -1,0 +1,41 @@
+version: 2
+
+macros:
+  - name: haversine_km
+    description: >
+      Great-circle distance in kilometres between two points, via the haversine
+      formula (Earth radius 6371.0 km). Used by fct_airport_distances (Malaysian
+      airport pairs) and fct_congestion / fct_congestion_history (airport-to-aircraft
+      distance for the 50 km congestion radius). Renders a plain SQL expression, not
+      a subquery, so it's cheap to inline into a select list or a join predicate.
+    arguments:
+      - name: lat1
+        type: string
+        description: SQL expression (column ref or literal) for the latitude of the first point, in decimal degrees.
+      - name: lon1
+        type: string
+        description: SQL expression (column ref or literal) for the longitude of the first point, in decimal degrees.
+      - name: lat2
+        type: string
+        description: SQL expression (column ref or literal) for the latitude of the second point, in decimal degrees.
+      - name: lon2
+        type: string
+        description: SQL expression (column ref or literal) for the longitude of the second point, in decimal degrees.
+
+  - name: generate_schema_name
+    description: >
+      Overrides dbt's built-in generate_schema_name. The default macro prefixes a
+      model's custom `+schema` config (here: `staging` / `marts`, set in
+      dbt_project.yml) with the target's schema, e.g. `dev_marts`. This project
+      wants the same fixed schema names — `staging` and `marts` — no matter which
+      target/profile runs the build (dev, CI, a teammate's local DUCKDB_PATH),
+      because the pipeline, dashboard exports, and MCP server all query
+      `marts.<model>` by exact schema name. Falls back to `target.schema` only for
+      the rare model with no custom schema config at all.
+    arguments:
+      - name: custom_schema_name
+        type: string
+        description: The model's `schema` config value (from +schema in dbt_project.yml or model config), or none if unset.
+      - name: node
+        type: any
+        description: The model/node being compiled. Unused here, but part of dbt's required macro signature.

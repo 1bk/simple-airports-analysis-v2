@@ -1,5 +1,5 @@
 arrival_airport_icao,airport_name,iata_code,arrivals_7d,arrivals_per_day,earliest_arrival,latest_arrival
-WMKK,Kuala Lumpur International Airport,KUL,2911,415.9,2026-07-12 15:50:13+08,2026-07-18 19:43:05+08
-WBKK,Kota Kinabalu International Airport,BKI,486,69.4,2026-07-12 15:59:52+08,2026-07-18 07:33:38+08
-WMKJ,Senai International Airport,JHB,244,34.9,2026-07-12 16:30:29+08,2026-07-18 07:15:59+08
+WMKK,Kuala Lumpur International Airport,KUL,2845,406.4,2026-07-12 17:45:17+08,2026-07-18 19:43:05+08
+WBKK,Kota Kinabalu International Airport,BKI,474,67.7,2026-07-12 17:44:57+08,2026-07-18 07:33:38+08
+WMKJ,Senai International Airport,JHB,240,34.3,2026-07-12 17:51:22+08,2026-07-18 07:15:59+08
 WMKP,Penang International Airport,PEN,172,24.6,2026-07-13 10:11:19+08,2026-07-18 16:33:25+08

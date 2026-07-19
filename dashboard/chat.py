@@ -2,6 +2,7 @@
 # requires-python = ">=3.12"
 # dependencies = [
 #     "marimo",
+#     "altair",
 #     "polars",
 # ]
 # ///
@@ -17,10 +18,11 @@ def _():
     import json
     import re
 
+    import altair as alt
     import marimo as mo
     import polars as pl
 
-    return json, mo, pl, re
+    return alt, json, mo, pl, re
 
 
 @app.cell
@@ -31,12 +33,21 @@ def _(mo, pl):
     congestion = pl.read_csv(str(_base / "congestion.csv"))
     arrivals = pl.read_csv(str(_base / "arrivals.csv"))
     arrivals_daily = pl.read_csv(str(_base / "arrivals_daily.csv"))
+    arrival_origins = pl.read_csv(str(_base / "arrival_origins.csv"))
     meta = pl.read_csv(str(_base / "meta.csv")).row(0, named=True)
-    return airports, arrivals, arrivals_daily, congestion, distances, meta
+    return (
+        airports,
+        arrival_origins,
+        arrivals,
+        arrivals_daily,
+        congestion,
+        distances,
+        meta,
+    )
 
 
 @app.cell
-def _(airports, arrivals, arrivals_daily, congestion, distances, meta):
+def _(airports, arrival_origins, arrivals, arrivals_daily, congestion, distances, meta, pl):
     # Bake the small marts into the system prompt so the model answers from
     # real data. The whole context is a few KB - well within any model's budget.
     _dist = distances["distance_km"]
@@ -45,6 +56,15 @@ def _(airports, arrivals, arrivals_daily, congestion, distances, meta):
     _pair_cols = ["airport_a_name", "airport_b_name", "distance_km"]
     _closest = distances.sort("distance_km").head(5).select(_pair_cols).rows()
     _farthest = distances.sort("distance_km", descending=True).head(5).select(_pair_cols).rows()
+    _by_country = (
+        arrival_origins.group_by("origin_country")
+        .agg(pl.col("flights").sum())
+        .sort("flights", descending=True)
+        .rows()
+    )
+    _by_intl = arrival_origins.group_by("is_international").agg(pl.col("flights").sum()).rows()
+    _domestic_flights = next((n for is_intl, n in _by_intl if not is_intl), 0)
+    _intl_flights = next((n for is_intl, n in _by_intl if is_intl), 0)
     DATA_CONTEXT = f"""
 You are the data assistant for the Malaysian Airports Analysis dashboard
 (https://github.com/1bk/simple-airports-analysis-v2). Answer questions using
@@ -71,6 +91,21 @@ Breakdown by type: {_by_type}
 {distances.height} pairs. Min {_dist.min()} km, max {_dist.max()} km, mean {round(_dist.mean(), 1)}.
 Closest pairs: {_closest}
 Farthest pairs: {_farthest}
+
+## Arrival origins, past 7 days (where inbound flights came from)
+Domestic arrivals (origin in Malaysia): {_domestic_flights}.
+International arrivals: {_intl_flights}.
+Flights by origin country (country code, total flights): {_by_country}
+
+## Charts
+If the user asks for a chart, graph, or plot, reply with ONLY a fenced json
+code block (no other text) matching this spec, computed from the data above:
+```json
+{{"chart": "bar" | "line" | "pie", "title": "...", "x_label": "...", "y_label": "...",
+  "data": [{{"label": "...", "value": 0}}, ...]}}
+```
+`x_label`/`y_label` are optional. Keep `data` to at most ~15 points. For
+anything else, answer normally in prose.
 """
     return (DATA_CONTEXT,)
 
@@ -252,7 +287,92 @@ def _(key_help, mo, model_source):
 
 
 @app.cell
-def _(DATA_CONTEXT, api_key_input, json, mo, model_picker, provider_picker):
+def _(alt, json, pl, re):
+    _ALLOWED_CHARTS = ("bar", "line", "pie")
+
+    def parse_chart_reply(reply_text: str):
+        """If reply_text is a valid chart spec (see DATA_CONTEXT's mini-spec),
+        return (title, altair_chart). Otherwise return None so the caller can
+        fall back to the raw text. Never raises - any malformed input just
+        yields None.
+        """
+        _fence = re.search(r"```json\s*(.*?)\s*```", reply_text, re.DOTALL)
+        _candidate = _fence.group(1) if _fence else reply_text.strip()
+        if not _candidate.startswith("{"):
+            return None
+        try:
+            _spec = json.loads(_candidate)
+        except (json.JSONDecodeError, TypeError):
+            return None
+        if not isinstance(_spec, dict):
+            return None
+        _chart_type = _spec.get("chart")
+        _data = _spec.get("data")
+        if _chart_type not in _ALLOWED_CHARTS or not isinstance(_data, list) or not _data:
+            return None
+        _valid_points = all(
+            isinstance(_d, dict)
+            and isinstance(_d.get("label"), str)
+            and isinstance(_d.get("value"), (int, float))
+            and not isinstance(_d.get("value"), bool)
+            for _d in _data
+        )
+        if not _valid_points:
+            return None
+        _title = str(_spec.get("title", ""))
+        _x_label = _spec.get("x_label")
+        _y_label = _spec.get("y_label")
+        _df = pl.DataFrame(_data[:15])
+        if _chart_type == "bar":
+            _chart = (
+                alt.Chart(_df)
+                .mark_bar()
+                .encode(
+                    x=alt.X(
+                        "value:Q",
+                        title=_x_label or "Value",
+                        axis=alt.Axis(format="d", tickMinStep=1),
+                    ),
+                    y=alt.Y("label:N", sort="-x", title=_y_label),
+                )
+            )
+        elif _chart_type == "line":
+            _chart = (
+                alt.Chart(_df)
+                .mark_line(point=True)
+                .encode(
+                    x=alt.X("label:N", title=_x_label, sort=None),
+                    y=alt.Y(
+                        "value:Q",
+                        title=_y_label or "Value",
+                        axis=alt.Axis(format="d", tickMinStep=1),
+                    ),
+                )
+            )
+        else:  # pie
+            _chart = (
+                alt.Chart(_df)
+                .mark_arc()
+                .encode(
+                    theta=alt.Theta("value:Q"),
+                    color=alt.Color("label:N", title=_y_label),
+                )
+            )
+        return _title, _chart.properties(title=_title)
+
+    return (parse_chart_reply,)
+
+
+@app.cell
+def _(
+    DATA_CONTEXT,
+    api_key_input,
+    json,
+    mo,
+    model_picker,
+    parse_chart_reply,
+    provider_picker,
+):
     async def _post_json(url: str, headers: dict, payload: dict) -> dict:
         headers = {**headers, "content-type": "application/json"}
         body = json.dumps(payload)
@@ -337,12 +457,7 @@ def _(DATA_CONTEXT, api_key_input, json, mo, model_picker, provider_picker):
         _texts = [p["text"] for p in _parts if "text" in p]
         return "".join(_texts) or "*(empty response)*"
 
-    async def chat_model(messages, config):
-        key = api_key_input.value.strip()
-        provider = provider_picker.value
-        if not key:
-            return "Please paste your API key above first."
-        model = model_picker.value
+    async def _dispatch(messages, provider, key, model) -> str:
         if provider == "anthropic":
             return await _call_anthropic(key, model, messages)
         if provider == "openai":
@@ -357,13 +472,30 @@ def _(DATA_CONTEXT, api_key_input, json, mo, model_picker, provider_picker):
             )
         return f"Unknown provider: {provider}"
 
+    async def chat_model(messages, config):
+        key = api_key_input.value.strip()
+        provider = provider_picker.value
+        if not key:
+            return "Please paste your API key above first."
+        model = model_picker.value
+        reply_text = await _dispatch(messages, provider, key, model)
+        # If the model answered with a chart spec, render it; otherwise (most
+        # replies, and any malformed spec) fall through to the raw text - the
+        # chat model function must never crash on a bad/unexpected reply.
+        parsed = parse_chart_reply(reply_text)
+        if parsed is None:
+            return reply_text
+        title, chart = parsed
+        return mo.vstack([mo.md(f"**{title}**"), chart])
+
     chat = mo.ui.chat(
         chat_model,
         prompts=[
             "Which airport is the most congested right now?",
             "How many arrivals did KUL get in the last 7 days, per day on average?",
             "What are the two closest airports, and the two farthest apart?",
-            "Summarise this dashboard's data in three bullet points.",
+            "Draw a bar chart of 7-day arrivals by airport.",
+            "Pie chart: domestic vs international arrival origins.",
         ],
         show_configuration_controls=False,
     )

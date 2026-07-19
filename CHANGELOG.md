@@ -17,6 +17,14 @@ new models, sources, or dashboard features, PATCH for fixes.
   a "Where flights come from" section (top origins, by country, live
   domestic/international stats), and the semantic layer grew to four semantic
   models and eleven metrics (including an `international_share` ratio).
+- **Chart replies in the data chat**: asking for a chart makes the model answer
+  with a small validated JSON spec, rendered natively as a bar, line, or pie
+  chart (with new suggested prompts to try it); invalid specs fall back to
+  prose. A full generative-UI answers page stays on the roadmap as exploratory.
+- **dbt governance showcase**: enforced contracts (typed columns + not_null
+  constraints in the DDL) on every mart, exposures for the four site surfaces,
+  two unit tests with mocked inputs, two custom generic tests (`is_icao_code`,
+  `is_recent_epoch`), and documented macros.
 - **Multi-provider data chat**: the `/chat/` page now supports Anthropic,
   OpenAI, Gemini, and GLM. Model lists are discovered live from each
   provider's models endpoint with the user's own key (static fallback lists
@@ -26,9 +34,10 @@ new models, sources, or dashboard features, PATCH for fixes.
 
 ### Changed
 
-- The dbt MCP demo is now an animated terminal recording (gif) of a real
-  headless `claude -p` session querying the warehouse — it answers the new
-  question 5 using the MCP tools. Prefect UI screenshots refreshed.
+- The dbt MCP demo screenshot now shows a headless `claude -p` session
+  answering the new question 5 via the MCP tools (an animated-gif version was
+  tried and reverted — the run is minutes of silent waiting, which a static
+  shot of the finished answer shows better). Prefect UI screenshots refreshed.
 
 - **Snapshot history is now partitioned monthly**: snapshots merge into
   append-only `history/{dataset}/{YYYY-MM}.parquet` files instead of rewriting

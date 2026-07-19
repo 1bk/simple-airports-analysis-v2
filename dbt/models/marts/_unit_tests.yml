@@ -1,0 +1,82 @@
+version: 2
+
+# dbt unit tests (1.8+): mock upstream rows, assert exact output rows, no
+# warehouse round-trip. Picked two models whose logic is a plain deterministic
+# transform of its refs -- not stg_arrivals/stg_aircraft_states_history
+# themselves, which decide *which* source() branch even compiles via
+# adapter.get_relation at parse time (see their .sql), so mocking their own
+# inputs wouldn't reliably exercise the branch dbt actually built. Both tests
+# below ref('stg_arrivals') as an upstream input instead: a unit test replaces
+# a ref() wholesale with the given rows, so stg_arrivals' internal branching
+# never runs and never gets in the way.
+
+unit_tests:
+  - name: unit_test_fct_arrival_origins_is_international
+    description: >
+      is_international must be false for a Malaysian origin, true for a foreign
+      origin, and the row must be dropped entirely (not emitted as false/null)
+      when the origin airport is unknown -- a NULL est_departure_airport means
+      "OpenSky couldn't tell", not "domestic".
+    model: fct_arrival_origins
+    given:
+      - input: ref('stg_arrivals')
+        rows:
+          - {arrival_airport_icao: WMKK, departure_airport_icao: WMKP, arrived_at: "2026-01-01 10:00:00"}
+          - {arrival_airport_icao: WMKK, departure_airport_icao: RJTT, arrived_at: "2026-01-01 11:00:00"}
+          - {arrival_airport_icao: WMKK, departure_airport_icao: null, arrived_at: "2026-01-01 12:00:00"}
+      - input: ref('stg_airports')
+        rows:
+          - {ident: WMKP, name: Penang International Airport, iso_country: MY, municipality: George Town}
+          - {ident: RJTT, name: Tokyo Haneda Airport, iso_country: JP, municipality: Tokyo}
+      - input: ref('dim_airports_my')
+        rows:
+          - {icao_code: WMKK, name: Kuala Lumpur International Airport}
+    expect:
+      rows:
+        - arrival_airport_icao: WMKK
+          arrival_airport_name: Kuala Lumpur International Airport
+          arrival_date: "2026-01-01"
+          origin_ident: WMKP
+          origin_name: Penang International Airport
+          origin_country: MY
+          origin_municipality: George Town
+          is_international: false
+          flights: 1
+        - arrival_airport_icao: WMKK
+          arrival_airport_name: Kuala Lumpur International Airport
+          arrival_date: "2026-01-01"
+          origin_ident: RJTT
+          origin_name: Tokyo Haneda Airport
+          origin_country: JP
+          origin_municipality: Tokyo
+          is_international: true
+          flights: 1
+
+  - name: unit_test_fct_arrivals_daily_date_bucketing
+    description: >
+      Arrivals bucket by local calendar date regardless of time-of-day: two
+      arrivals on the same date (one just after midnight, one just before)
+      collapse into a single row with arrivals=2, while an arrival that
+      crosses into the next date gets its own row.
+    model: fct_arrivals_daily
+    given:
+      - input: ref('stg_arrivals')
+        rows:
+          - {arrival_airport_icao: WMKK, arrived_at: "2026-01-01 08:00:00"}
+          - {arrival_airport_icao: WMKK, arrived_at: "2026-01-01 23:59:00"}
+          - {arrival_airport_icao: WMKK, arrived_at: "2026-01-02 00:00:01"}
+      - input: ref('dim_airports_my')
+        rows:
+          - {icao_code: WMKK, name: Kuala Lumpur International Airport, iata_code: KUL}
+    expect:
+      rows:
+        - arrival_airport_icao: WMKK
+          airport_name: Kuala Lumpur International Airport
+          iata_code: KUL
+          arrival_date: "2026-01-01"
+          arrivals: 2
+        - arrival_airport_icao: WMKK
+          airport_name: Kuala Lumpur International Airport
+          iata_code: KUL
+          arrival_date: "2026-01-02"
+          arrivals: 1
