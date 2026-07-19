@@ -226,9 +226,19 @@ seeds/         committed sample aircraft snapshot (offline/CI fallback)
 .github/       CI (lint + pipeline + site build) and Pages deploy workflows
 ```
 
+## Learnings
+
+Non-obvious gotchas hit while building this (marimo scoping rules, Pyodide
+networking, dlt/dbt/OpenSky/Actions quirks) are collected in
+[docs/LEARNINGS.md](docs/LEARNINGS.md) — recorded so each one only costs
+debugging time once.
+
 ## Future features
 
 - **sqlmesh** as an alternative transformation engine alongside dbt
+- **More chat providers**: let the [data chat](https://1bk.dev/simple-airports-analysis-v2/chat/)
+  use other well-known models (e.g. Gemini; each provider must support direct
+  browser CORS calls, which not all do)
 - **dbt Docs v2 hosting** once dbt Labs ships a static export (see the preview section above)
 
 ## Versioning & releases
