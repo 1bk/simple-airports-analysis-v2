@@ -19,6 +19,19 @@ new models, sources, or dashboard features, PATCH for fixes.
   (the top-level form is deprecated in dbt-core and errors in Fusion,
   silently dropping semantic nodes from the Docs v2 index).
 - `docs/LEARNINGS.md` records the non-obvious gotchas hit while building.
+- Dashboard showcase screenshots are full-page captures again (the previous
+  refresh cropped both to the first viewport, making the two pages hard to
+  tell apart).
+- README documents the data-growth outlook: committed history and dashboard
+  payloads grow ~5 MB/year, and a "bounded history growth" roadmap item covers
+  the git-history cost of rewriting Parquet snapshots.
+
+### Fixed
+
+- Landing-page mermaid diagram could stay raw text on cold-cache visits:
+  `startOnLoad` races the window `load` event when mermaid loads as a deferred
+  CDN module. The landing page now calls `mermaid.run()` explicitly (and picks
+  the dark theme under a dark color scheme).
 
 ## [2.6.0] - 2026-07-19
 

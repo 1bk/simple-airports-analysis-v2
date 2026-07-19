@@ -263,6 +263,16 @@ debugging time once.
   use other well-known models (e.g. Gemini; each provider must support direct
   browser CORS calls, which not all do)
 - **dbt Docs v2 hosting** once dbt Labs ships a static export (see the preview section above)
+- **Bounded history growth**: the committed snapshots are tiny today
+  (`history/` is ~50 KB, growing ~15 KB/day ≈ 5 MB/year, and the CSV extracts
+  the dashboards download are ~60 KB), so GitHub Pages limits (1 GB site,
+  100 GB/month bandwidth) are decades away — page weight is dominated by the
+  ~27 MB WASM runtime, not data. The real long-term cost is *git history*:
+  every 6-hourly snapshot commit stores a fresh compressed copy of each
+  Parquet file (compressed data doesn't delta), so repo history grows with the
+  cumulative sum of file sizes — on the order of a few GB after a year. Fix
+  when it matters: partition `history/` into append-only monthly files so old
+  months are never rewritten, making repo growth linear (~5 MB/year).
 
 ## Versioning & releases
 

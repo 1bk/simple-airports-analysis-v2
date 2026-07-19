@@ -98,7 +98,12 @@ blockquote {
 MERMAID_SCRIPT = """
 <script type="module">
   import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+  // startOnLoad hooks the window load event, which can fire before this
+  // module finishes downloading from the CDN — then nothing renders.
+  // run() renders unconditionally, whenever the module arrives.
+  const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'default' });
+  await mermaid.run();
 </script>
 """
 

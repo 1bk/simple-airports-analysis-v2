@@ -72,6 +72,15 @@ is a thing that cost real debugging time — recorded so it only costs it once.
   models and metrics appear as pink nodes in the static `dbt docs generate`
   lineage graph. No Docs v2 required to *see* the semantic layer.
 
+## Static site
+
+- **Mermaid's `startOnLoad` is a race against the window `load` event.** As a
+  deferred CDN ES module, mermaid may finish downloading *after* `load` has
+  fired — `startOnLoad: true` only registers a load listener, so nothing
+  renders and the diagram stays raw text (typically on cold-cache first
+  visits; a warm reload hides it). Call `await mermaid.run()` explicitly
+  instead.
+
 ## APIs & data sources
 
 - **OpenSky blocks/throttles GitHub Actions runner IPs** (proven by a
