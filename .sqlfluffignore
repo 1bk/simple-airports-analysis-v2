@@ -2,3 +2,5 @@
 # jinja templater cannot resolve.
 dbt/models/staging/stg_arrivals.sql
 dbt/models/staging/stg_aircraft_states_history.sql
+# uses the dbt.date_spine package macro, which the templater can't resolve
+dbt/models/marts/time_spine_daily.sql

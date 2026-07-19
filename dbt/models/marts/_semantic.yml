@@ -1,0 +1,140 @@
+version: 2
+
+# MetricFlow semantic layer: define each measure once, then query any metric by
+# any dimension without hand-writing new marts. Uses the legacy (1.6-1.11) spec
+# because the MetricFlow CLI currently caps dbt-core below 1.12; dbt 1.12
+# parses it fine. Query locally with `make metrics` / `make mf ARGS="..."`.
+
+models:
+  - name: time_spine_daily
+    description: One row per day; MetricFlow's backbone for time joins and cumulative metrics.
+    time_spine:
+      standard_granularity_column: date_day
+    columns:
+      - name: date_day
+        granularity: day
+
+semantic_models:
+  - name: arrivals
+    description: One row per flight arrival at a major Malaysian airport (live fetch + committed history).
+    model: ref('stg_arrivals')
+    defaults:
+      agg_time_dimension: arrived_at
+    primary_entity: flight
+    entities:
+      - name: airport
+        type: foreign
+        expr: arrival_airport_icao
+    dimensions:
+      - name: arrived_at
+        type: time
+        type_params:
+          time_granularity: day
+      - name: departure_airport_code
+        type: categorical
+        expr: departure_airport_icao
+    measures:
+      - name: arrivals
+        description: Count of arriving flights.
+        agg: sum
+        expr: 1
+      - name: arriving_aircraft
+        description: Distinct aircraft (ICAO24 transponder addresses) that arrived.
+        agg: count_distinct
+        expr: icao24
+
+  - name: airports
+    description: Malaysian airports dimension; joins to facts through the shared airport entity.
+    model: ref('dim_airports_my')
+    entities:
+      - name: airport
+        type: primary
+        expr: ident
+    dimensions:
+      - name: name
+        type: categorical
+      - name: iata_code
+        type: categorical
+      - name: airport_type
+        type: categorical
+      - name: iso_region
+        type: categorical
+      - name: has_scheduled_service
+        type: categorical
+
+  - name: airport_congestion
+    description: Aircraft within 50 km of each scheduled-service airport, per committed history snapshot.
+    model: ref('fct_congestion_history')
+    defaults:
+      agg_time_dimension: observed_at
+    primary_entity: airport_snapshot
+    entities:
+      - name: airport
+        type: foreign
+        expr: ident
+    dimensions:
+      - name: observed_at
+        type: time
+        expr: snapshot_at
+        type_params:
+          time_granularity: day
+    measures:
+      - name: avg_aircraft_within_50km
+        description: Average aircraft within 50 km across snapshots.
+        agg: average
+        expr: aircraft_within_50km
+      - name: peak_aircraft_within_50km
+        description: Highest single-snapshot aircraft count within 50 km.
+        agg: max
+        expr: aircraft_within_50km
+
+metrics:
+  - name: total_arrivals
+    description: Total flight arrivals at major Malaysian airports.
+    label: Total arrivals
+    type: simple
+    type_params:
+      measure: arrivals
+
+  - name: arriving_aircraft
+    description: Distinct aircraft that arrived.
+    label: Distinct arriving aircraft
+    type: simple
+    type_params:
+      measure: arriving_aircraft
+
+  - name: arrivals_rolling_7d
+    description: Trailing 7-day arrivals, computed against the time spine.
+    label: Arrivals (rolling 7 days)
+    type: cumulative
+    type_params:
+      measure: arrivals
+      cumulative_type_params:
+        window: 7 days
+
+  - name: arrivals_dod_change
+    description: Day-over-day change in arrivals.
+    label: Arrivals change (d/d)
+    type: derived
+    type_params:
+      expr: arrivals_today - arrivals_yesterday
+      metrics:
+        - name: total_arrivals
+          alias: arrivals_today
+        - name: total_arrivals
+          alias: arrivals_yesterday
+          offset_window: 1 day
+
+  - name: avg_airport_congestion
+    description: Average aircraft within 50 km of an airport across history snapshots.
+    label: Avg aircraft within 50 km
+    type: simple
+    type_params:
+      measure: avg_aircraft_within_50km
+
+  - name: peak_airport_congestion
+    description: Peak single-snapshot aircraft count within 50 km of an airport.
+    label: Peak aircraft within 50 km
+    type: simple
+    type_params:
+      measure: peak_aircraft_within_50km

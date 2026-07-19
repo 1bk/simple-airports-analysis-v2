@@ -9,6 +9,35 @@ new models, sources, or dashboard features, PATCH for fixes.
 
 ## [Unreleased]
 
+## [2.6.0] - 2026-07-19
+
+### Added
+
+- **MetricFlow semantic layer**: three semantic models (arrivals, airports,
+  congestion history) joined through a shared `airport` entity, six metrics
+  (including a rolling 7-day cumulative and a day-over-day derived metric), a
+  daily time spine, and `make metrics` / `make mf ARGS=...` targets. The
+  MetricFlow CLI runs sandboxed via `uvx` (it pins `dbt-core < 1.12`); MetricFlow's
+  BSL 1.1 license is flagged in the README.
+- **dbt MCP server**: committed `.mcp.json` + `scripts/dbt_mcp.sh` launcher, so
+  any MCP client opened in the repo can explore lineage, compile models, and
+  query DuckDB — fully local, no dbt Cloud, Cloud-only tool groups disabled,
+  telemetry off. README documents a headless `claude -p` example.
+- **Data chat page** at `/chat/`: bring-your-own-API-key Claude chat over the
+  dashboard's datasets, running entirely in the browser (WASM). The key goes
+  straight from the browser to `api.anthropic.com` via Anthropic's CORS
+  support — no backend, no proxy, nothing stored.
+
+### Changed
+
+- Classic dashboard redesigned for legibility: single-row header, full-width
+  map/table and arrivals/distances sections in tabs, integer axis ticks with
+  bar headroom, top-6 congestion-over-time trend with an adaptive time axis,
+  partial edge days dropped from the daily-arrivals trend, table column
+  summaries hidden, and a distance heatmap alongside the matrix table.
+- Q&A dashboard links to the new chat page; README showcase screenshots
+  refreshed for both dashboards.
+
 ## [2.5.0] - 2026-07-19
 
 ### Added
@@ -110,7 +139,8 @@ rebuilt on a fully open-source, zero-Docker data stack.
 - CI (pre-commit: gitleaks, ruff, sqlfluff), GitHub Pages deploy, static dbt
   docs, and tag-driven releases.
 
-[Unreleased]: https://github.com/1bk/simple-airports-analysis-v2/compare/v2.5.0...HEAD
+[Unreleased]: https://github.com/1bk/simple-airports-analysis-v2/compare/v2.6.0...HEAD
+[2.6.0]: https://github.com/1bk/simple-airports-analysis-v2/compare/v2.5.0...v2.6.0
 [2.5.0]: https://github.com/1bk/simple-airports-analysis-v2/compare/v2.4.0...v2.5.0
 [2.4.0]: https://github.com/1bk/simple-airports-analysis-v2/compare/v2.3.0...v2.4.0
 [2.3.0]: https://github.com/1bk/simple-airports-analysis-v2/compare/v2.2.0...v2.3.0

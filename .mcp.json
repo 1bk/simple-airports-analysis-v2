@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "dbt": {
+      "command": "sh",
+      "args": ["scripts/dbt_mcp.sh"]
+    }
+  }
+}

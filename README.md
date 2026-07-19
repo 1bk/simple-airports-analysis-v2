@@ -8,12 +8,14 @@
 ![Repo size](https://img.shields.io/github/repo-size/1bk/simple-airports-analysis-v2)
 [![Dashboard](https://img.shields.io/website?url=https%3A%2F%2F1bk.dev%2Fsimple-airports-analysis-v2%2Fdashboard%2F&label=dashboard)](https://1bk.dev/simple-airports-analysis-v2/dashboard/)
 [![Classic dashboard](https://img.shields.io/website?url=https%3A%2F%2F1bk.dev%2Fsimple-airports-analysis-v2%2Fclassic%2F&label=classic%20dashboard)](https://1bk.dev/simple-airports-analysis-v2/classic/)
+[![Data chat](https://img.shields.io/website?url=https%3A%2F%2F1bk.dev%2Fsimple-airports-analysis-v2%2Fchat%2F&label=data%20chat)](https://1bk.dev/simple-airports-analysis-v2/chat/)
 [![dbt docs](https://img.shields.io/website?url=https%3A%2F%2F1bk.dev%2Fsimple-airports-analysis-v2%2Fdbt-docs%2F&label=dbt%20docs)](https://1bk.dev/simple-airports-analysis-v2/dbt-docs/)
 ![License](https://img.shields.io/github/license/1bk/simple-airports-analysis-v2)
 
 **Live:** [Project overview](https://1bk.dev/simple-airports-analysis-v2/) ·
 [Interactive dashboard](https://1bk.dev/simple-airports-analysis-v2/dashboard/) ·
 [classic dashboard](https://1bk.dev/simple-airports-analysis-v2/classic/) ·
+[chat with the data](https://1bk.dev/simple-airports-analysis-v2/chat/) ·
 [dbt docs & lineage](https://1bk.dev/simple-airports-analysis-v2/dbt-docs/)
 
 A revival of [simple-airports-analysis](https://github.com/1bk/simple-airports-analysis)
@@ -119,6 +121,70 @@ flowchart LR
   it into DuckDB, so congestion and arrivals are real time series that keep working even
   when OpenSky throttles CI runner IPs — last-known-good by construction.
 
+### Semantic layer (MetricFlow)
+
+New to semantic layers? The idea: instead of hand-writing a new SQL mart for every
+question ("arrivals by airport", "arrivals by day", "arrivals by airport by week…"),
+you define each **metric once** — its aggregation, its time column, how tables join —
+and [MetricFlow](https://github.com/dbt-labs/metricflow) generates the SQL for any
+slice on demand:
+
+![MetricFlow query](docs/img/metricflow-demo.gif)
+
+```sh
+make metrics    # validate the semantic layer + run a demo query
+make mf ARGS='query --metrics arrivals_rolling_7d --group-by metric_time'
+make mf ARGS='query --metrics avg_airport_congestion --group-by airport__iata_code'
+```
+
+The definitions live in [`dbt/models/marts/_semantic.yml`](dbt/models/marts/_semantic.yml):
+three semantic models (arrivals, airports, congestion history) joined through a shared
+`airport` entity, and six metrics including a rolling 7-day cumulative and a
+day-over-day derived metric — both computed against a
+[time spine](dbt/models/marts/time_spine_daily.sql).
+
+Two honest footnotes: the MetricFlow CLI runs sandboxed via `uvx` because it currently
+pins `dbt-core < 1.12` (this project is on 1.12 — the semantic YAML uses the
+backwards-compatible spec both understand), and MetricFlow is licensed
+**BSL 1.1**, not an OSI-approved open-source license — free to use here, but flagged
+since this project is otherwise FOSS-first.
+
+### AI layer (dbt MCP)
+
+The repo ships with the official (Apache-2.0)
+[dbt MCP server](https://github.com/dbt-labs/dbt-mcp) wired in, so an AI assistant
+opened in this repo can explore lineage, compile models, and query the warehouse —
+grounded in the real project, not guesswork:
+
+![dbt MCP demo](docs/img/dbt-mcp-demo.png)
+
+Try it yourself after cloning (needs [uv](https://docs.astral.sh/uv/) and one
+`make all` to build the DuckDB file):
+
+- **Claude Code / Cursor / any MCP client**: open the repo — the committed
+  [`.mcp.json`](.mcp.json) launches [`scripts/dbt_mcp.sh`](scripts/dbt_mcp.sh), which
+  points the server at this project. Approve the server when prompted, then ask things
+  like *"what feeds fct_congestion?"* or *"show me the top arrivals mart rows"*.
+- **One-off, headless**:
+
+  ```sh
+  claude -p "Using the dbt MCP tools: which model answers 'most congested airport', and its top 3 rows?" \
+    --mcp-config .mcp.json --strict-mcp-config --allowedTools "mcp__dbt__*"
+  ```
+
+Everything runs locally against dbt-core + DuckDB — no dbt Cloud account; the
+Cloud-only tool groups (Semantic Layer API, Discovery, Admin) are disabled in the
+launcher, and telemetry is off, as everywhere in this repo.
+
+And on the live site itself: **[chat with the data](https://1bk.dev/simple-airports-analysis-v2/chat/)** —
+a bring-your-own-API-key Claude chat over the dashboard's datasets. The page is pure
+static WASM (no backend, no proxy): your key goes from your browser straight to
+`api.anthropic.com` via Anthropic's
+[CORS support for direct browser access](https://simonwillison.net/2024/Aug/23/anthropic-dangerous-direct-browser-access/),
+and is never stored anywhere.
+
+![Data chat page](docs/img/data-chat.png)
+
 ### Orchestration (Prefect)
 
 `make all` runs the whole ELT pipeline headless — no UI needed. To watch it run instead,
@@ -163,10 +229,7 @@ seeds/         committed sample aircraft snapshot (offline/CI fallback)
 ## Future features
 
 - **sqlmesh** as an alternative transformation engine alongside dbt
-- **Semantic layer** (MetricFlow) over the marts
-- **OpenSky arrivals** wired into CI via repository secrets
 - **dbt Docs v2 hosting** once dbt Labs ships a static export (see the preview section above)
-- **AI/LLM layer**: natural-language questions over the warehouse via the dbt MCP server
 
 ## Versioning & releases
 

@@ -48,6 +48,7 @@ def _(meta, mo):
     live-traffic source: **{meta["aircraft_source"]}** ·
     [project overview](../) ·
     [classic dashboard](../classic/) ·
+    [chat with the data](../chat/) ·
     [dbt docs & lineage](../dbt-docs/) ·
     [source on GitHub](https://github.com/1bk/simple-airports-analysis-v2)
     """
