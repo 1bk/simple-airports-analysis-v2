@@ -42,6 +42,12 @@ is a thing that cost real debugging time — recorded so it only costs it once.
 - **Failed load packages leak across runs.** A half-loaded package from a
   failed run is retried into the *next* run and can poison it. Call
   `pipeline.drop_pending_packages()` before every run.
+- **dlt's local pipeline state can go stale and poison runs.** dlt caches its
+  schema under `~/.dlt/pipelines/<name>/` — if that cache and the physical
+  DuckDB file drift apart (e.g. the db was rebuilt by a different run), loads
+  fail with binder errors about variant columns like `foo__v_double`. Neither
+  artifact is in the repo, so fresh clones/CI are immune; locally, delete both
+  the cache dir and the db and rerun.
 - **Never pre-create a table dlt owns.** dlt will try to reconcile the schema
   with `ALTER ... ADD CONSTRAINT`, which DuckDB doesn't support. Let dlt create
   its tables; handle possibly-absent tables in dbt with `adapter.get_relation`

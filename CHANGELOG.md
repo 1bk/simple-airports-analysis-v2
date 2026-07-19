@@ -11,6 +11,14 @@ new models, sources, or dashboard features, PATCH for fixes.
 
 ### Changed
 
+- **Snapshot history is now partitioned monthly**: snapshots merge into
+  append-only `history/{dataset}/{YYYY-MM}.parquet` files instead of rewriting
+  one ever-growing Parquet per dataset, so git-history growth stays linear
+  (~5 MB/year) instead of quadratic. The pipeline reads the whole directory
+  with read-time deduplication (a flight fetched near a month boundary can
+  land in two files); existing history was migrated losslessly and all
+  dashboards/marts verified equal-or-better (dbt build 36/36).
+
 - README: "Who consumes what" section explaining how each surface gets its
   data (baked mart extracts for the static site vs. on-demand semantic-layer /
   MCP queries against the warehouse); lineage screenshot now shows the

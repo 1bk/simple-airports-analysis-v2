@@ -119,9 +119,12 @@ flowchart LR
   committed snapshot history and degrades gracefully if that's missing too.
 - **Snapshot history**: a [scheduled workflow](.github/workflows/snapshot.yml) (and
   `make snapshot` locally) merges each aircraft-state snapshot and 7-day arrivals window
-  into deduplicated Parquet under `history/`, committed to the repo. Every deploy loads
-  it into DuckDB, so congestion and arrivals are real time series that keep working even
-  when OpenSky throttles CI runner IPs — last-known-good by construction.
+  into deduplicated Parquet under `history/{dataset}/{YYYY-MM}.parquet`, committed to
+  the repo. Every deploy loads it into DuckDB, so congestion and arrivals are real time
+  series that keep working even when OpenSky throttles CI runner IPs — last-known-good
+  by construction. One append-only file per UTC month means a snapshot commit only ever
+  rewrites the current month, keeping git-history growth linear (~5 MB/year) instead of
+  quadratic.
 
 ### Semantic layer (MetricFlow)
 
@@ -244,7 +247,7 @@ To develop the dashboard interactively: `uv run marimo edit dashboard/dashboard.
 pipelines/     dlt sources + Prefect flow (the entrypoint: python -m pipelines.flow)
 dbt/           dbt project: staging views + marts, tests, docs
 dashboard/     marimo notebook + public/ data baked for the WASM build
-history/       committed Parquet time series, grown by the snapshot workflow
+history/       committed Parquet time series (one file per month), grown by the snapshot workflow
 seeds/         committed sample aircraft snapshot (offline/CI fallback)
 .github/       CI (lint + pipeline + site build) and Pages deploy workflows
 ```
@@ -256,6 +259,18 @@ networking, dlt/dbt/OpenSky/Actions quirks) are collected in
 [docs/LEARNINGS.md](docs/LEARNINGS.md) — recorded so each one only costs
 debugging time once.
 
+## A note on data growth
+
+The committed snapshots are tiny (`history/` is ~50 KB, growing ~15 KB/day ≈ 5 MB/year,
+and the CSV extracts the dashboards download are ~60 KB), so GitHub Pages limits (1 GB
+site, 100 GB/month bandwidth) are decades away — page weight is dominated by the ~27 MB
+WASM runtime, not data. The subtler cost was *git history*: a snapshot commit stores a
+fresh compressed copy of any Parquet file it rewrites (compressed data doesn't delta),
+so rewriting one ever-growing file 4× a day would have accumulated a few GB of pack data
+per year. That's why history is partitioned into one append-only file per UTC month —
+only the small current-month file is ever rewritten, so repo growth stays linear at
+roughly the size of the data itself.
+
 ## Future features
 
 - **sqlmesh** as an alternative transformation engine alongside dbt
@@ -263,16 +278,6 @@ debugging time once.
   use other well-known models (e.g. Gemini; each provider must support direct
   browser CORS calls, which not all do)
 - **dbt Docs v2 hosting** once dbt Labs ships a static export (see the preview section above)
-- **Bounded history growth**: the committed snapshots are tiny today
-  (`history/` is ~50 KB, growing ~15 KB/day ≈ 5 MB/year, and the CSV extracts
-  the dashboards download are ~60 KB), so GitHub Pages limits (1 GB site,
-  100 GB/month bandwidth) are decades away — page weight is dominated by the
-  ~27 MB WASM runtime, not data. The real long-term cost is *git history*:
-  every 6-hourly snapshot commit stores a fresh compressed copy of each
-  Parquet file (compressed data doesn't delta), so repo history grows with the
-  cumulative sum of file sizes — on the order of a few GB after a year. Fix
-  when it matters: partition `history/` into append-only monthly files so old
-  months are never rewritten, making repo growth linear (~5 MB/year).
 
 ## Versioning & releases
 

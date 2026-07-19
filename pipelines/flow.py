@@ -103,17 +103,29 @@ def load_arrivals() -> None:
             logging.warning("arrivals load failed - keeping previous data", exc_info=True)
 
 
+# Dedupe key per history dataset: a flight fetched near a month boundary can land
+# in two monthly files, so read-time dedupe mirrors the merge-time dedupe in
+# pipelines/snapshot.py.
+HISTORY_KEYS = {
+    "aircraft_states": ["icao24", "snapshot_ts"],
+    "arrivals": ["icao24", "arrival_airport_icao", "first_seen"],
+}
+
+
 @materialize("duckdb://raw/aircraft_states_history", "duckdb://raw/arrivals_history")
 def load_history() -> None:
     """Committed history parquet -> raw tables. Works with zero API access, so
     arrivals/congestion time series survive OpenSky being unreachable from CI."""
     with duckdb.connect(DUCKDB_PATH) as con:
-        for name in ("aircraft_states", "arrivals"):
-            path = HISTORY_DIR / f"{name}.parquet"
-            if path.exists():
+        for name, key in HISTORY_KEYS.items():
+            history_dir = HISTORY_DIR / name
+            if history_dir.exists() and any(history_dir.glob("*.parquet")):
+                keys = ", ".join(key)
                 con.execute(
                     f"create or replace table raw.{name}_history as "
-                    f"select * from read_parquet('{path}')"
+                    f"select * from read_parquet('{history_dir}/*.parquet') "
+                    f"qualify row_number() over "
+                    f"(partition by {keys} order by collected_at desc) = 1"
                 )
 
 

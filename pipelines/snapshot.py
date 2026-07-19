@@ -1,9 +1,12 @@
 """Snapshot collector: merge live aircraft states + 7-day arrivals into committed Parquet.
 
 Run on a schedule by .github/workflows/snapshot.yml (and locally via `make snapshot`).
-Each run deduplicates new rows into history/*.parquet, so the repo accumulates a
-time series (last-known-good pattern) and deploys never depend on OpenSky being
-reachable from CI runners. The committed sample seed is never written to history.
+Each run deduplicates new rows into history/{name}/{YYYY-MM}.parquet, one file per
+UTC month, so the repo accumulates a time series (last-known-good pattern) without
+every commit rewriting the whole history (append-only monthly files keep git
+history growth bounded instead of quadratic). Deploys never depend on OpenSky
+being reachable from CI runners. The committed sample seed is never written to
+history.
 """
 
 import logging
@@ -111,21 +114,26 @@ def _merge(rows: list[dict], columns: dict, path: Path, key: list[str]) -> int:
 def main() -> None:
     load_dotenv(REPO_ROOT / ".env")  # optional local secrets, see .env.example
     HISTORY_DIR.mkdir(exist_ok=True)
+    month = time.strftime("%Y-%m", time.gmtime())  # one append-only file per UTC month
     states = _fetch_states()
     if states:
+        states_dir = HISTORY_DIR / "aircraft_states"
+        states_dir.mkdir(parents=True, exist_ok=True)
         grew = _merge(
             states,
             STATE_COLUMNS,
-            HISTORY_DIR / "aircraft_states.parquet",
+            states_dir / f"{month}.parquet",
             ["icao24", "snapshot_ts"],
         )
         log.info("aircraft_states history: +%d rows", grew)
     arrival_rows = _fetch_arrivals()
     if arrival_rows:
+        arrivals_dir = HISTORY_DIR / "arrivals"
+        arrivals_dir.mkdir(parents=True, exist_ok=True)
         grew = _merge(
             arrival_rows,
             ARRIVAL_COLUMNS,
-            HISTORY_DIR / "arrivals.parquet",
+            arrivals_dir / f"{month}.parquet",
             ["icao24", "arrival_airport_icao", "first_seen"],
         )
         log.info("arrivals history: +%d rows", grew)
