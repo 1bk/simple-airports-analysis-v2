@@ -298,21 +298,18 @@ per year. That's why history is partitioned into one append-only file per UTC mo
 only the small current-month file is ever rewritten, so repo growth stays linear at
 roughly the size of the data itself.
 
-## Future features
+## Wish list
 
-- **sqlmesh** as an alternative transformation engine alongside dbt
-- **dbt Docs v2 hosting** once dbt Labs ships a static export (see the preview section above)
-- **More dbt governance**: source freshness checks (surface stale OpenSky data instead
-  of silently serving it), semantic-layer saved queries, model versions with a
-  deprecation window on contracted marts, groups + access levels, and the
-  dbt-project-evaluator package as the model count grows
-- **Departures analysis**: OpenSky also has a departures endpoint — the mirror image of
-  the arrival-origins analysis (where do flights *from* Malaysia go?)
-- **Generative-UI answers page** (exploratory, low priority): a separate page where the
-  model answers with a whole composed layout — charts, stat cards, tables — from a
-  constrained JSON spec, in the spirit of
-  [json-render](https://json-render.dev/)'s catalog idea but rendered in pure Python
-  with marimo + altair (the chat page's single-chart replies are the first step)
+Future ideas live on a public kanban board — **[Airports v2 · Wish
+list](https://github.com/users/1bk/projects/1)** — with three columns: 💭 Wishlist
+(ideas worth doing someday), 🔎 Exploring (actively poking at it), and ✅ Shipped
+(what already made it into the repo). It's a personal project, so there are no
+dates and no promises — the board is exactly what it says: a wish list.
+
+Current headliners: **sqlmesh** as an alternative transformation engine,
+**departures analysis** (the mirror image of arrival origins — where do flights
+*from* Malaysia go?), and a **generative-UI answers page** in the spirit of
+[json-render](https://json-render.dev/)'s catalog idea, rendered in pure Python.
 
 ## Versioning & releases
 

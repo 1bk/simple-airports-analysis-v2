@@ -34,6 +34,10 @@ new models, sources, or dashboard features, PATCH for fixes.
 
 ### Changed
 
+- Future ideas moved to a public kanban wish-list board
+  ([users/1bk/projects/1](https://github.com/users/1bk/projects/1)) with
+  Wishlist / Exploring / Shipped columns — no dates, no promises; the README's
+  Future features section became a short pointer to it.
 - The dbt MCP demo screenshot now shows a headless `claude -p` session
   answering the new question 5 via the MCP tools (an animated-gif version was
   tried and reverted — the run is minutes of silent waiting, which a static
